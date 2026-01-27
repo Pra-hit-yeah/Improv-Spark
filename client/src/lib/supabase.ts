@@ -1,27 +1,6 @@
-// This is a minimal wrapper to simulate Supabase client structure
-// In a real app, this would import createClient from @supabase/supabase-js
+import { createClient } from '@supabase/supabase-js';
 
-export const supabase = {
-  auth: {
-    signInWithOtp: async ({ email }: { email: string }) => {
-      console.log('Mock Supabase: Sending magic link to', email);
-      return { data: {}, error: null };
-    },
-    signInWithOAuth: async ({ provider }: { provider: string }) => {
-      console.log('Mock Supabase: Redirecting to', provider);
-      return { data: {}, error: null };
-    },
-    signOut: async () => {
-      console.log('Mock Supabase: Signing out');
-      return { error: null };
-    }
-  },
-  from: (table: string) => ({
-    select: () => ({
-      eq: () => ({
-        single: async () => ({ data: null, error: null }),
-        data: [],
-      }),
-    }),
-  }),
-};
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://qveybdeyprsvobwfsnmz.supabase.co';
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF2ZXliZGV5cHJzdm9id2Zzbm16Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjkwOTAyNzcsImV4cCI6MjA4NDY2NjI3N30.B9Cooms7lt7i-VToJvxve8LMJaOs8U6wDUKTFWIpNfA';
+
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);
