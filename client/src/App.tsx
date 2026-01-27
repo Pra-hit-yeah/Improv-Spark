@@ -11,6 +11,7 @@ import Tracks from "@/pages/Tracks";
 import Progress from "@/pages/Progress";
 import Settings from "@/pages/Settings";
 import SessionPage from "@/pages/Session";
+import ProductCaseStudy from "@/pages/ProductCaseStudy";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -19,6 +20,7 @@ function Router() {
       <Switch>
         {/* Public */}
         <Route path="/" component={LandingPage} />
+        <Route path="/product" component={ProductCaseStudy} />
         <Route path="/login" component={AuthPage} />
         <Route path="/signup" component={AuthPage} />
         

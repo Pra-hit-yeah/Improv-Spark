@@ -1,4 +1,4 @@
-import { useLocation } from "wouter";
+import { Link, useLocation } from "wouter";
 import { Sidebar } from "./Sidebar";
 import { useStore } from "@/lib/store";
 import { useEffect } from "react";
@@ -40,6 +40,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         <div className="container mx-auto px-4 text-center text-muted-foreground text-sm">
           <p>&copy; {new Date().getFullYear()} Quick-Wit. All rights reserved.</p>
           <div className="flex justify-center gap-6 mt-4">
+            <Link href="/product"><a className="hover:text-foreground">Product Case Study</a></Link>
             <a href="#" className="hover:text-foreground">Terms</a>
             <a href="#" className="hover:text-foreground">Privacy</a>
             <a href="#" className="hover:text-foreground">Contact</a>
