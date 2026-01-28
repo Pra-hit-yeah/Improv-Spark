@@ -33,9 +33,9 @@ export default function ProductCaseStudy() {
           <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed font-light">
             The Duolingo for spontaneous communication.
           </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <Link href="/app">
-              <Button size="lg" className="h-12 px-8 rounded-full shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all text-base font-semibold">
+              <Button size="lg" className="h-12 px-8 rounded-full shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all text-base font-semibold" data-testid="button-product-try-app">
                 Try Live App
                 <ArrowRight className="ml-2 w-4 h-4" />
               </Button>
@@ -44,10 +44,16 @@ export default function ProductCaseStudy() {
               variant="outline" 
               size="lg" 
               className="h-12 px-8 rounded-full bg-background/50 backdrop-blur-sm border-border hover:bg-background transition-all text-base font-medium"
+              data-testid="button-product-scroll-thinking"
               onClick={() => document.getElementById('problem')?.scrollIntoView({ behavior: 'smooth' })}
             >
               View Product Thinking
             </Button>
+            <Link href="/prd">
+              <Button asChild variant="outline" size="lg" className="h-12 px-8 rounded-full bg-background/50 backdrop-blur-sm border-border hover:bg-background transition-all text-base font-medium" data-testid="button-product-view-prd">
+                <a>View PRD</a>
+              </Button>
+            </Link>
           </div>
         </div>
       </section>

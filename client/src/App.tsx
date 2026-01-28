@@ -13,6 +13,7 @@ import Settings from "@/pages/Settings";
 import SessionPage from "@/pages/Session";
 import ProductCaseStudy from "@/pages/ProductCaseStudy";
 import RoadmapPage from "@/pages/Roadmap";
+import PRDHub from "@/pages/PRD";
 import Onboarding from "@/pages/Onboarding";
 import AnalyticsPage from "@/pages/Analytics";
 import AnalyticsGate from "@/pages/AnalyticsGate";
@@ -25,6 +26,7 @@ function Router() {
         {/* Public */}
         <Route path="/" component={LandingPage} />
         <Route path="/product" component={ProductCaseStudy} />
+        <Route path="/prd" component={PRDHub} />
         <Route path="/roadmap" component={RoadmapPage} />
         <Route path="/login" component={AuthPage} />
         <Route path="/signup" component={AuthPage} />

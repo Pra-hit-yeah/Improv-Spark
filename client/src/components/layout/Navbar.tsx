@@ -16,7 +16,7 @@ export function Navbar() {
     <nav className="sticky top-0 z-50 w-full border-b border-white/10 bg-white/80 backdrop-blur-md">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <Link href="/">
-          <a className="flex items-center gap-2 group">
+          <a className="flex items-center gap-2 group" data-testid="link-wordmark">
             <div className="bg-primary/10 p-2 rounded-lg group-hover:bg-primary/20 transition-colors">
               <Sparkles className="w-5 h-5 text-primary" />
             </div>
@@ -28,11 +28,12 @@ export function Navbar() {
 
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-8">
-          <Link href="/#how-it-works"><a className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">How it works</a></Link>
-          <Link href="/tracks"><a className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">Tracks</a></Link>
-          <Link href="/product"><a className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">Product</a></Link>
-          <Link href="/roadmap"><a className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">Roadmap</a></Link>
-          <Link href="/#pricing"><a className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">Pricing</a></Link>
+          <Link href="/#how-it-works"><a className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors" data-testid="link-nav-how-it-works">How it works</a></Link>
+          <Link href="/tracks"><a className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors" data-testid="link-nav-tracks">Tracks</a></Link>
+          <Link href="/product"><a className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors" data-testid="link-nav-product">Product</a></Link>
+          <Link href="/roadmap"><a className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors" data-testid="link-nav-roadmap">Roadmap</a></Link>
+          <Link href="/prd"><a className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors" data-testid="link-nav-prd">PRD</a></Link>
+          <Link href="/#pricing"><a className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors" data-testid="link-nav-pricing">Pricing</a></Link>
           
           <div className="flex items-center gap-4 ml-4">
             {isAuthenticated ? (
@@ -67,8 +68,11 @@ export function Navbar() {
       {/* Mobile Nav */}
       {isOpen && (
         <div className="md:hidden border-t border-border bg-background p-4 flex flex-col gap-4 animate-in slide-in-from-top-5">
-          <Link href="/#how-it-works"><a className="text-sm font-medium p-2" onClick={() => setIsOpen(false)}>How it works</a></Link>
-          <Link href="/tracks"><a className="text-sm font-medium p-2" onClick={() => setIsOpen(false)}>Tracks</a></Link>
+          <Link href="/#how-it-works"><a className="text-sm font-medium p-2" onClick={() => setIsOpen(false)} data-testid="link-mobile-how-it-works">How it works</a></Link>
+          <Link href="/tracks"><a className="text-sm font-medium p-2" onClick={() => setIsOpen(false)} data-testid="link-mobile-tracks">Tracks</a></Link>
+          <Link href="/product"><a className="text-sm font-medium p-2" onClick={() => setIsOpen(false)} data-testid="link-mobile-product">Product</a></Link>
+          <Link href="/roadmap"><a className="text-sm font-medium p-2" onClick={() => setIsOpen(false)} data-testid="link-mobile-roadmap">Roadmap</a></Link>
+          <Link href="/prd"><a className="text-sm font-medium p-2" onClick={() => setIsOpen(false)} data-testid="link-mobile-prd">PRD</a></Link>
           <div className="h-px bg-border my-2" />
           <Link href="/login">
             <Button asChild variant="outline" className="w-full justify-start" onClick={() => setIsOpen(false)}>
