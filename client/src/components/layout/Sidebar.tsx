@@ -59,11 +59,14 @@ export function Sidebar() {
             const isActive = location === item.href;
             return (
               <Link key={item.href} href={item.href}>
-                <a className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
-                  isActive 
-                    ? "bg-primary text-primary-foreground shadow-md shadow-primary/20" 
-                    : "text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
-                }`}>
+                <a
+                  data-testid={`link-nav-${item.label.toLowerCase()}`}
+                  className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
+                    isActive 
+                      ? "bg-primary text-primary-foreground shadow-md shadow-primary/20" 
+                      : "text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                  }`}
+                >
                   <item.icon className="w-5 h-5" />
                   {item.label}
                 </a>
@@ -75,9 +78,9 @@ export function Sidebar() {
         <div className="p-4 border-t border-sidebar-border">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="flex items-center gap-3 w-full hover:bg-sidebar-accent p-2 rounded-lg transition-colors text-left">
+              <button className="flex items-center gap-3 w-full hover:bg-sidebar-accent p-2 rounded-lg transition-colors text-left" data-testid="button-account-menu">
                 <Avatar className="w-9 h-9 border border-border">
-                  <AvatarImage src={user?.avatar_url || ""} />
+                  <AvatarImage src={user?.avatar_url ?? undefined} />
                   <AvatarFallback>{user?.name?.[0] || "U"}</AvatarFallback>
                 </Avatar>
                 <div className="flex-1 min-w-0">
@@ -90,9 +93,11 @@ export function Sidebar() {
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
-                 <Link href="/app/settings">Settings</Link>
+                <Link href="/app/settings">
+                  <a data-testid="link-account-settings">Settings</a>
+                </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem className="text-destructive focus:text-destructive" onClick={() => logout()}>
+              <DropdownMenuItem className="text-destructive focus:text-destructive" onClick={() => logout()} data-testid="button-logout">
                 <LogOut className="w-4 h-4 mr-2" />
                 Log out
               </DropdownMenuItem>
@@ -107,9 +112,12 @@ export function Sidebar() {
           const isActive = location === item.href;
           return (
             <Link key={item.href} href={item.href}>
-              <a className={`flex flex-col items-center justify-center p-2 rounded-lg gap-1 ${
-                isActive ? "text-primary" : "text-muted-foreground"
-              }`}>
+              <a
+                data-testid={`link-bottomnav-${item.label.toLowerCase()}`}
+                className={`flex flex-col items-center justify-center p-2 rounded-lg gap-1 ${
+                  isActive ? "text-primary" : "text-muted-foreground"
+                }`}
+              >
                 <item.icon className="w-5 h-5" />
                 <span className="text-[10px] font-medium">{item.label}</span>
               </a>

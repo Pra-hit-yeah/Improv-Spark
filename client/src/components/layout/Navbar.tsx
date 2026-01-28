@@ -37,17 +37,21 @@ export function Navbar() {
           <div className="flex items-center gap-4 ml-4">
             {isAuthenticated ? (
                <Link href="/app">
-                <Button>Dashboard</Button>
+                <Button asChild>
+                  <a data-testid="link-dashboard">Dashboard</a>
+                </Button>
                </Link>
             ) : (
               <>
                 <Link href="/login">
-                  <a className="text-sm font-medium text-foreground hover:text-primary transition-colors">
+                  <a className="text-sm font-medium text-foreground hover:text-primary transition-colors" data-testid="link-login">
                     Log in
                   </a>
                 </Link>
                 <Link href="/signup">
-                  <Button>Start Free</Button>
+                  <Button asChild>
+                    <a data-testid="link-start-free">Start Free</a>
+                  </Button>
                 </Link>
               </>
             )}
@@ -66,8 +70,16 @@ export function Navbar() {
           <Link href="/#how-it-works"><a className="text-sm font-medium p-2" onClick={() => setIsOpen(false)}>How it works</a></Link>
           <Link href="/tracks"><a className="text-sm font-medium p-2" onClick={() => setIsOpen(false)}>Tracks</a></Link>
           <div className="h-px bg-border my-2" />
-          <Link href="/login"><Button variant="outline" className="w-full justify-start" onClick={() => setIsOpen(false)}>Log in</Button></Link>
-          <Link href="/signup"><Button className="w-full justify-start" onClick={() => setIsOpen(false)}>Start Free</Button></Link>
+          <Link href="/login">
+            <Button asChild variant="outline" className="w-full justify-start" onClick={() => setIsOpen(false)}>
+              <a data-testid="link-mobile-login">Log in</a>
+            </Button>
+          </Link>
+          <Link href="/signup">
+            <Button asChild className="w-full justify-start" onClick={() => setIsOpen(false)}>
+              <a data-testid="link-mobile-start-free">Start Free</a>
+            </Button>
+          </Link>
         </div>
       )}
     </nav>
