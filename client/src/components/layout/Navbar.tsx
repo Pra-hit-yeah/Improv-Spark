@@ -30,6 +30,8 @@ export function Navbar() {
         <div className="hidden md:flex items-center gap-8">
           <Link href="/#how-it-works"><a className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">How it works</a></Link>
           <Link href="/tracks"><a className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">Tracks</a></Link>
+          <Link href="/product"><a className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">Product</a></Link>
+          <Link href="/roadmap"><a className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">Roadmap</a></Link>
           <Link href="/#pricing"><a className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">Pricing</a></Link>
           
           <div className="flex items-center gap-4 ml-4">

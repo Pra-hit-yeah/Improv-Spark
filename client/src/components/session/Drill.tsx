@@ -4,6 +4,7 @@ import { Progress } from "@/components/ui/progress";
 import { Card, CardContent } from "@/components/ui/card";
 import { Mic, Timer, ArrowRight, CheckCircle2 } from "lucide-react";
 import { useStore } from "@/lib/store";
+import { logEvent } from "@/lib/analytics";
 import { useLocation } from "wouter";
 
 type Difficulty = 'beginner' | 'intermediate' | 'advanced';
@@ -74,6 +75,8 @@ export function Drill({ difficulty }: { difficulty: Difficulty }) {
   }, [active, completed, difficulty, currentWordIndex, prompts.length]);
 
   const handleStart = () => {
+    logEvent({ name: "difficulty_selected", userId: null, properties: { difficulty } });
+    logEvent({ name: "session_started", userId: null, properties: { difficulty } });
     setActive(true);
   };
 

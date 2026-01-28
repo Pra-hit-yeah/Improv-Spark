@@ -12,6 +12,9 @@ export type User = {
   total_xp: number;
   level: number;
   last_session_date: string | null;
+  goal?: string | null;
+  daily_time?: string | null;
+  activated?: boolean;
 };
 
 export type Session = {
@@ -40,10 +43,13 @@ interface AppState {
   sessions: Session[];
   tracks: Track[];
   isAuthenticated: boolean;
-  
+  testerBypassEnabled: boolean;
+
   // Actions
+  setTesterBypassEnabled: (enabled: boolean) => void;
   login: (email: string) => Promise<void>;
   logout: () => void;
+  setOnboarding: (values: { goal: string | null; daily_time: string | null }) => void;
   completeSession: (difficulty: 'beginner' | 'intermediate' | 'advanced', duration: number) => void;
 }
 
@@ -88,31 +94,54 @@ const INITIAL_TRACKS: Track[] = [
   },
 ];
 
+import { logEvent } from "@/lib/analytics";
+
 export const useStore = create<AppState>()(
   persist(
     (set, get) => ({
       user: null,
       isAuthenticated: false,
+      testerBypassEnabled: true,
       sessions: [],
       tracks: INITIAL_TRACKS,
+
+      setTesterBypassEnabled: (enabled) => set({ testerBypassEnabled: enabled }),
 
       login: async (email) => {
         // Simulate API delay
         await new Promise(resolve => setTimeout(resolve, 800));
         set({ 
-          user: { ...MOCK_USER, email }, 
+          user: { ...MOCK_USER, email, activated: false }, 
           isAuthenticated: true 
         });
+        logEvent({ name: "user_signed_up", userId: MOCK_USER.id, properties: { email } });
       },
 
       logout: () => {
         set({ user: null, isAuthenticated: false });
       },
 
+      setOnboarding: ({ goal, daily_time }) => {
+        set((state) => {
+          if (!state.user) return state;
+          return {
+            user: {
+              ...state.user,
+              goal,
+              daily_time,
+              activated: true,
+            },
+          };
+        });
+      },
+
       completeSession: (difficulty, duration) => {
         const xpMap = { beginner: 10, intermediate: 25, advanced: 50 };
         const earnedXp = xpMap[difficulty];
-        
+
+        logEvent({ name: "session_completed", userId: get().user?.id ?? null, properties: { difficulty, duration_seconds: duration, xp_earned: earnedXp } });
+        logEvent({ name: "streak_incremented", userId: get().user?.id ?? null, properties: { difficulty } });
+
         set((state) => {
           if (!state.user) return state;
 

@@ -12,10 +12,15 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     // Ideally this checks auth state and redirects
-    if (isAppRoute && !isAuthenticated) {
+    if (isAppRoute && !isAuthenticated && !useStore.getState().testerBypassEnabled) {
       setLocation("/login");
+      return;
     }
-  }, [isAppRoute, isAuthenticated, setLocation]);
+
+    if (location === "/app" && (isAuthenticated || useStore.getState().testerBypassEnabled) && !useStore.getState().user?.activated) {
+      setLocation("/app/onboarding");
+    }
+  }, [isAppRoute, isAuthenticated, location, setLocation]);
 
   if (isAppRoute) {
     return (
@@ -40,9 +45,10 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         <div className="container mx-auto px-4 text-center text-muted-foreground text-sm">
           <p>&copy; {new Date().getFullYear()} Quick-Wit. All rights reserved.</p>
           <div className="flex justify-center gap-6 mt-4">
-            <Link href="/product"><a className="hover:text-foreground">Product Case Study</a></Link>
+            <Link href="/product"><a className="hover:text-foreground">Product</a></Link>
             <a href="#" className="hover:text-foreground">Terms</a>
             <a href="#" className="hover:text-foreground">Privacy</a>
+            <Link href="/roadmap"><a className="hover:text-foreground">Roadmap</a></Link>
             <a href="#" className="hover:text-foreground">Contact</a>
           </div>
         </div>

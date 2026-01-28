@@ -12,6 +12,10 @@ import Progress from "@/pages/Progress";
 import Settings from "@/pages/Settings";
 import SessionPage from "@/pages/Session";
 import ProductCaseStudy from "@/pages/ProductCaseStudy";
+import RoadmapPage from "@/pages/Roadmap";
+import Onboarding from "@/pages/Onboarding";
+import AnalyticsPage from "@/pages/Analytics";
+import AnalyticsGate from "@/pages/AnalyticsGate";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -21,15 +25,22 @@ function Router() {
         {/* Public */}
         <Route path="/" component={LandingPage} />
         <Route path="/product" component={ProductCaseStudy} />
+        <Route path="/roadmap" component={RoadmapPage} />
         <Route path="/login" component={AuthPage} />
         <Route path="/signup" component={AuthPage} />
         
         {/* App Shell */}
         <Route path="/app" component={Dashboard} />
+        <Route path="/app/onboarding" component={Onboarding} />
         <Route path="/app/tracks" component={Tracks} />
         <Route path="/app/progress" component={Progress} />
         <Route path="/app/settings" component={Settings} />
         <Route path="/app/session" component={SessionPage} />
+        <Route path="/app/analytics">
+          <AnalyticsGate>
+            <AnalyticsPage />
+          </AnalyticsGate>
+        </Route>
 
         <Route component={NotFound} />
       </Switch>

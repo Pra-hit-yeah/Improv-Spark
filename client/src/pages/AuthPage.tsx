@@ -21,7 +21,7 @@ export default function AuthPage() {
     setLoading(true);
     await login(email);
     setLoading(false);
-    setLocation("/app");
+    setLocation("/app/onboarding");
   };
 
   return (

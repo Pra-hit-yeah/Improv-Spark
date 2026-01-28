@@ -4,18 +4,40 @@ import { Progress } from "@/components/ui/progress";
 import { useStore } from "@/lib/store";
 import { Link } from "wouter";
 import { Play, Zap, Trophy, Flame } from "lucide-react";
+import { getDashboardCtaText, getDashboardCtaVariant } from "@/lib/experiments";
+import { logEvent } from "@/lib/analytics";
 
 export default function Dashboard() {
   const { user, tracks } = useStore();
 
   const currentTrack = tracks.find(t => !t.locked) || tracks[0];
+  const variant = getDashboardCtaVariant(user?.id ?? null);
+  const ctaText = getDashboardCtaText(variant);
+
+  const headline = user?.goal === 'confidence'
+    ? 'Build calm confidence'
+    : user?.goal === 'wit'
+      ? 'Sharpen your wit'
+      : user?.goal === 'social_ease'
+        ? 'Make conversations feel easy'
+        : user?.goal === 'presence'
+          ? 'Speak with presence'
+          : `Good Morning, ${user?.name?.split(' ')[0]}`;
+
+  const subtext = user?.daily_time === 'morning'
+    ? 'A quick drill to start the day strong.'
+    : user?.daily_time === 'afternoon'
+      ? 'A quick reset for clearer thinking.'
+      : user?.daily_time === 'evening'
+        ? 'A short drill to end on a high note.'
+        : 'Ready to sharpen your mind today?';
 
   return (
     <div className="space-y-8">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-           <h1 className="text-3xl font-heading font-bold">Good Morning, {user?.name?.split(' ')[0]}</h1>
-           <p className="text-muted-foreground">Ready to sharpen your mind today?</p>
+           <h1 className="text-3xl font-heading font-bold" data-testid="text-dashboard-headline">{headline}</h1>
+           <p className="text-muted-foreground" data-testid="text-dashboard-subtext">{subtext}</p>
         </div>
         <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-full border border-border shadow-xs">
            <Flame className="w-5 h-5 text-orange-500 fill-orange-500" />
@@ -41,9 +63,25 @@ export default function Dashboard() {
                  <div className="text-4xl font-bold">{user?.level}</div>
               </div>
               <Link href="/app/session">
-                <Button size="lg" variant="secondary" className="h-12 px-8 font-bold shadow-lg">
+                <Button
+                  size="lg"
+                  variant="secondary"
+                  className="h-12 px-8 font-bold shadow-lg"
+                  data-testid="button-dashboard-primary-cta"
+                  onClick={() => {
+                    logEvent({
+                      name: "cta_clicked",
+                      userId: user?.id ?? null,
+                      properties: {
+                        experiment_key: "dashboard_primary_cta_text",
+                        variant,
+                        cta_text: ctaText,
+                      },
+                    });
+                  }}
+                >
                    <Play className="w-4 h-4 mr-2 fill-current" />
-                   Start Session
+                   {ctaText}
                 </Button>
               </Link>
             </div>

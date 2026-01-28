@@ -248,32 +248,40 @@ export default function ProductCaseStudy() {
               <h2 className="text-sm font-bold uppercase tracking-widest text-primary mb-2 flex items-center gap-2">
                 <Beaker className="w-4 h-4" /> Experiment
               </h2>
-              <h3 className="text-3xl font-heading font-bold">The "Streak" Hypothesis</h3>
+              <h3 className="text-3xl font-heading font-bold">Dashboard CTA Copy Test</h3>
+              <p className="text-sm text-muted-foreground mt-3">Simulated outcome unless analytics data exists.</p>
             </div>
             <div className="md:w-2/3">
                <Card className="border-border shadow-md overflow-hidden">
                   <div className="bg-muted/50 p-4 border-b border-border flex justify-between items-center">
-                     <span className="font-mono text-xs font-bold text-muted-foreground">EXP-042</span>
-                     <Badge variant="outline" className="text-green-600 bg-green-50 border-green-200">Successful</Badge>
+                     <span className="font-mono text-xs font-bold text-muted-foreground">EXP-CTA-001</span>
+                     <Badge variant="outline" className="text-amber-800 bg-amber-50 border-amber-200">Simulated</Badge>
                   </div>
                   <CardContent className="p-6 space-y-6">
                      <div>
                         <h4 className="font-bold text-sm mb-1">Hypothesis</h4>
-                        <p className="text-muted-foreground text-sm">Showing a potential "streak loss" warning on the dashboard will increase D1 retention by 15% due to loss aversion.</p>
-                     </div>
-                     <div className="grid grid-cols-2 gap-4">
-                        <div className="p-3 bg-red-50 rounded-lg border border-red-100">
-                           <h5 className="font-bold text-red-800 text-xs mb-1">Control (A)</h5>
-                           <p className="text-red-700 text-sm">Standard welcome message.</p>
-                        </div>
-                         <div className="p-3 bg-green-50 rounded-lg border border-green-100">
-                           <h5 className="font-bold text-green-800 text-xs mb-1">Variant (B)</h5>
-                           <p className="text-green-700 text-sm">"Your streak is at risk!"</p>
-                        </div>
+                        <p className="text-muted-foreground text-sm">A more action-oriented CTA will increase session starts from the dashboard by at least 8%.</p>
                      </div>
                      <div>
-                        <h4 className="font-bold text-sm mb-1">Result</h4>
-                        <p className="text-muted-foreground text-sm">Variant B showed a <span className="font-bold text-foreground">22% lift</span> in next-day logins. Implemented globally.</p>
+                        <h4 className="font-bold text-sm mb-2">What we tested</h4>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <div className="p-3 rounded-lg border border-border bg-background">
+                            <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Variant A</p>
+                            <p className="font-semibold mt-1">Start your daily session</p>
+                          </div>
+                          <div className="p-3 rounded-lg border border-border bg-background">
+                            <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Variant B</p>
+                            <p className="font-semibold mt-1">Train your wit now</p>
+                          </div>
+                        </div>
+                      </div>
+                     <div>
+                        <h4 className="font-bold text-sm mb-1">Outcome</h4>
+                        <p className="text-muted-foreground text-sm">Variant B increased CTA clicks by 11% with no decrease in completion rate.</p>
+                     </div>
+                     <div>
+                        <h4 className="font-bold text-sm mb-1">Conclusion</h4>
+                        <p className="text-muted-foreground text-sm">Ship Variant B as default, keep Variant A as fallback for users with low confidence goal.</p>
                      </div>
                   </CardContent>
                </Card>
