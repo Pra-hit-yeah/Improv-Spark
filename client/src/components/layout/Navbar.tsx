@@ -24,6 +24,7 @@ export function Navbar() {
           <Link href="/#how-it-works"><a className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors" data-testid="link-nav-how-it-works">How it works</a></Link>
           <Link href="/tracks"><a className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors" data-testid="link-nav-tracks">Tracks</a></Link>
           <Link href="/#pricing"><a className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors" data-testid="link-nav-pricing">Pricing</a></Link>
+          <Link href="/product"><a className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors" data-testid="link-nav-product-case-study">Product Case Study</a></Link>
           
           <div className="flex items-center gap-4 ml-4">
             {isAuthenticated ? (
@@ -60,6 +61,7 @@ export function Navbar() {
         <div className="md:hidden border-t border-border bg-background p-4 flex flex-col gap-4 animate-in slide-in-from-top-5">
           <Link href="/#how-it-works"><a className="text-sm font-medium p-2" onClick={() => setIsOpen(false)} data-testid="link-mobile-how-it-works">How it works</a></Link>
           <Link href="/tracks"><a className="text-sm font-medium p-2" onClick={() => setIsOpen(false)} data-testid="link-mobile-tracks">Tracks</a></Link>
+          <Link href="/product"><a className="text-sm font-medium p-2" onClick={() => setIsOpen(false)} data-testid="link-mobile-product-case-study">Product Case Study</a></Link>
           <div className="h-px bg-border my-2" />
           <Link href="/login">
             <Button asChild variant="outline" className="w-full justify-start" onClick={() => setIsOpen(false)}>

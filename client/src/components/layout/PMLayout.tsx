@@ -37,7 +37,7 @@ export function PMLayout({ children }: { children: React.ReactNode }) {
           <div className="flex items-center gap-2">
             <Link href="/app">
               <a
-                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+                className="inline-flex items-center justify-center h-9 px-3 rounded-full text-sm font-semibold border border-border bg-background text-foreground hover:bg-muted/40 transition-colors"
                 data-testid="link-pm-back-to-app"
               >
                 Back to App

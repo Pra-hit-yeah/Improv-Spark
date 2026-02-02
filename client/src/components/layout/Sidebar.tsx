@@ -29,17 +29,30 @@ export function Sidebar() {
     { href: "/app/settings", icon: Settings, label: "Settings" },
   ];
 
+  const productLink = (
+    <Link href="/product">
+      <a
+        className="text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors"
+        data-testid="link-app-product-case-study"
+      >
+        Product Case Study
+      </a>
+    </Link>
+  );
+
   return (
     <>
       {/* Desktop Sidebar */}
       <aside className="hidden md:flex flex-col w-64 h-screen fixed left-0 top-0 border-r border-border bg-sidebar text-sidebar-foreground">
         <div className="p-6">
-          <div className="flex items-center justify-between">
+          <div className="flex items-start justify-between gap-3">
             <div>
               <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Quick-Wit</p>
               <p className="font-heading font-bold text-xl tracking-tight">Dashboard</p>
             </div>
+            <div className="pt-1 hidden lg:block">{productLink}</div>
           </div>
+          <div className="mt-3 lg:hidden">{productLink}</div>
         </div>
 
         <nav className="flex-1 px-4 py-6 space-y-2">
@@ -95,7 +108,7 @@ export function Sidebar() {
       </aside>
 
       {/* Mobile Bottom Nav */}
-      <nav className="md:hidden fixed bottom-0 left-0 w-full h-16 bg-background border-t border-border flex items-center justify-around z-50 px-2 pb-safe">
+      <nav className="md:hidden fixed bottom-0 left-0 w-full h-16 bg-background border-t border-border flex items-center justify-around z-50 px-2 pb-safe" data-testid="nav-bottom-app">
         {navItems.map((item) => {
           const isActive = location === item.href;
           return (
