@@ -3,6 +3,8 @@ import { Brand } from "@/components/layout/Brand";
 
 const nav = [
   { href: "/product", label: "Product" },
+  { href: "/research", label: "Research" },
+  { href: "/gtm", label: "GTM" },
   { href: "/prd", label: "PRD" },
   { href: "/roadmap", label: "Roadmap" },
 ];
@@ -20,28 +22,27 @@ export function PMLayout({ children }: { children: React.ReactNode }) {
             {nav.map((item) => {
               const active = location === item.href;
               return (
-                <Link key={item.href} href={item.href}>
-                  <a
-                    className={`text-sm font-medium transition-colors ${
-                      active ? "text-foreground" : "text-muted-foreground hover:text-foreground"
-                    }`}
-                    data-testid={`link-pm-${item.label.toLowerCase()}`}
-                  >
-                    {item.label}
-                  </a>
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`text-sm font-medium transition-colors ${
+                    active ? "text-foreground" : "text-muted-foreground hover:text-foreground"
+                  }`}
+                  data-testid={`link-pm-${item.label.toLowerCase()}`}
+                >
+                  {item.label}
                 </Link>
               );
             })}
           </nav>
 
           <div className="flex items-center gap-2">
-            <Link href="/app">
-              <a
-                className="inline-flex items-center justify-center h-9 px-3 rounded-full text-sm font-semibold border border-border bg-background text-foreground hover:bg-muted/40 transition-colors"
-                data-testid="link-pm-back-to-app"
-              >
-                Back to App
-              </a>
+            <Link
+              href="/app"
+              className="inline-flex items-center justify-center h-9 px-3 rounded-full text-sm font-semibold border border-border bg-background text-foreground hover:bg-muted/40 transition-colors"
+              data-testid="link-pm-back-to-app"
+            >
+              Back to App
             </Link>
           </div>
         </div>
@@ -57,10 +58,12 @@ export function PMLayout({ children }: { children: React.ReactNode }) {
             Quick-Wit PM portfolio
           </p>
           <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
-            <Link href="/product"><a className="text-muted-foreground hover:text-foreground" data-testid="link-pm-footer-product">Product</a></Link>
-            <Link href="/prd"><a className="text-muted-foreground hover:text-foreground" data-testid="link-pm-footer-prd">PRD</a></Link>
-            <Link href="/roadmap"><a className="text-muted-foreground hover:text-foreground" data-testid="link-pm-footer-roadmap">Roadmap</a></Link>
-            <Link href="/app"><a className="text-muted-foreground hover:text-foreground" data-testid="link-pm-footer-app">Back to App</a></Link>
+            <Link href="/product" className="text-muted-foreground hover:text-foreground" data-testid="link-pm-footer-product">Product</Link>
+            <Link href="/research" className="text-muted-foreground hover:text-foreground" data-testid="link-pm-footer-research">Research</Link>
+            <Link href="/gtm" className="text-muted-foreground hover:text-foreground" data-testid="link-pm-footer-gtm">GTM</Link>
+            <Link href="/prd" className="text-muted-foreground hover:text-foreground" data-testid="link-pm-footer-prd">PRD</Link>
+            <Link href="/roadmap" className="text-muted-foreground hover:text-foreground" data-testid="link-pm-footer-roadmap">Roadmap</Link>
+            <Link href="/app" className="text-muted-foreground hover:text-foreground" data-testid="link-pm-footer-app">Back to App</Link>
           </div>
         </div>
       </footer>

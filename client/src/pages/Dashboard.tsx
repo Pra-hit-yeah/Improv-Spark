@@ -63,26 +63,31 @@ export default function Dashboard() {
                  <p className="text-sm font-medium opacity-80 mb-1">Current Level</p>
                  <div className="text-4xl font-bold">{user?.level}</div>
               </div>
-              <Link href="/app/session">
+              <Link href="/app/session" asChild>
                 <Button
+                  asChild
                   size="lg"
                   variant="secondary"
                   className="h-12 px-8 font-bold shadow-lg"
                   data-testid="button-dashboard-primary-cta"
-                  onClick={() => {
-                    logEvent({
-                      name: "cta_clicked",
-                      userId: user?.id ?? null,
-                      properties: {
-                        experiment_key: "dashboard_primary_cta_text",
-                        variant,
-                        cta_text: ctaText,
-                      },
-                    });
-                  }}
                 >
-                   <Play className="w-4 h-4 mr-2 fill-current" />
-                   {ctaText}
+                  <a
+                    data-testid="link-dashboard-primary-cta"
+                    onClick={() => {
+                      logEvent({
+                        name: "cta_clicked",
+                        userId: user?.id ?? null,
+                        properties: {
+                          experiment_key: "dashboard_primary_cta_text",
+                          variant,
+                          cta_text: ctaText,
+                        },
+                      });
+                    }}
+                  >
+                    <Play className="w-4 h-4 mr-2 fill-current" />
+                    {ctaText}
+                  </a>
                 </Button>
               </Link>
             </div>
@@ -122,22 +127,20 @@ export default function Dashboard() {
       <h2 className="text-xl font-bold mt-8 mb-4">Your Tracks</h2>
       <div className="grid md:grid-cols-3 gap-6">
          {tracks.map(track => (
-            <Link key={track.id} href="/app/tracks">
-              <a className="block h-full">
-                <Card className={`h-full transition-all hover:border-primary/50 hover:shadow-md ${track.locked ? 'opacity-60 grayscale' : ''}`}>
-                  <CardHeader>
-                    <div className="w-10 h-10 bg-muted rounded-lg flex items-center justify-center mb-2">
-                       <Zap className={`w-5 h-5 ${track.locked ? 'text-muted-foreground' : 'text-primary'}`} />
-                    </div>
-                    <CardTitle className="text-lg">{track.title}</CardTitle>
-                    <CardDescription>{track.total_modules} Modules</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                     <p className="text-sm text-muted-foreground mb-4">{track.description}</p>
-                     <Progress value={(track.completed_modules / track.total_modules) * 100} />
-                  </CardContent>
-                </Card>
-              </a>
+            <Link key={track.id} href="/app/tracks" className="block h-full" data-testid={`card-track-${track.id}`}>
+              <Card className={`h-full transition-all hover:border-primary/50 hover:shadow-md ${track.locked ? "opacity-60 grayscale" : ""}`}>
+                <CardHeader>
+                  <div className="w-10 h-10 bg-muted rounded-lg flex items-center justify-center mb-2">
+                    <Zap className={`w-5 h-5 ${track.locked ? "text-muted-foreground" : "text-primary"}`} />
+                  </div>
+                  <CardTitle className="text-lg">{track.title}</CardTitle>
+                  <CardDescription>{track.total_modules} Modules</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground mb-4">{track.description}</p>
+                  <Progress value={(track.completed_modules / track.total_modules) * 100} />
+                </CardContent>
+              </Card>
             </Link>
          ))}
       </div>

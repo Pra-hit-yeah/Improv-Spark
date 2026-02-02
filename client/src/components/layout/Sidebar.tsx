@@ -30,13 +30,12 @@ export function Sidebar() {
   ];
 
   const productLink = (
-    <Link href="/product">
-      <a
-        className="text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors"
-        data-testid="link-app-product-case-study"
-      >
-        Product Case Study
-      </a>
+    <Link
+      href="/product"
+      className="text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors"
+      data-testid="link-app-product-case-study"
+    >
+      Product Case Study
     </Link>
   );
 
@@ -59,18 +58,18 @@ export function Sidebar() {
           {navItems.map((item) => {
             const isActive = location === item.href;
             return (
-              <Link key={item.href} href={item.href}>
-                <a
-                  data-testid={`link-nav-${item.label.toLowerCase()}`}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
-                    isActive 
-                      ? "bg-primary text-primary-foreground shadow-md shadow-primary/20" 
-                      : "text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
-                  }`}
-                >
-                  <item.icon className="w-5 h-5" />
-                  {item.label}
-                </a>
+              <Link
+                key={item.href}
+                href={item.href}
+                data-testid={`link-nav-${item.label.toLowerCase()}`}
+                className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
+                  isActive
+                    ? "bg-primary text-primary-foreground shadow-md shadow-primary/20"
+                    : "text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                }`}
+              >
+                <item.icon className="w-5 h-5" />
+                {item.label}
               </Link>
             );
           })}
@@ -94,8 +93,8 @@ export function Sidebar() {
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
-                <Link href="/app/settings">
-                  <a data-testid="link-account-settings">Settings</a>
+                <Link href="/app/settings" data-testid="link-account-settings">
+                  Settings
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem className="text-destructive focus:text-destructive" onClick={() => logout()} data-testid="button-logout">
@@ -112,16 +111,16 @@ export function Sidebar() {
         {navItems.map((item) => {
           const isActive = location === item.href;
           return (
-            <Link key={item.href} href={item.href}>
-              <a
-                data-testid={`link-bottomnav-${item.label.toLowerCase()}`}
-                className={`flex flex-col items-center justify-center p-2 rounded-lg gap-1 ${
-                  isActive ? "text-primary" : "text-muted-foreground"
-                }`}
-              >
-                <item.icon className="w-5 h-5" />
-                <span className="text-[10px] font-medium">{item.label}</span>
-              </a>
+            <Link
+              key={item.href}
+              href={item.href}
+              data-testid={`link-bottomnav-${item.label.toLowerCase()}`}
+              className={`flex flex-col items-center justify-center p-2 rounded-lg gap-1 ${
+                isActive ? "text-primary" : "text-muted-foreground"
+              }`}
+            >
+              <item.icon className="w-5 h-5" />
+              <span className="text-[10px] font-medium">{item.label}</span>
             </Link>
           );
         })}

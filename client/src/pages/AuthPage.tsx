@@ -73,10 +73,12 @@ export default function AuthPage() {
         <CardFooter>
           <p className="text-center text-sm text-muted-foreground w-full">
             {isLogin ? "Don't have an account? " : "Already have an account? "}
-            <Link href={isLogin ? "/signup" : "/login"}>
-              <a className="underline underline-offset-4 hover:text-primary">
-                {isLogin ? "Sign up" : "Log in"}
-              </a>
+            <Link
+              href={isLogin ? "/signup" : "/login"}
+              className="underline underline-offset-4 hover:text-primary"
+              data-testid="link-auth-toggle"
+            >
+              {isLogin ? "Sign up" : "Log in"}
             </Link>
           </p>
         </CardFooter>

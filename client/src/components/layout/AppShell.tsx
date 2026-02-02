@@ -12,12 +12,22 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   // Route theme for global typography + tokens
   useEffect(() => {
     const root = document.documentElement;
-    const isPM = location === "/product" || location === "/prd" || location === "/roadmap";
+    const isPM =
+      location === "/product" ||
+      location === "/research" ||
+      location === "/gtm" ||
+      location === "/prd" ||
+      location === "/roadmap";
     root.setAttribute("data-theme", isPM ? "pm" : "app");
   }, [location]);
 
   const isAppRoute = location.startsWith("/app");
-  const isPMRoute = location === "/product" || location === "/prd" || location === "/roadmap";
+  const isPMRoute =
+    location === "/product" ||
+    location === "/research" ||
+    location === "/gtm" ||
+    location === "/prd" ||
+    location === "/roadmap";
 
   useEffect(() => {
     // Ideally this checks auth state and redirects

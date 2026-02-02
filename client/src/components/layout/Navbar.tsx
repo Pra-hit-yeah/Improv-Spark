@@ -11,7 +11,12 @@ export function Navbar() {
   const { isAuthenticated } = useStore();
 
   const isAuthPage = location === "/login" || location === "/signup";
-  const isPMPage = location === "/product" || location === "/prd" || location === "/roadmap";
+  const isPMPage =
+    location === "/product" ||
+    location === "/research" ||
+    location === "/gtm" ||
+    location === "/prd" ||
+    location === "/roadmap";
   if (isAuthPage || isPMPage) return null;
 
   return (
@@ -21,26 +26,24 @@ export function Navbar() {
 
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-8">
-          <Link href="/#how-it-works"><a className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors" data-testid="link-nav-how-it-works">How it works</a></Link>
-          <Link href="/tracks"><a className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors" data-testid="link-nav-tracks">Tracks</a></Link>
-          <Link href="/#pricing"><a className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors" data-testid="link-nav-pricing">Pricing</a></Link>
-          <Link href="/product"><a className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors" data-testid="link-nav-product-case-study">Product Case Study</a></Link>
+          <Link href="/#how-it-works" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors" data-testid="link-nav-how-it-works">How it works</Link>
+          <Link href="/tracks" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors" data-testid="link-nav-tracks">Tracks</Link>
+          <Link href="/#pricing" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors" data-testid="link-nav-pricing">Pricing</Link>
+          <Link href="/product" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors" data-testid="link-nav-product-case-study">Product Case Study</Link>
           
           <div className="flex items-center gap-4 ml-4">
             {isAuthenticated ? (
-               <Link href="/app">
+              <Link href="/app" asChild>
                 <Button asChild>
                   <a data-testid="link-dashboard">Dashboard</a>
                 </Button>
-               </Link>
+              </Link>
             ) : (
               <>
-                <Link href="/login">
-                  <a className="text-sm font-medium text-foreground hover:text-primary transition-colors" data-testid="link-login">
-                    Log in
-                  </a>
+                <Link href="/login" className="text-sm font-medium text-foreground hover:text-primary transition-colors" data-testid="link-login">
+                  Log in
                 </Link>
-                <Link href="/signup">
+                <Link href="/signup" asChild>
                   <Button asChild>
                     <a data-testid="link-start-free">Start Free</a>
                   </Button>
@@ -64,16 +67,16 @@ export function Navbar() {
       {/* Mobile Nav */}
       {isOpen && (
         <div className="md:hidden border-t border-border bg-background p-4 flex flex-col gap-4 animate-in slide-in-from-top-5">
-          <Link href="/#how-it-works"><a className="text-sm font-medium p-2" onClick={() => setIsOpen(false)} data-testid="link-mobile-how-it-works">How it works</a></Link>
-          <Link href="/tracks"><a className="text-sm font-medium p-2" onClick={() => setIsOpen(false)} data-testid="link-mobile-tracks">Tracks</a></Link>
-          <Link href="/product"><a className="text-sm font-medium p-2" onClick={() => setIsOpen(false)} data-testid="link-mobile-product-case-study">Product Case Study</a></Link>
+          <Link href="/#how-it-works" className="text-sm font-medium p-2" onClick={() => setIsOpen(false)} data-testid="link-mobile-how-it-works">How it works</Link>
+          <Link href="/tracks" className="text-sm font-medium p-2" onClick={() => setIsOpen(false)} data-testid="link-mobile-tracks">Tracks</Link>
+          <Link href="/product" className="text-sm font-medium p-2" onClick={() => setIsOpen(false)} data-testid="link-mobile-product-case-study">Product Case Study</Link>
           <div className="h-px bg-border my-2" />
-          <Link href="/login">
+          <Link href="/login" asChild>
             <Button asChild variant="outline" className="w-full justify-start" onClick={() => setIsOpen(false)}>
               <a data-testid="link-mobile-login">Log in</a>
             </Button>
           </Link>
-          <Link href="/signup">
+          <Link href="/signup" asChild>
             <Button asChild className="w-full justify-start" onClick={() => setIsOpen(false)}>
               <a data-testid="link-mobile-start-free">Start Free</a>
             </Button>
