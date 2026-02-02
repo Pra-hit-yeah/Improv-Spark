@@ -6,62 +6,116 @@ export default function LandingPage() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
-      <section className="relative pt-20 pb-32 md:pt-32 md:pb-48 overflow-hidden">
+      <section className="relative pt-20 pb-24 md:pt-32 md:pb-28 overflow-hidden">
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/10 via-background to-background" />
         <div className="absolute top-0 right-0 -z-10 w-1/2 h-full bg-secondary/5 blur-[120px]" />
-        
-        <div className="container mx-auto px-4 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-8 animate-in fade-in slide-in-from-bottom-4">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
-            </span>
-            New: Daily Advanced Tracks Available
-          </div>
-          
-          <h1 className="text-5xl md:text-7xl font-heading font-bold tracking-tight text-foreground mb-6 max-w-4xl mx-auto leading-[1.1]">
-            Master the art of <br/>
-            <span className="text-gradient">spontaneous</span> speech.
-          </h1>
-          
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
-            The Duolingo for improv. Build confidence, think faster, and command any room with daily gamified communication drills.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
-            <Link href="/signup">
-              <Button size="lg" className="h-14 px-8 text-lg rounded-full shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all">
-                Start for free
-                <ArrowRight className="ml-2 w-5 h-5" />
-              </Button>
-            </Link>
-            <Link href="/#how-it-works">
-               <Button variant="outline" size="lg" className="h-14 px-8 text-lg rounded-full bg-white/50 backdrop-blur-sm border-white/20 hover:bg-white/80">
-                How it works
-               </Button>
-            </Link>
-          </div>
 
-          <div className="text-sm text-muted-foreground font-medium">
-            Trusted by speakers from <span className="text-foreground">Google</span>, <span className="text-foreground">TEDx</span>, and <span className="text-foreground">Toastmasters</span>
-          </div>
-
-          <div className="mt-20 relative mx-auto max-w-5xl">
-            <div className="absolute -inset-1 bg-linear-to-r from-primary to-secondary rounded-2xl blur opacity-20" />
-            <img 
-              src="/hero-abstract.png" 
-              alt="App Dashboard Preview" 
-              className="relative rounded-xl shadow-2xl border border-white/10 w-full aspect-[21/9] object-cover"
-            />
-             {/* Float Card Mockup */}
-            <div className="absolute -bottom-8 -right-8 bg-white p-4 rounded-xl shadow-xl border border-border hidden md:block">
-              <div className="flex items-center gap-3 mb-2">
-                 <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-600 font-bold text-xs">✓</div>
-                 <div>
-                    <p className="text-xs font-bold text-foreground">Streak Kept!</p>
-                    <p className="text-[10px] text-muted-foreground">You're on fire 🔥</p>
-                 </div>
+        <div className="container mx-auto px-4">
+          <div className="mx-auto max-w-5xl grid lg:grid-cols-2 gap-12 items-center">
+            <div className="text-center lg:text-left">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-8 animate-in fade-in slide-in-from-bottom-4" data-testid="badge-hero-new">
+                <span className="relative flex h-2 w-2" aria-hidden="true">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+                </span>
+                Daily timed drills • 3 difficulty levels
               </div>
+
+              <h1 className="text-5xl md:text-7xl font-heading font-bold tracking-tight text-foreground mb-6 leading-[1.05]" data-testid="text-hero-headline">
+                Speak with confidence—
+                <span className="block">even when it’s spontaneous.</span>
+              </h1>
+
+              <p className="text-xl text-muted-foreground max-w-2xl mx-auto lg:mx-0 mb-10 leading-relaxed" data-testid="text-hero-subtitle">
+                Quick-Wit is a Duolingo-style training app for verbal fluency. Practice daily, under time pressure, and build a real streak.
+              </p>
+
+              <div className="flex flex-col sm:flex-row items-center lg:items-start justify-center lg:justify-start gap-4" data-testid="hero-ctas">
+                <Link href="/signup">
+                  <Button size="lg" className="h-14 px-8 text-lg rounded-full shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all" data-testid="button-hero-start-free">
+                    Start for free
+                    <ArrowRight className="ml-2 w-5 h-5" />
+                  </Button>
+                </Link>
+                <Link href="/#how-it-works">
+                  <Button variant="outline" size="lg" className="h-14 px-8 text-lg rounded-full bg-white/50 backdrop-blur-sm border-white/20 hover:bg-white/80" data-testid="button-hero-how-it-works">
+                    How it works
+                  </Button>
+                </Link>
+              </div>
+
+              <div className="mt-10 text-sm text-muted-foreground font-medium" data-testid="text-hero-social-proof">
+                Built for interviews, meetings, and high-stakes conversations.
+              </div>
+            </div>
+
+            {/* Minimal, on-theme hero treatment (no abstract art, no streak/XP CTAs) */}
+            <div className="relative" data-testid="hero-visual">
+              <div className="rounded-3xl border border-border bg-white/60 backdrop-blur-sm shadow-xl shadow-primary/5 overflow-hidden">
+                <div className="p-5 sm:p-6 border-b border-border bg-white/50">
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="flex items-center gap-2">
+                      <div className="w-9 h-9 rounded-2xl bg-primary/10 flex items-center justify-center">
+                        <Mic2 className="w-5 h-5 text-primary" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold text-foreground" data-testid="text-hero-card-title">Timed prompt</p>
+                        <p className="text-xs text-muted-foreground" data-testid="text-hero-card-subtitle">Respond out loud—no prep</p>
+                      </div>
+                    </div>
+                    <div className="inline-flex items-center gap-2 rounded-full bg-muted/40 px-3 py-1 text-xs font-semibold text-foreground" data-testid="pill-hero-timer">
+                      <span className="inline-block w-2 h-2 rounded-full bg-secondary" aria-hidden="true" />
+                      00:30
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-5 sm:p-6 space-y-4">
+                  <p className="text-sm text-muted-foreground" data-testid="text-hero-instruction">Use these words to pitch a quick idea:</p>
+
+                  <div className="flex flex-wrap gap-2" data-testid="list-hero-words">
+                    {[
+                      { w: "deadline", tone: "bg-primary/10 text-primary" },
+                      { w: "customer", tone: "bg-secondary/10 text-secondary-foreground" },
+                      { w: "tradeoff", tone: "bg-amber-100 text-amber-900" },
+                      { w: "clarity", tone: "bg-emerald-100 text-emerald-900" },
+                    ].map((t) => (
+                      <span
+                        key={t.w}
+                        className={`px-3 py-1.5 rounded-full text-xs font-semibold border border-border/60 ${t.tone}`}
+                        data-testid={`chip-hero-word-${t.w}`}
+                      >
+                        {t.w}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="grid grid-cols-3 gap-3 pt-2" data-testid="hero-flow">
+                    {["Think", "Speak", "Refine"].map((label, idx) => (
+                      <div key={label} className="rounded-2xl border border-border bg-background p-3" data-testid={`card-hero-step-${idx}`}> 
+                        <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Step {idx + 1}</p>
+                        <p className="mt-1 text-sm font-semibold text-foreground">{label}</p>
+                        <div className="mt-3 h-2 rounded-full bg-muted/50 overflow-hidden">
+                          <div className="h-full bg-primary/60" style={{ width: `${(idx + 1) * 33}%` }} />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="flex items-center justify-between pt-1" data-testid="hero-footer-row">
+                    <div className="inline-flex items-center gap-2 text-xs text-muted-foreground">
+                      <Zap className="w-4 h-4" />
+                      Fast, daily practice
+                    </div>
+                    <div className="inline-flex items-center gap-2 text-xs text-muted-foreground">
+                      <MessageCircle className="w-4 h-4" />
+                      Better responses
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="absolute -z-10 -inset-8 bg-primary/5 blur-3xl" aria-hidden="true" />
             </div>
           </div>
         </div>
