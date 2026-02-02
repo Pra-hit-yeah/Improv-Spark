@@ -36,19 +36,20 @@ export default function Dashboard() {
     <div className="space-y-8">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-           <h1 className="text-3xl font-heading font-bold" data-testid="text-dashboard-headline">{headline}</h1>
-           <p className="text-muted-foreground" data-testid="text-dashboard-subtext">{subtext}</p>
+          <h1 className="text-3xl font-heading font-bold" data-testid="text-dashboard-headline">{headline}</h1>
+          <p className="text-muted-foreground" data-testid="text-dashboard-subtext">{subtext}</p>
         </div>
-        <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-full border border-border shadow-xs">
-           <Flame className="w-5 h-5 text-orange-500 fill-orange-500" />
-           <span className="font-bold">{user?.streak} Day Streak</span>
+        <div className="flex items-center gap-2 app-surface px-4 py-2 rounded-full app-ring" data-testid="pill-dashboard-streak">
+          <Flame className="w-5 h-5 text-orange-500 fill-orange-500" />
+          <span className="font-bold">{user?.streak} Day Streak</span>
         </div>
       </div>
 
       <div className="grid md:grid-cols-3 gap-6">
         {/* Main Action Card */}
-        <Card className="md:col-span-2 bg-linear-to-br from-primary to-violet-700 text-white border-0 shadow-xl overflow-hidden relative">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -mr-16 -mt-16" />
+        <Card className="md:col-span-2 bg-linear-to-br from-primary via-indigo-600 to-secondary text-white border-0 shadow-xl overflow-hidden relative app-glow">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-white/12 rounded-full blur-3xl -mr-16 -mt-16" />
+          <div className="absolute -bottom-24 -left-24 w-72 h-72 bg-white/10 rounded-full blur-3xl" />
           
           <CardHeader>
             <CardTitle className="text-2xl">Today's Session</CardTitle>
@@ -89,12 +90,12 @@ export default function Dashboard() {
         </Card>
 
         {/* Stats Card */}
-        <Card>
+        <Card className="app-surface">
           <CardHeader>
-             <CardTitle className="flex items-center gap-2">
-                <Trophy className="w-5 h-5 text-yellow-500" />
-                Your Stats
-             </CardTitle>
+            <CardTitle className="flex items-center gap-2">
+              <Trophy className="w-5 h-5 text-yellow-500" />
+              Your Stats
+            </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
              <div>

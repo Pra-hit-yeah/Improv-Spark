@@ -11,7 +11,7 @@ export default function SessionPage() {
   if (selectedMode) {
     return (
       <div className="min-h-screen bg-background p-4">
-        <Button variant="ghost" onClick={() => setSelectedMode(null)} className="mb-4">
+        <Button variant="ghost" onClick={() => setSelectedMode(null)} className="mb-4" data-testid="button-session-back-selection">
           <ArrowLeft className="w-4 h-4 mr-2" /> Back to selection
         </Button>
         <Drill difficulty={selectedMode} />

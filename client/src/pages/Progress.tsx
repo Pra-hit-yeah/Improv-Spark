@@ -23,26 +23,26 @@ export default function Progress() {
       </div>
 
       <div className="grid md:grid-cols-3 gap-6">
-        <Card>
+        <Card className="app-callout">
           <CardContent className="pt-6">
             <div className="text-center">
-              <div className="text-4xl font-bold text-primary mb-1">{user?.total_xp}</div>
+              <div className="text-4xl font-bold text-primary mb-1" data-testid="text-progress-total-xp">{user?.total_xp}</div>
               <p className="text-sm text-muted-foreground">Total XP Earned</p>
             </div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="app-surface">
           <CardContent className="pt-6">
             <div className="text-center">
-              <div className="text-4xl font-bold text-orange-500 mb-1">{user?.streak}</div>
+              <div className="text-4xl font-bold text-orange-500 mb-1" data-testid="text-progress-streak">{user?.streak}</div>
               <p className="text-sm text-muted-foreground">Current Day Streak</p>
             </div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="app-surface">
           <CardContent className="pt-6">
             <div className="text-center">
-              <div className="text-4xl font-bold text-blue-500 mb-1">{user?.level}</div>
+              <div className="text-4xl font-bold text-blue-600 mb-1" data-testid="text-progress-level">{user?.level}</div>
               <p className="text-sm text-muted-foreground">Current Level</p>
             </div>
           </CardContent>
