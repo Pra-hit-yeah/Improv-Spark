@@ -4,47 +4,77 @@
 @theme inline {
   --font-sans: "Plus Jakarta Sans", "Inter", sans-serif;
   --font-heading: "Outfit", sans-serif;
+  --font-pm: "IBM Plex Sans", "Inter", sans-serif;
+  --font-pm-heading: "IBM Plex Sans", "Inter", sans-serif;
 
-  --color-background: hsl(255 20% 97%);
-  --color-foreground: hsl(240 10% 3.9%);
-  
-  --color-card: hsl(0 0% 100%);
-  --color-card-foreground: hsl(240 10% 3.9%);
-  
-  --color-popover: hsl(0 0% 100%);
-  --color-popover-foreground: hsl(240 10% 3.9%);
-  
-  --color-primary: hsl(255 60% 60%); /* Soft Violet */
-  --color-primary-foreground: hsl(0 0% 98%);
-  
-  --color-secondary: hsl(45 90% 60%); /* Vibrant Amber/Yellow */
-  --color-secondary-foreground: hsl(240 5.9% 10%);
-  
-  --color-muted: hsl(240 4.8% 95.9%);
-  --color-muted-foreground: hsl(240 3.8% 46.1%);
-  
-  --color-accent: hsl(255 60% 95%);
-  --color-accent-foreground: hsl(255 60% 50%);
-  
-  --color-destructive: hsl(0 84.2% 60.2%);
-  --color-destructive-foreground: hsl(0 0% 98%);
-  
-  --color-border: hsl(240 5.9% 90%);
-  --color-input: hsl(240 5.9% 90%);
-  --color-ring: hsl(255 60% 60%);
-  
-  --color-sidebar: hsl(0 0% 100%);
-  --color-sidebar-foreground: hsl(240 5.3% 26.1%);
-  --color-sidebar-primary: hsl(240 5.9% 10%);
-  --color-sidebar-primary-foreground: hsl(0 0% 98%);
-  --color-sidebar-accent: hsl(240 4.8% 95.9%);
-  --color-sidebar-accent-foreground: hsl(240 5.9% 10%);
-  --color-sidebar-border: hsl(220 13% 91%);
-  --color-sidebar-ring: hsl(217.2 91.2% 59.8%);
-  
+  /* APP THEME (energetic) */
+  --color-background: 220 40% 98%;
+  --color-foreground: 222 47% 11%;
+
+  --color-card: 0 0% 100%;
+  --color-card-foreground: 222 47% 11%;
+
+  --color-popover: 0 0% 100%;
+  --color-popover-foreground: 222 47% 11%;
+
+  --color-primary: 229 89% 60%;
+  --color-primary-foreground: 0 0% 100%;
+
+  --color-secondary: 172 66% 42%;
+  --color-secondary-foreground: 0 0% 100%;
+
+  --color-muted: 220 18% 96%;
+  --color-muted-foreground: 215 16% 42%;
+
+  --color-accent: 164 72% 92%;
+  --color-accent-foreground: 222 47% 11%;
+
+  --color-destructive: 0 84% 60%;
+  --color-destructive-foreground: 0 0% 98%;
+
+  --color-border: 220 16% 90%;
+  --color-input: 220 16% 90%;
+  --color-ring: 229 89% 60%;
+
+  --color-sidebar: 0 0% 100%;
+  --color-sidebar-foreground: 222 47% 11%;
+  --color-sidebar-primary: 229 89% 60%;
+  --color-sidebar-primary-foreground: 0 0% 100%;
+  --color-sidebar-accent: 220 18% 96%;
+  --color-sidebar-accent-foreground: 222 47% 11%;
+  --color-sidebar-border: 220 16% 90%;
+  --color-sidebar-ring: 229 89% 60%;
+
   --radius-sm: 0.5rem;
   --radius-md: 0.75rem;
   --radius-lg: 1rem;
+}
+
+:root[data-theme="pm"] {
+  --color-background: 0 0% 99%;
+  --color-foreground: 225 15% 8%;
+
+  --color-card: 0 0% 100%;
+  --color-card-foreground: 225 15% 8%;
+
+  --color-popover: 0 0% 100%;
+  --color-popover-foreground: 225 15% 8%;
+
+  --color-primary: 220 30% 20%;
+  --color-primary-foreground: 0 0% 100%;
+
+  --color-secondary: 220 14% 92%;
+  --color-secondary-foreground: 225 15% 8%;
+
+  --color-muted: 220 10% 96%;
+  --color-muted-foreground: 220 10% 45%;
+
+  --color-accent: 220 14% 92%;
+  --color-accent-foreground: 225 15% 8%;
+
+  --color-border: 220 12% 90%;
+  --color-input: 220 12% 90%;
+  --color-ring: 220 30% 20%;
 }
 
 @layer base {
@@ -57,14 +87,59 @@
   h1, h2, h3, h4, h5, h6 {
     @apply font-heading tracking-tight;
   }
+
+  :root[data-theme="pm"] body {
+    font-family: var(--font-pm);
+    letter-spacing: -0.01em;
+  }
+
+  :root[data-theme="pm"] h1,
+  :root[data-theme="pm"] h2,
+  :root[data-theme="pm"] h3,
+  :root[data-theme="pm"] h4,
+  :root[data-theme="pm"] h5,
+  :root[data-theme="pm"] h6 {
+    font-family: var(--font-pm-heading);
+    letter-spacing: -0.02em;
+  }
 }
 
 @layer utilities {
-  .glass-panel {
+  /* APP-only utilities */
+  :root[data-theme="app"] .glass-panel {
     @apply bg-white/70 backdrop-blur-md border border-white/20 shadow-xl;
   }
-  
-  .text-gradient {
-    @apply bg-clip-text text-transparent bg-linear-to-r from-primary via-violet-500 to-indigo-600;
+
+  :root[data-theme="app"] .text-gradient {
+    @apply bg-clip-text text-transparent bg-linear-to-r from-primary via-blue-500 to-teal-400;
+  }
+
+  /* PM typography helpers */
+  .pm-h1 {
+    @apply text-4xl sm:text-5xl font-semibold leading-[1.08];
+  }
+
+  .pm-lede {
+    @apply text-base sm:text-lg leading-relaxed text-muted-foreground;
+  }
+
+  .pm-prose {
+    @apply text-[15px] sm:text-[16px] leading-[1.8] text-foreground;
+  }
+
+  .pm-prose h2 {
+    @apply text-2xl sm:text-3xl font-semibold leading-tight mt-10;
+  }
+
+  .pm-prose h3 {
+    @apply text-xl sm:text-2xl font-semibold leading-tight mt-8;
+  }
+
+  .pm-prose p {
+    @apply my-4 text-muted-foreground;
+  }
+
+  .pm-prose strong {
+    @apply text-foreground;
   }
 }

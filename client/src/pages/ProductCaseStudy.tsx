@@ -18,47 +18,51 @@ import {
   Beaker
 } from "lucide-react";
 
+import { PMPage } from "@/components/layout/PMPage";
+
 export default function ProductCaseStudy() {
   return (
-    <div className="min-h-screen bg-background text-foreground font-sans">
-      {/* 1. Hero Section */}
-      <section className="relative pt-24 pb-20 md:pt-32 md:pb-32 overflow-hidden bg-muted/20 border-b border-border/50">
-        <div className="container max-w-5xl mx-auto px-6 text-center">
-          <Badge variant="outline" className="mb-6 px-4 py-1.5 text-sm border-primary/20 text-primary bg-primary/5 rounded-full uppercase tracking-wider font-semibold">
-            Product Case Study
-          </Badge>
-          <h1 className="text-5xl md:text-7xl font-heading font-bold tracking-tight mb-6 bg-clip-text text-transparent bg-linear-to-b from-foreground to-foreground/70">
-            Quick-Wit
-          </h1>
-          <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed font-light">
-            The Duolingo for spontaneous communication.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-            <Link href="/app">
-              <Button size="lg" className="h-12 px-8 rounded-full shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all text-base font-semibold" data-testid="button-product-try-app">
-                Try Live App
-                <ArrowRight className="ml-2 w-4 h-4" />
-              </Button>
-            </Link>
-            <Button 
-              variant="outline" 
-              size="lg" 
-              className="h-12 px-8 rounded-full bg-background/50 backdrop-blur-sm border-border hover:bg-background transition-all text-base font-medium"
-              data-testid="button-product-scroll-thinking"
-              onClick={() => document.getElementById('problem')?.scrollIntoView({ behavior: 'smooth' })}
+    <PMPage
+      eyebrow="Product case study"
+      title="Quick-Wit"
+      subtitle="Duolingo for spontaneous communication"
+    >
+      <div className="not-prose">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3" data-testid="product-hero-ctas">
+          <Link href="/app">
+            <Button
+              size="lg"
+              className="h-11 px-6 rounded-full"
+              data-testid="button-product-try-app"
             >
-              View Product Thinking
+              Try live app
+              <ArrowRight className="ml-2 w-4 h-4" />
             </Button>
-            <Link href="/prd">
-              <Button asChild variant="outline" size="lg" className="h-12 px-8 rounded-full bg-background/50 backdrop-blur-sm border-border hover:bg-background transition-all text-base font-medium" data-testid="button-product-view-prd">
-                <a>View PRD</a>
-              </Button>
-            </Link>
-          </div>
+          </Link>
+          <Button
+            variant="outline"
+            size="lg"
+            className="h-11 px-6 rounded-full"
+            data-testid="button-product-scroll-thinking"
+            onClick={() => document.getElementById("problem")?.scrollIntoView({ behavior: "smooth" })}
+          >
+            View product thinking
+          </Button>
+          <Link href="/prd">
+            <Button
+              asChild
+              variant="outline"
+              size="lg"
+              className="h-11 px-6 rounded-full"
+              data-testid="button-product-view-prd"
+            >
+              <a>View PRD</a>
+            </Button>
+          </Link>
         </div>
-      </section>
+      </div>
 
-      <div className="container max-w-4xl mx-auto px-6 py-24 space-y-24">
+      <div className="space-y-16">
         
         {/* 2. Problem Statement */}
         <section id="problem" className="scroll-mt-24">
@@ -357,22 +361,6 @@ export default function ProductCaseStudy() {
         </section>
 
       </div>
-
-      {/* 10. Footer CTA */}
-      <section className="py-20 bg-foreground text-background text-center">
-         <div className="container max-w-3xl mx-auto px-6">
-            <h2 className="text-4xl font-heading font-bold mb-6">Experience the product</h2>
-            <p className="text-lg text-muted-foreground/60 mb-10 max-w-xl mx-auto">
-               The best way to understand the design decisions is to feel the time pressure yourself.
-            </p>
-            <Link href="/app">
-               <Button size="lg" className="h-14 px-10 text-lg rounded-full bg-primary text-primary-foreground hover:bg-primary/90">
-                  Launch Quick-Wit
-                  <ArrowRight className="ml-2 w-5 h-5" />
-               </Button>
-            </Link>
-         </div>
-      </section>
-    </div>
+    </PMPage>
   );
 }

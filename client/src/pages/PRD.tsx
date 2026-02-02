@@ -166,43 +166,34 @@ function ResponsiveFlowDiagram() {
   );
 }
 
+import { PMPage } from "@/components/layout/PMPage";
+
 export default function PRDHub() {
   return (
-    <div className="min-h-screen bg-background">
-      <section className="pt-20 pb-14 border-b border-border bg-muted/20">
-        <div className="container mx-auto px-4 max-w-5xl">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="p-2 rounded-lg bg-primary/10 border border-primary/15">
-              <FileText className="w-5 h-5 text-primary" />
-            </div>
-            <Badge variant="outline" className="bg-primary/5 border-primary/20 text-primary">PRD hub</Badge>
-          </div>
-          <h1 className="text-4xl md:text-6xl font-heading font-bold tracking-tight" data-testid="text-prd-h1">Product Requirements</h1>
-          <p className="text-lg text-muted-foreground mt-4 max-w-2xl" data-testid="text-prd-subhead">
-            Recruiter-ready documentation for core product features. This page includes the full PRD for Difficulty Levels.
-          </p>
-          <div className="mt-8 flex flex-col sm:flex-row gap-3">
-            <Link href="/app">
-              <Button size="lg" className="rounded-full" data-testid="button-prd-try-app">
-                Try live app
-                <ArrowRight className="ml-2 w-4 h-4" />
-              </Button>
-            </Link>
-            <Button
-              size="lg"
-              variant="outline"
-              className="rounded-full"
-              data-testid="button-prd-scroll"
-              onClick={() => document.getElementById("prd-content")?.scrollIntoView({ behavior: "smooth" })}
-            >
-              View PRD
-            </Button>
-          </div>
-        </div>
-      </section>
+    <PMPage
+      eyebrow="PRD hub"
+      title="Product requirements"
+      subtitle="Full PRD for Difficulty Levels, plus a responsive user flow diagram."
+    >
+      <div className="not-prose flex flex-col sm:flex-row gap-3" data-testid="prd-hero-ctas">
+        <Link href="/app">
+          <Button size="lg" className="rounded-full" data-testid="button-prd-try-app">
+            Try live app
+            <ArrowRight className="ml-2 w-4 h-4" />
+          </Button>
+        </Link>
+        <Button
+          size="lg"
+          variant="outline"
+          className="rounded-full"
+          data-testid="button-prd-scroll"
+          onClick={() => document.getElementById("prd-content")?.scrollIntoView({ behavior: "smooth" })}
+        >
+          Jump to PRD
+        </Button>
+      </div>
 
-      <section id="prd-content" className="py-16">
-        <div className="container mx-auto px-4 max-w-4xl space-y-14">
+      <div id="prd-content" className="space-y-14">
           <div className="flex items-start justify-between gap-4">
             <div>
               <Badge variant="outline" className="bg-background border-border text-muted-foreground" data-testid="badge-prd-feature">
@@ -493,7 +484,6 @@ export default function PRDHub() {
             </Card>
           </section>
         </div>
-      </section>
-    </div>
+    </PMPage>
   );
 }
