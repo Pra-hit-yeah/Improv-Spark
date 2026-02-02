@@ -1,489 +1,718 @@
+import { PMPage } from "@/components/layout/PMPage";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
-import { ArrowRight, FileText, Layers, Target, AlertTriangle, CheckCircle2, GitBranch } from "lucide-react";
+import {
+  AlertTriangle,
+  CalendarDays,
+  CheckCircle2,
+  ClipboardList,
+  Compass,
+  GitBranch,
+  HelpCircle,
+  LineChart,
+  ListChecks,
+  Shield,
+  Target,
+  Timer,
+} from "lucide-react";
 
-function SectionHeading({
+function MetaRow({
+  label,
+  value,
+  testId,
+}: {
+  label: string;
+  value: React.ReactNode;
+  testId: string;
+}) {
+  return (
+    <div className="flex items-start justify-between gap-4" data-testid={testId}>
+      <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground" data-testid={`${testId}-label`}>
+        {label}
+      </p>
+      <div className="text-sm text-foreground leading-relaxed text-right" data-testid={`${testId}-value`}>
+        {value}
+      </div>
+    </div>
+  );
+}
+
+function Section({
   kicker,
   title,
-  desc,
   icon,
+  children,
+  testId,
 }: {
   kicker: string;
   title: string;
-  desc?: string;
-  icon?: React.ReactNode;
+  icon: React.ReactNode;
+  children: React.ReactNode;
+  testId: string;
 }) {
   return (
-    <div className="flex flex-col gap-3">
-      <div className="flex items-center gap-2">
-        <span className="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-primary/10 text-primary border border-primary/15">
+    <section className="space-y-4" data-testid={testId}>
+      <div className="not-prose flex items-start justify-between gap-6">
+        <div className="min-w-0">
+          <p
+            className="text-xs font-semibold uppercase tracking-widest text-muted-foreground"
+            data-testid={`${testId}-kicker`}
+          >
+            {kicker}
+          </p>
+          <h2 className="pm-h2 mt-2" data-testid={`${testId}-title`}>
+            {title}
+          </h2>
+        </div>
+        <div
+          className="hidden sm:flex shrink-0 w-10 h-10 items-center justify-center rounded-xl border border-border bg-background"
+          aria-hidden="true"
+        >
           {icon}
-        </span>
-        <p className="text-xs font-bold uppercase tracking-widest text-primary" data-testid={`text-prd-kicker-${kicker.toLowerCase().replaceAll(" ", "-")}`}> {kicker}</p>
+        </div>
       </div>
-      <h2 className="text-2xl md:text-3xl font-heading font-bold tracking-tight" data-testid={`text-prd-title-${title.toLowerCase().replaceAll(" ", "-")}`}>{title}</h2>
-      {desc ? <p className="text-sm md:text-base text-muted-foreground leading-relaxed" data-testid={`text-prd-desc-${title.toLowerCase().replaceAll(" ", "-")}`}>{desc}</p> : null}
-    </div>
+      <div className="space-y-4">{children}</div>
+    </section>
   );
 }
 
-function FlowNode({
+function BulletCard({
   title,
-  subtitle,
-  tone,
+  items,
   testId,
 }: {
   title: string;
-  subtitle?: string;
-  tone?: "default" | "primary" | "success" | "muted";
+  items: React.ReactNode[];
   testId: string;
 }) {
-  const toneClass =
-    tone === "primary"
-      ? "border-primary/25 bg-primary/5"
-      : tone === "success"
-        ? "border-green-200 bg-green-50"
-        : tone === "muted"
-          ? "border-border/60 bg-muted/20"
-          : "border-border bg-background";
-
   return (
-    <div
-      className={`rounded-2xl border p-4 shadow-sm ${toneClass}`}
-      data-testid={testId}
-    >
-      <div className="flex items-start justify-between gap-3">
-        <div>
-          <p className="font-semibold leading-tight" data-testid={`${testId}-title`}>{title}</p>
-          {subtitle ? (
-            <p className="text-xs text-muted-foreground mt-1 leading-relaxed" data-testid={`${testId}-subtitle`}>
-              {subtitle}
-            </p>
-          ) : null}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function ArrowDown({ testId }: { testId: string }) {
-  return (
-    <div className="flex items-center justify-center" data-testid={testId}>
-      <div className="h-8 w-px bg-border" />
-      <div className="w-2 h-2 rotate-45 border-r border-b border-border -mt-1" />
-    </div>
-  );
-}
-
-function ArrowRightInline({ testId }: { testId: string }) {
-  return (
-    <div className="flex items-center justify-center" data-testid={testId}>
-      <div className="h-px w-6 bg-border" />
-      <div className="w-2 h-2 rotate-45 border-r border-b border-border" />
-    </div>
-  );
-}
-
-function ResponsiveFlowDiagram() {
-  return (
-    <Card className="border-border/60 shadow-sm" data-testid="card-prd-flow">
+    <Card className="shadow-none border-border/60" data-testid={testId}>
       <CardHeader className="pb-3">
-        <CardTitle className="text-lg">User flow diagram</CardTitle>
-        <p className="text-sm text-muted-foreground">
-          Difficulty selection and drill experience, from dashboard to completion.
-        </p>
+        <CardTitle className="text-base" data-testid={`${testId}-title`}>
+          {title}
+        </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-8">
-        {/* Mobile (vertical) */}
-        <div className="md:hidden space-y-3" data-testid="flow-mobile">
-          <FlowNode title="Dashboard" subtitle="Primary CTA to start today\'s session" tone="primary" testId="node-dashboard" />
-          <ArrowDown testId="arrow-dashboard-start" />
-          <FlowNode title="Start Session" subtitle="User initiates a new session" testId="node-start-session" />
-          <ArrowDown testId="arrow-start-difficulty" />
-          <FlowNode title="Difficulty selection" subtitle="Beginner, Intermediate, Advanced" tone="primary" testId="node-difficulty" />
-          <ArrowDown testId="arrow-difficulty-drills" />
-          <FlowNode title="Drill experience" subtitle="Timed prompts with optional notes" testId="node-drills" />
-          <div className="grid grid-cols-1 gap-3 pt-2">
-            <FlowNode title="Beginner" subtitle="Word association. New word every 5 seconds" tone="muted" testId="node-beginner" />
-            <FlowNode title="Intermediate" subtitle="Two words. 30 seconds to pitch" tone="muted" testId="node-intermediate" />
-            <FlowNode title="Advanced" subtitle="Five words. 45 seconds to tell a story" tone="muted" testId="node-advanced" />
-          </div>
-          <ArrowDown testId="arrow-drills-completion" />
-          <FlowNode title="Completion" subtitle="Session complete screen" tone="success" testId="node-completion" />
-          <ArrowDown testId="arrow-completion-xp" />
-          <FlowNode title="XP and streak update" subtitle="XP awarded by difficulty. Streak incremented" tone="success" testId="node-xp-streak" />
-          <ArrowDown testId="arrow-xp-dashboard" />
-          <FlowNode title="Back to dashboard" subtitle="Next best action presented" testId="node-back-dashboard" />
-        </div>
-
-        {/* Desktop (flowchart) */}
-        <div className="hidden md:block" data-testid="flow-desktop">
-          <div className="grid grid-cols-[1fr_auto_1fr_auto_1fr] gap-4 items-center">
-            <FlowNode title="Dashboard" subtitle="Primary CTA to start today\'s session" tone="primary" testId="node-desk-dashboard" />
-            <ArrowRightInline testId="arrow-desk-1" />
-            <FlowNode title="Start Session" subtitle="User initiates a new session" testId="node-desk-start" />
-            <ArrowRightInline testId="arrow-desk-2" />
-            <FlowNode title="Difficulty selection" subtitle="Beginner, Intermediate, Advanced" tone="primary" testId="node-desk-difficulty" />
-          </div>
-
-          <div className="flex items-center justify-center py-6" data-testid="arrow-desk-down-1">
-            <div className="h-10 w-px bg-border" />
-            <div className="w-2 h-2 rotate-45 border-r border-b border-border -mt-1" />
-          </div>
-
-          <div className="grid grid-cols-3 gap-4" data-testid="desk-branch">
-            <FlowNode title="Beginner" subtitle="Word association. New word every 5 seconds" tone="muted" testId="node-desk-beginner" />
-            <FlowNode title="Intermediate" subtitle="Two words. 30 seconds to pitch" tone="muted" testId="node-desk-intermediate" />
-            <FlowNode title="Advanced" subtitle="Five words. 45 seconds to tell a story" tone="muted" testId="node-desk-advanced" />
-          </div>
-
-          <div className="flex items-center justify-center py-6" data-testid="arrow-desk-down-2">
-            <div className="h-10 w-px bg-border" />
-            <div className="w-2 h-2 rotate-45 border-r border-b border-border -mt-1" />
-          </div>
-
-          <div className="grid grid-cols-[1fr_auto_1fr_auto_1fr] gap-4 items-center">
-            <FlowNode title="Completion" subtitle="Session complete screen" tone="success" testId="node-desk-completion" />
-            <ArrowRightInline testId="arrow-desk-3" />
-            <FlowNode title="XP and streak update" subtitle="XP by difficulty. Streak incremented" tone="success" testId="node-desk-xp" />
-            <ArrowRightInline testId="arrow-desk-4" />
-            <FlowNode title="Back to dashboard" subtitle="Next best action presented" testId="node-desk-back" />
-          </div>
-        </div>
-
-        <div className="rounded-xl border border-border bg-muted/20 p-4" data-testid="callout-prd-events">
-          <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Instrumentation</p>
-          <p className="text-sm text-muted-foreground mt-2 leading-relaxed">
-            Events logged: difficulty_selected, session_started, session_completed, streak_incremented.
-            This PRD assumes persistent storage when available, with graceful local fallback.
-          </p>
-        </div>
+      <CardContent className="text-sm text-muted-foreground leading-relaxed" data-testid={`${testId}-content`}>
+        <ul className="list-disc pl-5 space-y-2">
+          {items.map((it, idx) => (
+            <li key={idx} data-testid={`${testId}-item-${idx}`}>
+              {it}
+            </li>
+          ))}
+        </ul>
       </CardContent>
     </Card>
   );
 }
 
-import { PMPage } from "@/components/layout/PMPage";
+function MetricRow({
+  metric,
+  baseline,
+  target,
+  method,
+  testId,
+}: {
+  metric: string;
+  baseline: string;
+  target: string;
+  method: string;
+  testId: string;
+}) {
+  return (
+    <div
+      className="grid grid-cols-1 sm:grid-cols-[1.5fr_1fr_1fr_1.2fr] gap-2 sm:gap-4 py-3"
+      data-testid={testId}
+    >
+      <div className="text-sm font-medium text-foreground" data-testid={`${testId}-metric`}>
+        {metric}
+      </div>
+      <div className="text-sm text-muted-foreground" data-testid={`${testId}-baseline`}>
+        <span className="sm:hidden text-xs uppercase tracking-widest">Baseline: </span>
+        {baseline}
+      </div>
+      <div className="text-sm text-foreground" data-testid={`${testId}-target`}>
+        <span className="sm:hidden text-xs uppercase tracking-widest">Target: </span>
+        {target}
+      </div>
+      <div className="text-sm text-muted-foreground" data-testid={`${testId}-method`}>
+        <span className="sm:hidden text-xs uppercase tracking-widest">How measured: </span>
+        {method}
+      </div>
+    </div>
+  );
+}
 
 export default function PRDHub() {
   return (
     <PMPage
-      eyebrow="PRD hub"
-      title="Product requirements"
-      subtitle="Full PRD for Difficulty Levels, plus a responsive user flow diagram."
+      eyebrow="PRD"
+      title="Structured difficulty levels for daily practice sessions"
+      subtitle="Asana-style product spec for adding Beginner / Intermediate / Advanced as a first-class part of the daily drill flow."
     >
-      <div className="not-prose flex flex-col sm:flex-row gap-3" data-testid="prd-hero-ctas">
-        <Link href="/app">
-          <Button size="lg" className="rounded-full" data-testid="button-prd-try-app">
-            Try live app
-            <ArrowRight className="ml-2 w-4 h-4" />
+      <div className="not-prose flex flex-col sm:flex-row gap-3" data-testid="prd-top-actions">
+        <Link href="/app" asChild>
+          <Button asChild className="rounded-full" data-testid="button-prd-try-app">
+            <a data-testid="link-prd-try-app">Open live app</a>
           </Button>
         </Link>
-        <Button
-          size="lg"
-          variant="outline"
-          className="rounded-full"
-          data-testid="button-prd-scroll"
-          onClick={() => document.getElementById("prd-content")?.scrollIntoView({ behavior: "smooth" })}
-        >
-          Jump to PRD
-        </Button>
+        <Link href="/product" className="inline-flex" data-testid="link-prd-back-product">
+          Back to case study
+        </Link>
       </div>
 
-      <div id="prd-content" className="space-y-14">
-          <div className="flex items-start justify-between gap-4">
-            <div>
-              <Badge variant="outline" className="bg-background border-border text-muted-foreground" data-testid="badge-prd-feature">
-                Feature PRD
+      <div className="space-y-14" data-testid="prd-body">
+        <section className="space-y-5" data-testid="section-prd-brief">
+          <div className="not-prose flex flex-col gap-3" data-testid="prd-brief-header">
+            <div className="flex flex-wrap gap-2 items-center" data-testid="prd-brief-badges">
+              <Badge variant="outline" className="border-border bg-background text-muted-foreground" data-testid="badge-prd-type">
+                Feature spec
               </Badge>
-              <h2 className="text-3xl md:text-4xl font-heading font-bold tracking-tight mt-3" data-testid="text-prd-feature-title">
-                Difficulty levels
-              </h2>
-              <p className="text-muted-foreground mt-3 leading-relaxed" data-testid="text-prd-feature-desc">
-                Let users choose a level that matches their comfort and ambition, then deliver a timed drill that builds spontaneous speaking skill through deliberate pressure.
-              </p>
+              <Badge variant="outline" className="border-border bg-background text-muted-foreground" data-testid="badge-prd-status">
+                V1
+              </Badge>
             </div>
-            <Link href="/product">
-              <Button asChild variant="outline" className="rounded-full hidden sm:inline-flex" data-testid="button-prd-back-product">
-                <a>Back to product</a>
-              </Button>
-            </Link>
           </div>
 
-          <ResponsiveFlowDiagram />
+          <Card className="shadow-none border-border/60" data-testid="card-prd-brief">
+            <CardContent className="pt-6" data-testid="card-prd-brief-content">
+              <div className="grid gap-5" data-testid="grid-prd-brief">
+                <MetaRow
+                  label="Owner"
+                  value="PM (me)"
+                  testId="meta-prd-owner"
+                />
+                <MetaRow
+                  label="Target users"
+                  value="Beginner / Intermediate / Advanced daily practice"
+                  testId="meta-prd-users"
+                />
+                <MetaRow
+                  label="Status"
+                  value="Ready for implementation"
+                  testId="meta-prd-status"
+                />
+                <MetaRow
+                  label="Time estimate"
+                  value="1–2 weeks (V1)"
+                  testId="meta-prd-timeline"
+                />
+              </div>
+            </CardContent>
+          </Card>
 
-          <Separator />
-
-          <section className="space-y-6" data-testid="section-problem">
-            <SectionHeading
-              kicker="Problem"
-              title="Users need the right challenge"
-              desc="Spontaneous speaking is intimidating. If drills feel too hard, users churn. If drills feel too easy, users do not feel progress. The product must offer a clear starting point with a path to grow." 
-              icon={<Target className="w-4 h-4" />}
-            />
-            <Card className="border-border/60">
-              <CardContent className="pt-6 text-sm text-muted-foreground leading-relaxed">
-                Difficulty levels reduce anxiety by letting users opt into pressure. They also create a simple progression system that maps to real scenarios: quick associations, structured pitching, and storytelling under constraints.
+          <Section
+            kicker="Project brief"
+            title="Background"
+            icon={<ClipboardList className="w-5 h-5 text-muted-foreground" />}
+            testId="section-background"
+          >
+            <p data-testid="text-prd-background-1">
+              I decided to formalize structured difficulty because early prototyping made a pattern impossible to ignore: when drills felt
+              too intense, people abandoned the session; when drills felt too easy, they finished but didn’t feel meaningfully trained.
+              That mismatch is the fastest way to lose a daily habit.
+            </p>
+            <p data-testid="text-prd-background-2">
+              In ~50 founder-led qualitative conversations, users consistently described the same tension: they have knowledge and ideas,
+              but freeze in high-stakes moments. This product is not about teaching content—it’s about improving retrieval under pressure.
+              A structured difficulty system gives users a safe, explicit way to opt into pressure.
+            </p>
+            <Card className="shadow-none border-border/60" data-testid="card-background-quote">
+              <CardContent className="pt-6 text-sm text-muted-foreground leading-relaxed" data-testid="text-background-quote">
+                “I know things but can’t think in the moment.” (paraphrased)
               </CardContent>
             </Card>
-          </section>
+          </Section>
+        </section>
 
-          <section className="space-y-6" data-testid="section-goals">
-            <SectionHeading
-              kicker="Goals"
-              title="Goals and non-goals"
-              desc="Define what success looks like, and what we intentionally avoid for an MVP." 
-              icon={<CheckCircle2 className="w-4 h-4" />}
-            />
+        <Separator />
 
-            <div className="grid md:grid-cols-2 gap-6">
-              <Card className="border-border/60">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-lg">Goals</CardTitle>
-                </CardHeader>
-                <CardContent className="text-sm text-muted-foreground leading-relaxed space-y-3">
-                  <ul className="space-y-2 list-disc pl-5">
-                    <li>Make it obvious what each difficulty means before the session starts.</li>
-                    <li>Deliver a consistent, timed drill experience per difficulty.</li>
-                    <li>Reward users with XP and streak progression in a way that feels fair.</li>
-                    <li>Reduce dropout by matching pressure to user readiness.</li>
-                  </ul>
-                </CardContent>
-              </Card>
-
-              <Card className="border-border/60">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-lg">Non-goals</CardTitle>
-                </CardHeader>
-                <CardContent className="text-sm text-muted-foreground leading-relaxed space-y-3">
-                  <ul className="space-y-2 list-disc pl-5">
-                    <li>Real-time speech scoring or AI feedback.</li>
-                    <li>Community matchmaking or live rooms.</li>
-                    <li>Personalized difficulty recommendation based on performance.</li>
-                    <li>Complex leveling economy or skill trees.</li>
-                  </ul>
-                </CardContent>
-              </Card>
-            </div>
-          </section>
-
-          <section className="space-y-6" data-testid="section-metrics">
-            <SectionHeading
-              kicker="Success"
-              title="Success metrics"
-              desc="Metrics that validate the difficulty system improves activation, retention, and perceived progress." 
-              icon={<Layers className="w-4 h-4" />}
-            />
-
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <Card className="border-primary/20 bg-primary/5">
-                <CardHeader className="pb-2">
-                  <p className="text-xs font-bold uppercase tracking-wider text-primary">North Star</p>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-xl font-bold">Weekly completed sessions</p>
-                  <p className="text-xs text-muted-foreground mt-1">Quality practice delivered</p>
-                </CardContent>
-              </Card>
-              <Card className="border-border/60">
-                <CardHeader className="pb-2">
-                  <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Activation</p>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-xl font-bold">Onboarding + 1 completion</p>
-                  <p className="text-xs text-muted-foreground mt-1">First success moment</p>
-                </CardContent>
-              </Card>
-              <Card className="border-border/60">
-                <CardHeader className="pb-2">
-                  <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Engagement</p>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-xl font-bold">Completion rate by level</p>
-                  <p className="text-xs text-muted-foreground mt-1">Friction and fit</p>
-                </CardContent>
-              </Card>
-              <Card className="border-border/60">
-                <CardHeader className="pb-2">
-                  <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Retention</p>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-xl font-bold">D1 and D7</p>
-                  <p className="text-xs text-muted-foreground mt-1">Habit formation</p>
-                </CardContent>
-              </Card>
-            </div>
-          </section>
-
-          <section className="space-y-6" data-testid="section-stories">
-            <SectionHeading
-              kicker="Stories"
-              title="User stories"
-              desc="Representative stories across new users, returning users, and advanced learners." 
-              icon={<GitBranch className="w-4 h-4" />}
-            />
-
-            <div className="grid md:grid-cols-2 gap-6">
-              <Card className="border-border/60">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-lg">New user</CardTitle>
-                </CardHeader>
-                <CardContent className="text-sm text-muted-foreground leading-relaxed">
-                  I want to choose a beginner drill so I can start without anxiety and still feel like I trained today.
-                </CardContent>
-              </Card>
-              <Card className="border-border/60">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-lg">Returning user</CardTitle>
-                </CardHeader>
-                <CardContent className="text-sm text-muted-foreground leading-relaxed">
-                  I want a clear daily session CTA and fast entry into a timed drill so I can keep my habit.
-                </CardContent>
-              </Card>
-              <Card className="border-border/60">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-lg">Ambitious learner</CardTitle>
-                </CardHeader>
-                <CardContent className="text-sm text-muted-foreground leading-relaxed">
-                  I want harder prompts and longer timers so I can practice storytelling under pressure.
-                </CardContent>
-              </Card>
-              <Card className="border-border/60">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-lg">Time-constrained user</CardTitle>
-                </CardHeader>
-                <CardContent className="text-sm text-muted-foreground leading-relaxed">
-                  I want sessions to be predictable so I can finish during a short break.
-                </CardContent>
-              </Card>
-            </div>
-          </section>
-
-          <section className="space-y-6" data-testid="section-edge">
-            <SectionHeading
-              kicker="Edge cases"
-              title="Edge cases and failure modes"
-              desc="Make the experience resilient and predictable even when users do unexpected things." 
-              icon={<AlertTriangle className="w-4 h-4" />}
-            />
-
-            <Card className="border-border/60">
-              <CardContent className="pt-6 text-sm text-muted-foreground leading-relaxed">
-                <ul className="space-y-2 list-disc pl-5">
-                  <li>User leaves mid-session and returns. The UI should not crash. The user can restart cleanly.</li>
-                  <li>User ends session early. We log session_completed with a shorter duration and award XP only when completion screen is reached.</li>
-                  <li>Timer hits zero while user is typing notes. Notes are optional and should not block completion.</li>
-                  <li>User switches difficulty repeatedly. Only the started difficulty should count for session_started.</li>
-                  <li>Offline usage. Event logging falls back to local storage and sync can be added later.</li>
+        <Section
+          kicker="Problem"
+          title="JTBD-style problem statements"
+          icon={<Target className="w-5 h-5 text-muted-foreground" />}
+          testId="section-problem-statements"
+        >
+          <div className="grid gap-6 md:grid-cols-3" data-testid="grid-problems">
+            <Card className="shadow-none border-border/60" data-testid="card-problem-beginner">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base">Beginner</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground leading-relaxed space-y-3">
+                <p data-testid="text-problem-beginner">
+                  When I feel intimidated by speaking under time pressure, I want a low-friction drill that still counts as practice,
+                  so I can complete today’s session without anxiety.
+                </p>
+                <ul className="list-disc pl-5 space-y-2" data-testid="list-problem-beginner">
+                  <li>Primary barrier: fear of freezing</li>
+                  <li>Desired outcome: “I spoke out loud today.”</li>
                 </ul>
               </CardContent>
             </Card>
-          </section>
 
-          <section className="space-y-6" data-testid="section-ux">
-            <SectionHeading
-              kicker="UX"
-              title="UX notes"
-              desc="Design principles to make difficulty selection feel confident and premium." 
-              icon={<Layers className="w-4 h-4" />}
-            />
-
-            <div className="grid md:grid-cols-2 gap-6">
-              <Card className="border-border/60">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-lg">Clarity over novelty</CardTitle>
-                </CardHeader>
-                <CardContent className="text-sm text-muted-foreground leading-relaxed">
-                  Each difficulty card should explain what happens, how long it takes, and what the user is practicing.
-                </CardContent>
-              </Card>
-              <Card className="border-border/60">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-lg">Fast entry</CardTitle>
-                </CardHeader>
-                <CardContent className="text-sm text-muted-foreground leading-relaxed">
-                  The number one job is to get users into the drill. Selection should be one tap, then start.
-                </CardContent>
-              </Card>
-              <Card className="border-border/60">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-lg">Reward right away</CardTitle>
-                </CardHeader>
-                <CardContent className="text-sm text-muted-foreground leading-relaxed">
-                  Completion should immediately show XP earned and streak impact. Users should feel progress in seconds.
-                </CardContent>
-              </Card>
-              <Card className="border-border/60">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-lg">Predictable timing</CardTitle>
-                </CardHeader>
-                <CardContent className="text-sm text-muted-foreground leading-relaxed">
-                  Timers should be visible and consistent. Users should know how long the drill will last.
-                </CardContent>
-              </Card>
-            </div>
-          </section>
-
-          <section className="space-y-6" data-testid="section-tradeoffs">
-            <SectionHeading
-              kicker="Tradeoffs"
-              title="Tradeoffs"
-              desc="Intentional compromises made to ship a strong MVP." 
-              icon={<GitBranch className="w-4 h-4" />}
-            />
-
-            <Card className="border-border/60">
-              <CardContent className="pt-6 text-sm text-muted-foreground leading-relaxed">
-                <ul className="space-y-2 list-disc pl-5">
-                  <li>We prioritize a consistent timed experience over personalized coaching.</li>
-                  <li>We keep the economy simple (XP by difficulty) to avoid confusion.</li>
-                  <li>We accept imperfect measurement without full backend integration, but we log events for later analysis.</li>
+            <Card className="shadow-none border-border/60" data-testid="card-problem-intermediate">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base">Intermediate</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground leading-relaxed space-y-3">
+                <p data-testid="text-problem-intermediate">
+                  When I want to sound clear in meetings or interviews, I need a drill that forces me to organize thoughts quickly,
+                  so I can practice forming coherent responses under light pressure.
+                </p>
+                <ul className="list-disc pl-5 space-y-2" data-testid="list-problem-intermediate">
+                  <li>Primary barrier: slow structure + overthinking</li>
+                  <li>Desired outcome: “I can say something coherent fast.”</li>
                 </ul>
               </CardContent>
             </Card>
-          </section>
 
-          <section className="space-y-6" data-testid="section-open">
-            <SectionHeading
-              kicker="Open questions"
-              title="Open questions"
-              desc="Questions we would answer with user research and experiments." 
-              icon={<Target className="w-4 h-4" />}
-            />
-
-            <Card className="border-border/60">
-              <CardContent className="pt-6 text-sm text-muted-foreground leading-relaxed">
-                <ul className="space-y-2 list-disc pl-5">
-                  <li>Should we recommend a difficulty based on onboarding goal or recent completion rates?</li>
-                  <li>What is the right XP spread so advanced feels rewarding but not mandatory?</li>
-                  <li>Does adding a short warm-up before intermediate and advanced increase completion rates?</li>
-                  <li>Should users be able to retry a drill immediately without losing streak credit?</li>
+            <Card className="shadow-none border-border/60" data-testid="card-problem-advanced">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base">Advanced</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground leading-relaxed space-y-3">
+                <p data-testid="text-problem-advanced">
+                  When I want to be agile in social settings with unpredictable turns, I need a harder drill that increases cognitive load,
+                  so I can practice storytelling and connecting ideas under real time pressure.
+                </p>
+                <ul className="list-disc pl-5 space-y-2" data-testid="list-problem-advanced">
+                  <li>Primary barrier: pressure + complexity simultaneously</li>
+                  <li>Desired outcome: “I stayed fluent under constraints.”</li>
                 </ul>
               </CardContent>
             </Card>
-          </section>
+          </div>
+        </Section>
 
-          <section className="pt-6" data-testid="section-prd-footer-cta">
-            <Card className="border-primary/15 bg-primary/5">
-              <CardContent className="py-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-                <div>
-                  <p className="text-xs font-bold uppercase tracking-widest text-primary">Next step</p>
-                  <p className="text-xl font-heading font-bold mt-2">Try the difficulty flow live</p>
-                  <p className="text-sm text-muted-foreground mt-2">Start a session and experience the timers and completion loop.</p>
-                </div>
-                <Link href="/app">
-                  <Button size="lg" className="rounded-full" data-testid="button-prd-launch">
-                    Launch app
-                    <ArrowRight className="ml-2 w-4 h-4" />
-                  </Button>
-                </Link>
+        <Separator />
+
+        <Section
+          kicker="Goals"
+          title="Goals and success metrics"
+          icon={<LineChart className="w-5 h-5 text-muted-foreground" />}
+          testId="section-goals"
+        >
+          <div className="grid gap-6 md:grid-cols-2" data-testid="grid-goals-nongoals">
+            <BulletCard
+              title="Goals (what I will achieve)"
+              testId="card-goals"
+              items={[
+                <>I will make difficulty selection obvious, fast, and confidence-building.</>,
+                <>I will increase weekly completed sessions per user by reducing mismatch-driven drop-off.</>,
+                <>I will improve completion rates by offering a safe entry point (Beginner) and an aspirational path (Advanced).</>,
+              ]}
+            />
+            <BulletCard
+              title="Non-goals (explicitly out of scope)"
+              testId="card-nongoals"
+              items={[
+                <>Speaking quality evaluation (no scoring).</>,
+                <>Humor evaluation (no “wit rating”).</>,
+                <>Coaching / correction (no tips on what to say).</>,
+                <>AI-generated feedback or judging (no LLM critique).</>,
+              ]}
+            />
+          </div>
+
+          <Card className="shadow-none border-border/60" data-testid="card-metrics">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base">Metrics mapping</CardTitle>
+            </CardHeader>
+            <CardContent className="text-sm" data-testid="card-metrics-content">
+              <div className="hidden sm:grid grid-cols-[1.5fr_1fr_1fr_1.2fr] gap-4 pb-2" data-testid="metrics-header">
+                <div className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Metric</div>
+                <div className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Baseline</div>
+                <div className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Target</div>
+                <div className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">How measured</div>
+              </div>
+              <div className="divide-y divide-border" data-testid="metrics-rows">
+                <MetricRow
+                  metric="Sessions per user per week"
+                  baseline="TBD (current prototype)"
+                  target="+ meaningful lift post-V1"
+                  method="weekly_user_sessions_completed"
+                  testId="metric-sessions-per-week"
+                />
+                <MetricRow
+                  metric="Session completion rate"
+                  baseline="TBD"
+                  target="+15% (conservative)"
+                  method="session_completed / session_started"
+                  testId="metric-completion"
+                />
+                <MetricRow
+                  metric="D7 retention"
+                  baseline="TBD"
+                  target="+10% (conservative)"
+                  method="users_active_day_7"
+                  testId="metric-d7"
+                />
+                <MetricRow
+                  metric="Churn"
+                  baseline="TBD"
+                  target="-5% (conservative)"
+                  method="paid_churn_rate (when pricing exists)"
+                  testId="metric-churn"
+                />
+              </div>
+            </CardContent>
+          </Card>
+        </Section>
+
+        <Separator />
+
+        <Section
+          kicker="Hypothesis"
+          title="What I believe will happen"
+          icon={<Compass className="w-5 h-5 text-muted-foreground" />}
+          testId="section-hypothesis"
+        >
+          <Card className="shadow-none border-border/60" data-testid="card-hypothesis">
+            <CardContent className="pt-6 text-sm text-muted-foreground leading-relaxed space-y-3">
+              <p data-testid="text-hypothesis">
+                I believe that giving users an explicit, structured choice (Beginner / Intermediate / Advanced) before starting a daily drill
+                will reduce anxiety-driven drop-off and increase the sense of “this is the right challenge for me.”
+              </p>
+              <p data-testid="text-hypothesis-deltas">
+                Conservatively, I expect a <strong className="text-foreground">15% lift in completion</strong>, a <strong className="text-foreground">10% lift in D7 retention</strong>,
+                and a <strong className="text-foreground">5% reduction in churn</strong> as users build a consistent daily habit.
+              </p>
+            </CardContent>
+          </Card>
+        </Section>
+
+        <Separator />
+
+        <Section
+          kicker="Vision"
+          title="Vision narrative"
+          icon={<Shield className="w-5 h-5 text-muted-foreground" />}
+          testId="section-vision"
+        >
+          <p data-testid="text-vision-1">
+            I’m optimizing for a very specific moment: a social setting where the conversation turns quickly, everyone is watching, and the
+            user wants to contribute—but their brain stalls.
+          </p>
+          <p data-testid="text-vision-2">
+            In that moment, the user doesn’t need theory. They need reps that make the feeling of pressure familiar. Difficulty levels let
+            them choose the amount of pressure they can handle today, and still walk away with a win.
+          </p>
+          <Card className="shadow-none border-border/60" data-testid="card-vision-callout">
+            <CardContent className="pt-6 text-sm text-muted-foreground leading-relaxed" data-testid="text-vision-callout">
+              I decided the product should feel like daily training, not a class. The core promise is a “warm start” for spontaneous speech.
+            </CardContent>
+          </Card>
+        </Section>
+
+        <Separator />
+
+        <Section
+          kicker="Scope"
+          title="Rough scoping & timeline"
+          icon={<CalendarDays className="w-5 h-5 text-muted-foreground" />}
+          testId="section-scope"
+        >
+          <div className="grid gap-6 md:grid-cols-2" data-testid="grid-scope">
+            <BulletCard
+              title="V1 (ship in 1–2 weeks)"
+              testId="card-scope-v1"
+              items={[
+                <>Difficulty selection step before drills (Beginner / Intermediate / Advanced).</>,
+                <>Clear descriptions on each difficulty card: what happens, how long, what it trains.</>,
+                <>Consistent drill templates per difficulty (timer + prompt format).</>,
+                <>Instrumentation: difficulty_selected, session_started, session_completed.</>,
+              ]}
+            />
+            <BulletCard
+              title="Deferred / V2"
+              testId="card-scope-v2"
+              items={[
+                <>Adaptive recommendations (suggest level based on behavior).</>,
+                <>Expanded prompt variety + anti-repetition system.</>,
+                <>“What this trains” explanations per exercise, richer and more explicit (see Risks section for fixes).</>,
+                <>Retry / streak rules experiments.</>,
+              ]}
+            />
+          </div>
+
+          <Card className="shadow-none border-border/60" data-testid="card-timeline">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base">Proposed timeline</CardTitle>
+            </CardHeader>
+            <CardContent className="text-sm text-muted-foreground leading-relaxed" data-testid="text-timeline">
+              Week 1: design + implement difficulty selection UI, basic copy, and event logging. Week 2: integrate drills per level,
+              add empty-state guidance, and validate flow with lightweight usability testing.
+            </CardContent>
+          </Card>
+        </Section>
+
+        <Separator />
+
+        <Section
+          kicker="Decisions"
+          title="Key tradeoffs & decisions"
+          icon={<GitBranch className="w-5 h-5 text-muted-foreground" />}
+          testId="section-decisions"
+        >
+          <div className="grid gap-6 md:grid-cols-2" data-testid="grid-decisions">
+            <Card className="shadow-none border-border/60" data-testid="card-decision-text-input">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base">I rejected text input as the primary interaction</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground leading-relaxed space-y-3">
+                <p data-testid="text-decision-text-input">
+                  I decided against requiring typed responses because it changes the skill being trained. Typing encourages editing and
+                  self-monitoring. Our user problem is verbal retrieval under pressure.
+                </p>
+                <ul className="list-disc pl-5 space-y-2" data-testid="list-decision-text-input">
+                  <li>Typing increases friction and drop-off in short sessions.</li>
+                  <li>Typing shifts the product toward “writing” rather than speaking.</li>
+                </ul>
               </CardContent>
             </Card>
-          </section>
-        </div>
+
+            <Card className="shadow-none border-border/60" data-testid="card-decision-ai-judging">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base">I rejected AI judging and scoring for V1</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground leading-relaxed space-y-3">
+                <p data-testid="text-decision-ai-judging">
+                  I decided not to add AI evaluation because the risk profile is wrong for early habit formation. Judging increases anxiety.
+                  Users already fear being evaluated; the product needs to feel safe.
+                </p>
+                <ul className="list-disc pl-5 space-y-2" data-testid="list-decision-ai-judging">
+                  <li>Evaluation creates “grade pressure,” which is anti-spontaneity.</li>
+                  <li>Reliability and fairness concerns are high without robust calibration.</li>
+                </ul>
+              </CardContent>
+            </Card>
+          </div>
+        </Section>
+
+        <Separator />
+
+        <Section
+          kicker="Concept mocks"
+          title="User flow + in-app references"
+          icon={<ListChecks className="w-5 h-5 text-muted-foreground" />}
+          testId="section-mocks"
+        >
+          <Card className="shadow-none border-border/60" data-testid="card-mock-flow">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base">Visual flow (V1)</CardTitle>
+            </CardHeader>
+            <CardContent className="text-sm text-muted-foreground leading-relaxed" data-testid="card-mock-flow-content">
+              <div className="grid gap-4" data-testid="mock-flow-steps">
+                {[
+                  {
+                    t: "Dashboard",
+                    d: "User taps the primary CTA for today’s session.",
+                    i: <Timer className="w-4 h-4 text-muted-foreground" />,
+                  },
+                  {
+                    t: "Difficulty selection",
+                    d: "I show three cards with time + what the drill trains. One tap selects.",
+                    i: <Target className="w-4 h-4 text-muted-foreground" />,
+                  },
+                  {
+                    t: "Drill",
+                    d: "Timed prompts. The user speaks out loud. No scoring.",
+                    i: <CheckCircle2 className="w-4 h-4 text-muted-foreground" />,
+                  },
+                  {
+                    t: "Completion",
+                    d: "XP + streak update. Clear next best action.",
+                    i: <LineChart className="w-4 h-4 text-muted-foreground" />,
+                  },
+                ].map((s, idx) => (
+                  <div
+                    key={idx}
+                    className="rounded-xl border border-border bg-background p-4"
+                    data-testid={`mock-flow-step-${idx}`}
+                  >
+                    <div className="flex items-start gap-3">
+                      <div className="mt-0.5 w-8 h-8 rounded-lg border border-border flex items-center justify-center">
+                        {s.i}
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-sm font-semibold text-foreground" data-testid={`mock-flow-step-${idx}-title`}>
+                          {s.t}
+                        </p>
+                        <p className="text-sm text-muted-foreground mt-1" data-testid={`mock-flow-step-${idx}-desc`}>
+                          {s.d}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="shadow-none border-border/60" data-testid="card-mock-screens">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base">In-app screenshot references</CardTitle>
+            </CardHeader>
+            <CardContent className="text-sm text-muted-foreground leading-relaxed space-y-3">
+              <p data-testid="text-mock-screens-1">
+                I reference the existing prototype screens to ground this PRD in what’s already built.
+              </p>
+              <ul className="list-disc pl-5 space-y-2" data-testid="list-mock-screens">
+                <li>Dashboard: “Today’s Session” card CTA</li>
+                <li>Session start: entry point into the drill flow</li>
+                <li>Timed prompt card: visible timer + prompt chips</li>
+                <li>Completion screen: XP and streak update</li>
+              </ul>
+              <p className="text-sm" data-testid="text-mock-screens-2">
+                Note: this PRD intentionally keeps evaluation out of the UI. The “win” is completion.
+              </p>
+            </CardContent>
+          </Card>
+        </Section>
+
+        <Separator />
+
+        <Section
+          kicker="Risks"
+          title="Risks & mitigations"
+          icon={<AlertTriangle className="w-5 h-5 text-muted-foreground" />}
+          testId="section-risks"
+        >
+          <div className="grid gap-6" data-testid="grid-risks">
+            <Card className="shadow-none border-border/60" data-testid="card-risk-arbitrary">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base">Risk: progression feels arbitrary</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground leading-relaxed space-y-3">
+                <p data-testid="text-risk-arbitrary">
+                  If users don’t understand what each level trains, “Beginner → Advanced” can feel cosmetic.
+                </p>
+                <p data-testid="text-risk-arbitrary-v2">
+                  <strong className="text-foreground">Mitigation (V2):</strong> I will add “What this trains” explanations per difficulty (e.g.,
+                  retrieval speed, structuring, narrative coherence) and tie them to real scenarios.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="shadow-none border-border/60" data-testid="card-risk-repetition">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base">Risk: prompts feel repetitive</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground leading-relaxed space-y-3">
+                <p data-testid="text-risk-repetition">
+                  A daily habit dies if the drills feel the same week after week.
+                </p>
+                <p data-testid="text-risk-repetition-v2">
+                  <strong className="text-foreground">Mitigation (V2):</strong> I will add prompt pools by domain + novelty constraints
+                  (avoid repeats within N days) and introduce lightweight themed days.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="shadow-none border-border/60" data-testid="card-risk-clarity">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base">Risk: unclear what skill is being trained</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground leading-relaxed space-y-3">
+                <p data-testid="text-risk-clarity">
+                  Users may complete sessions but not connect the reps to real life (“How does this help me at a party?”).
+                </p>
+                <p data-testid="text-risk-clarity-v2">
+                  <strong className="text-foreground">Mitigation (V2):</strong> I will add a short explanation after completion:
+                  “Today you trained: fast retrieval under pressure.” I’ll also label drills with scenario context.
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+        </Section>
+
+        <Separator />
+
+        <Section
+          kicker="Open questions"
+          title="What I still need to validate"
+          icon={<HelpCircle className="w-5 h-5 text-muted-foreground" />}
+          testId="section-open-questions"
+        >
+          <Card className="shadow-none border-border/60" data-testid="card-open-questions">
+            <CardContent className="pt-6 text-sm text-muted-foreground leading-relaxed">
+              <ul className="list-disc pl-5 space-y-2" data-testid="list-open-questions">
+                <li>Do users prefer a default recommended level or explicit choice every day?</li>
+                <li>What is the minimum copy needed to explain “what this trains” without adding reading friction?</li>
+                <li>Should Advanced be locked behind completions, or always available for agency?</li>
+                <li>What timer lengths maximize completion without reducing perceived challenge?</li>
+              </ul>
+            </CardContent>
+          </Card>
+        </Section>
+
+        <Separator />
+
+        <Section
+          kicker="Appendix"
+          title="Tie-back to research insights"
+          icon={<ListChecks className="w-5 h-5 text-muted-foreground" />}
+          testId="section-appendix"
+        >
+          <div className="grid gap-6 md:grid-cols-2" data-testid="grid-appendix">
+            <Card className="shadow-none border-border/60" data-testid="card-appendix-insights">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base">Relevant research insights</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground leading-relaxed" data-testid="text-appendix-insights">
+                <ul className="list-disc pl-5 space-y-2">
+                  <li>Flow priming beats long, infrequent classes for habit formation.</li>
+                  <li>Pressure vs knowledge is the core gap (retrieval under stakes).</li>
+                  <li>Fear blocks spontaneity; evaluation increases fear.</li>
+                  <li>Users want reps—practice-as-sport, not theory.</li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            <Card className="shadow-none border-border/60" data-testid="card-appendix-why-levels">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base">Why difficulty levels match the insight</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground leading-relaxed" data-testid="text-appendix-why-levels">
+                Structured difficulty is the simplest way to operationalize “safe pressure.” It gives users agency over stakes while keeping
+                the daily practice loop short and repeatable.
+              </CardContent>
+            </Card>
+          </div>
+
+          <Card className="shadow-none border-border/60" data-testid="card-appendix-instrumentation">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base">Instrumentation (V1)</CardTitle>
+            </CardHeader>
+            <CardContent className="text-sm text-muted-foreground leading-relaxed" data-testid="text-appendix-instrumentation">
+              I will log difficulty_selected, session_started, and session_completed so I can read completion rates by level and iterate on
+              copy + timers. This is intentionally lightweight and compatible with the prototype’s current analytics approach.
+            </CardContent>
+          </Card>
+        </Section>
+
+        <section className="not-prose pt-2" data-testid="section-prd-footer">
+          <Card className="shadow-none border-border/60" data-testid="card-prd-footer">
+            <CardContent className="py-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground" data-testid="text-prd-footer-kicker">
+                  Next step
+                </p>
+                <p className="text-sm text-muted-foreground mt-2" data-testid="text-prd-footer-desc">
+                  I will validate difficulty descriptions with 5 quick usability sessions and tune timers before expanding scope.
+                </p>
+              </div>
+              <Link href="/app" asChild>
+                <Button asChild className="rounded-full" data-testid="button-prd-launch">
+                  <a data-testid="link-prd-launch">Launch app</a>
+                </Button>
+              </Link>
+            </CardContent>
+          </Card>
+        </section>
+      </div>
     </PMPage>
   );
 }
