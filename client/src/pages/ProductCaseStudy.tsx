@@ -1,363 +1,453 @@
-import { Button } from "@/components/ui/button";
+import { PMPage } from "@/components/layout/PMPage";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Link } from "wouter";
-import { 
-  ArrowRight, 
-  Target, 
-  Users, 
-  Zap, 
-  Timer, 
-  Trophy, 
-  BarChart3, 
-  GitBranch, 
-  Layers, 
-  CheckCircle2, 
+import {
+  ArrowRight,
+  Target,
+  Users,
+  Zap,
+  Timer,
+  GitBranch,
+  Layers,
+  CheckCircle2,
   Lightbulb,
-  Beaker
+  AlertTriangle,
+  Compass,
+  LayoutTemplate,
+  BrainCircuit,
+  CalendarDays,
 } from "lucide-react";
 
-import { PMPage } from "@/components/layout/PMPage";
+function MetaRow({
+  label,
+  value,
+  testId,
+}: {
+  label: string;
+  value: React.ReactNode;
+  testId: string;
+}) {
+  return (
+    <div className="flex items-start justify-between gap-4" data-testid={testId}>
+      <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground" data-testid={`${testId}-label`}>
+        {label}
+      </p>
+      <div className="text-sm text-foreground leading-relaxed text-right" data-testid={`${testId}-value`}>
+        {value}
+      </div>
+    </div>
+  );
+}
+
+function Section({
+  kicker,
+  title,
+  icon,
+  children,
+  testId,
+}: {
+  kicker: string;
+  title: string;
+  icon: React.ReactNode;
+  children: React.ReactNode;
+  testId: string;
+}) {
+  return (
+    <section className="space-y-4" data-testid={testId}>
+      <div className="not-prose flex items-start justify-between gap-6">
+        <div className="min-w-0">
+          <p
+            className="text-xs font-semibold uppercase tracking-widest text-muted-foreground"
+            data-testid={`${testId}-kicker`}
+          >
+            {kicker}
+          </p>
+          <h2 className="pm-h2 mt-2" data-testid={`${testId}-title`}>
+            {title}
+          </h2>
+        </div>
+        <div
+          className="hidden sm:flex shrink-0 w-10 h-10 items-center justify-center rounded-xl border border-border bg-background"
+          aria-hidden="true"
+        >
+          {icon}
+        </div>
+      </div>
+      <div className="space-y-4">{children}</div>
+    </section>
+  );
+}
+
+function BulletCard({
+  title,
+  items,
+  testId,
+}: {
+  title: string;
+  items: React.ReactNode[];
+  testId: string;
+}) {
+  return (
+    <Card className="shadow-none border-border/60" data-testid={testId}>
+      <CardHeader className="pb-3">
+        <CardTitle className="text-base" data-testid={`${testId}-title`}>
+          {title}
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="text-sm text-muted-foreground leading-relaxed" data-testid={`${testId}-content`}>
+        <ul className="list-disc pl-5 space-y-2">
+          {items.map((it, idx) => (
+            <li key={idx} data-testid={`${testId}-item-${idx}`}>
+              {it}
+            </li>
+          ))}
+        </ul>
+      </CardContent>
+    </Card>
+  );
+}
 
 export default function ProductCaseStudy() {
   return (
     <PMPage
-      eyebrow="Product case study"
-      title="Quick-Wit"
-      subtitle="Duolingo for spontaneous communication"
+      eyebrow="Simple product brief"
+      title="Quick-Wit: Daily training for spontaneous verbal fluency"
+      subtitle="Founder-led product brief defining the problem, vision, and V1 scope."
     >
-      <div className="not-prose">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3" data-testid="product-hero-ctas">
-          <Link href="/app">
-            <Button
-              size="lg"
-              className="h-11 px-6 rounded-full"
-              data-testid="button-product-try-app"
-            >
+      <div className="not-prose flex flex-col sm:flex-row gap-3" data-testid="product-hero-ctas">
+        <Link href="/app" asChild>
+          <Button asChild className="rounded-full" data-testid="button-product-try-app">
+            <a data-testid="link-product-try-app">
               Try live app
               <ArrowRight className="ml-2 w-4 h-4" />
-            </Button>
-          </Link>
-          <Button
-            variant="outline"
-            size="lg"
-            className="h-11 px-6 rounded-full"
-            data-testid="button-product-scroll-thinking"
-            onClick={() => document.getElementById("problem")?.scrollIntoView({ behavior: "smooth" })}
-          >
-            View product thinking
+            </a>
           </Button>
-          <Link href="/prd">
-            <Button
-              asChild
-              variant="outline"
-              size="lg"
-              className="h-11 px-6 rounded-full"
-              data-testid="button-product-view-prd"
-            >
-              <a>View PRD</a>
-            </Button>
-          </Link>
-        </div>
+        </Link>
+        <Button
+          variant="outline"
+          className="rounded-full"
+          data-testid="button-product-scroll-background"
+          onClick={() => document.getElementById("background")?.scrollIntoView({ behavior: "smooth" })}
+        >
+          Read the brief
+        </Button>
       </div>
 
-      <div className="space-y-16">
-        
-        {/* 2. Problem Statement */}
-        <section id="problem" className="scroll-mt-24">
-          <div className="flex flex-col md:flex-row gap-12 items-start">
-            <div className="md:w-1/3">
-              <h2 className="text-sm font-bold uppercase tracking-widest text-primary mb-2 flex items-center gap-2">
-                <Target className="w-4 h-4" /> The Problem
-              </h2>
-              <h3 className="text-3xl font-heading font-bold">The "Freeze" Moment</h3>
-            </div>
-            <div className="md:w-2/3">
-              <p className="text-lg text-muted-foreground leading-relaxed">
-                Smart people often struggle to articulate their thoughts under pressure. Whether in interviews, meetings, or social settings, the gap between thinking and speaking causes anxiety ("the freeze"), filler words ("umms"), and missed opportunities.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        <Separator />
-
-        {/* 3. Target User */}
-        <section>
-          <div className="flex flex-col md:flex-row gap-12 items-start">
-            <div className="md:w-1/3">
-              <h2 className="text-sm font-bold uppercase tracking-widest text-primary mb-2 flex items-center gap-2">
-                <Users className="w-4 h-4" /> Target User
-              </h2>
-              <h3 className="text-3xl font-heading font-bold">High-Stakes Communicators</h3>
-            </div>
-            <div className="md:w-2/3 grid sm:grid-cols-2 gap-6">
-              <Card className="bg-background border-border/60 shadow-sm">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-lg">The Professional</CardTitle>
-                </CardHeader>
-                <CardContent className="text-muted-foreground text-sm">
-                  Founders, PMs, and consultants who need to pitch ideas, handle Q&A, and lead meetings without preparation.
-                </CardContent>
-              </Card>
-              <Card className="bg-background border-border/60 shadow-sm">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-lg">The Social Learner</CardTitle>
-                </CardHeader>
-                <CardContent className="text-muted-foreground text-sm">
-                  Individuals looking to build social confidence, improve wit, and become better storytellers in daily life.
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </section>
-
-        <Separator />
-
-        {/* 4. Solution */}
-        <section>
-          <div className="flex flex-col md:flex-row gap-12 items-start">
-            <div className="md:w-1/3">
-              <h2 className="text-sm font-bold uppercase tracking-widest text-primary mb-2 flex items-center gap-2">
-                <Zap className="w-4 h-4" /> The Solution
-              </h2>
-              <h3 className="text-3xl font-heading font-bold">Gamified Verbal Gym</h3>
-            </div>
-            <div className="md:w-2/3 space-y-6">
-              <p className="text-lg text-muted-foreground leading-relaxed mb-6">
-                Quick-Wit transforms the abstract skill of "being articulate" into concrete, daily micro-exercises.
-              </p>
-              <div className="grid sm:grid-cols-3 gap-4">
-                 <div className="p-4 rounded-xl bg-muted/30 border border-border/50">
-                    <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center mb-3">
-                      <Timer className="w-5 h-5 text-primary" />
-                    </div>
-                    <h4 className="font-bold mb-1">Time Pressure</h4>
-                    <p className="text-xs text-muted-foreground">Forcing rapid neural pathways via strict timers.</p>
-                 </div>
-                 <div className="p-4 rounded-xl bg-muted/30 border border-border/50">
-                    <div className="w-10 h-10 rounded-lg bg-orange-500/10 flex items-center justify-center mb-3">
-                      <Trophy className="w-5 h-5 text-orange-500" />
-                    </div>
-                    <h4 className="font-bold mb-1">Streaks & XP</h4>
-                    <p className="text-xs text-muted-foreground">Building habit loops through visual progress tracking.</p>
-                 </div>
-                 <div className="p-4 rounded-xl bg-muted/30 border border-border/50">
-                    <div className="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center mb-3">
-                      <Layers className="w-5 h-5 text-blue-500" />
-                    </div>
-                    <h4 className="font-bold mb-1">Scaffolding</h4>
-                    <p className="text-xs text-muted-foreground">Progressive difficulty from associations to storytelling.</p>
-                 </div>
+      <div className="space-y-14" data-testid="product-body">
+        {/* Meta / Status */}
+        <section className="space-y-5" data-testid="section-product-meta">
+          <Card className="shadow-none border-border/60" data-testid="card-product-meta">
+            <CardContent className="pt-6" data-testid="card-product-meta-content">
+              <div className="grid gap-5" data-testid="grid-product-meta">
+                <MetaRow
+                  label="Role"
+                  value="Founder / PM / Engineer"
+                  testId="meta-product-role"
+                />
+                <MetaRow
+                  label="Stage"
+                  value="Live Prototype (V1)"
+                  testId="meta-product-stage"
+                />
+                <MetaRow
+                  label="Core Insight"
+                  value="Pressure is the skill gap, not just knowledge."
+                  testId="meta-product-insight"
+                />
               </div>
-            </div>
-          </div>
+            </CardContent>
+          </Card>
         </section>
 
-        {/* 5. Product Decisions */}
-        <section className="bg-muted/20 -mx-6 md:-mx-12 px-6 md:px-12 py-16 rounded-3xl">
-          <div className="mb-10 text-center max-w-2xl mx-auto">
-             <h2 className="text-sm font-bold uppercase tracking-widest text-primary mb-2">
-                Product Thinking
-              </h2>
-              <h3 className="text-3xl font-heading font-bold mb-4">Key Design Decisions</h3>
-              <p className="text-muted-foreground">
-                We made specific tradeoffs to prioritize habit formation over perfection.
-              </p>
-          </div>
-          
-          <div className="grid md:grid-cols-3 gap-6">
-             {[
-               {
-                 title: "Short Sessions (<2 mins)",
-                 rationale: "Lowering the barrier to start. Users can play while waiting for coffee, increasing daily retention.",
-                 icon: Timer
-               },
-               {
-                 title: "Audio-First (No Typing)",
-                 rationale: "Mimics real-world pressure. Typing allows for editing and hesitation; speaking requires commitment.",
-                 icon: Users
-               },
-               {
-                 title: "Strict Timers",
-                 rationale: "Panic is the point. We want to desensitize users to the feeling of 'running out of time' so they stay calm in real life.",
-                 icon: Zap
-               }
-             ].map((item, i) => (
-               <Card key={i} className="border-border/50 shadow-sm bg-background">
-                 <CardHeader>
-                   <div className="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center mb-2">
-                     <item.icon className="w-5 h-5 text-secondary-foreground" />
-                   </div>
-                   <CardTitle className="text-lg">{item.title}</CardTitle>
-                 </CardHeader>
-                 <CardContent>
-                   <p className="text-sm text-muted-foreground leading-relaxed">{item.rationale}</p>
-                 </CardContent>
-               </Card>
-             ))}
-          </div>
-        </section>
-
-        {/* 6. Metrics Framework */}
-        <section>
-          <div className="mb-8">
-             <h2 className="text-sm font-bold uppercase tracking-widest text-primary mb-2 flex items-center gap-2">
-                <BarChart3 className="w-4 h-4" /> Metrics Framework
-              </h2>
-              <h3 className="text-3xl font-heading font-bold">Measuring Success</h3>
-          </div>
-          
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-             <Card className="border-primary/20 bg-primary/5">
-                <CardHeader className="pb-2">
-                   <p className="text-xs font-bold uppercase text-primary tracking-wider">North Star</p>
-                </CardHeader>
-                <CardContent>
-                   <p className="text-xl md:text-2xl font-bold">Weekly Active Drills</p>
-                   <p className="text-[10px] text-muted-foreground mt-1">Reflects true value realization</p>
-                </CardContent>
-             </Card>
-             <Card>
-                <CardHeader className="pb-2">
-                   <p className="text-xs font-bold uppercase text-muted-foreground tracking-wider">Activation</p>
-                </CardHeader>
-                <CardContent>
-                   <p className="text-xl md:text-2xl font-bold">D1 Retention</p>
-                   <p className="text-[10px] text-muted-foreground mt-1">% who return next day</p>
-                </CardContent>
-             </Card>
-             <Card>
-                <CardHeader className="pb-2">
-                   <p className="text-xs font-bold uppercase text-muted-foreground tracking-wider">Engagement</p>
-                </CardHeader>
-                <CardContent>
-                   <p className="text-xl md:text-2xl font-bold">Session Length</p>
-                   <p className="text-[10px] text-muted-foreground mt-1">Time spent practicing</p>
-                </CardContent>
-             </Card>
-             <Card>
-                <CardHeader className="pb-2">
-                   <p className="text-xs font-bold uppercase text-muted-foreground tracking-wider">Conversion</p>
-                </CardHeader>
-                <CardContent>
-                   <p className="text-xl md:text-2xl font-bold">Sign-up Rate</p>
-                   <p className="text-[10px] text-muted-foreground mt-1">Visitor to User %</p>
-                </CardContent>
-             </Card>
-          </div>
-        </section>
-
-        <Separator />
-
-        {/* 7. Experiment Example */}
-        <section>
-          <div className="flex flex-col md:flex-row gap-12 items-start">
-             <div className="md:w-1/3">
-              <h2 className="text-sm font-bold uppercase tracking-widest text-primary mb-2 flex items-center gap-2">
-                <Beaker className="w-4 h-4" /> Experiment
-              </h2>
-              <h3 className="text-3xl font-heading font-bold">Dashboard CTA Copy Test</h3>
-              <p className="text-sm text-muted-foreground mt-3">Simulated outcome unless analytics data exists.</p>
-            </div>
-            <div className="md:w-2/3">
-               <Card className="border-border shadow-md overflow-hidden">
-                  <div className="bg-muted/50 p-4 border-b border-border flex justify-between items-center">
-                     <span className="font-mono text-xs font-bold text-muted-foreground">EXP-CTA-001</span>
-                     <Badge variant="outline" className="text-amber-800 bg-amber-50 border-amber-200">Simulated</Badge>
-                  </div>
-                  <CardContent className="p-6 space-y-6">
-                     <div>
-                        <h4 className="font-bold text-sm mb-1">Hypothesis</h4>
-                        <p className="text-muted-foreground text-sm">A more action-oriented CTA will increase session starts from the dashboard by at least 8%.</p>
-                     </div>
-                     <div>
-                        <h4 className="font-bold text-sm mb-2">What we tested</h4>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                          <div className="p-3 rounded-lg border border-border bg-background">
-                            <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Variant A</p>
-                            <p className="font-semibold mt-1">Start your daily session</p>
-                          </div>
-                          <div className="p-3 rounded-lg border border-border bg-background">
-                            <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Variant B</p>
-                            <p className="font-semibold mt-1">Train your wit now</p>
-                          </div>
-                        </div>
-                      </div>
-                     <div>
-                        <h4 className="font-bold text-sm mb-1">Outcome</h4>
-                        <p className="text-muted-foreground text-sm">Variant B increased CTA clicks by 11% with no decrease in completion rate.</p>
-                     </div>
-                     <div>
-                        <h4 className="font-bold text-sm mb-1">Conclusion</h4>
-                        <p className="text-muted-foreground text-sm">Ship Variant B as default, keep Variant A as fallback for users with low confidence goal.</p>
-                     </div>
-                  </CardContent>
-               </Card>
-            </div>
-          </div>
-        </section>
-
-         {/* 8. Roadmap */}
-        <section>
-          <div className="mb-10">
-             <h2 className="text-sm font-bold uppercase tracking-widest text-primary mb-2 flex items-center gap-2">
-                <GitBranch className="w-4 h-4" /> Roadmap
-              </h2>
-              <h3 className="text-3xl font-heading font-bold">What's Next</h3>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-             <div className="space-y-4">
-                <div className="flex items-center gap-2 pb-2 border-b border-border">
-                   <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                   <h4 className="font-bold text-sm uppercase tracking-wide">Now</h4>
-                </div>
-                <ul className="space-y-3">
-                   <li className="flex gap-2 text-sm text-muted-foreground"><CheckCircle2 className="w-4 h-4 text-green-500 shrink-0" /> Core Drill Engine</li>
-                   <li className="flex gap-2 text-sm text-muted-foreground"><CheckCircle2 className="w-4 h-4 text-green-500 shrink-0" /> Auth & Profiles</li>
-                   <li className="flex gap-2 text-sm text-muted-foreground"><CheckCircle2 className="w-4 h-4 text-green-500 shrink-0" /> Streak System</li>
-                </ul>
-             </div>
-             <div className="space-y-4">
-                <div className="flex items-center gap-2 pb-2 border-b border-border">
-                   <div className="w-2 h-2 rounded-full bg-yellow-500" />
-                   <h4 className="font-bold text-sm uppercase tracking-wide">Next</h4>
-                </div>
-                <ul className="space-y-3">
-                   <li className="flex gap-2 text-sm text-muted-foreground"><Lightbulb className="w-4 h-4 text-muted-foreground shrink-0" /> AI Speech Analysis</li>
-                   <li className="flex gap-2 text-sm text-muted-foreground"><Lightbulb className="w-4 h-4 text-muted-foreground shrink-0" /> Personalized Tracks</li>
-                   <li className="flex gap-2 text-sm text-muted-foreground"><Lightbulb className="w-4 h-4 text-muted-foreground shrink-0" /> Mobile PWA</li>
-                </ul>
-             </div>
-             <div className="space-y-4">
-                <div className="flex items-center gap-2 pb-2 border-b border-border">
-                   <div className="w-2 h-2 rounded-full bg-blue-500" />
-                   <h4 className="font-bold text-sm uppercase tracking-wide">Later</h4>
-                </div>
-                <ul className="space-y-3">
-                   <li className="flex gap-2 text-sm text-muted-foreground"><Lightbulb className="w-4 h-4 text-muted-foreground shrink-0" /> Multiplayer Duels</li>
-                   <li className="flex gap-2 text-sm text-muted-foreground"><Lightbulb className="w-4 h-4 text-muted-foreground shrink-0" /> Community Rooms</li>
-                   <li className="flex gap-2 text-sm text-muted-foreground"><Lightbulb className="w-4 h-4 text-muted-foreground shrink-0" /> Enterprise Teams</li>
-                </ul>
-             </div>
-          </div>
-        </section>
-
-        <Separator />
-
-         {/* 9. Role */}
-        <section className="bg-primary/5 rounded-3xl p-8 md:p-12 text-center">
-           <h3 className="text-2xl font-heading font-bold mb-4">My Role</h3>
-           <p className="text-muted-foreground max-w-2xl mx-auto leading-relaxed mb-8">
-              I led this project from 0 to 1, owning the entire product lifecycle: from initial user research and problem definition, to UI/UX design in Figma, and final full-stack implementation using Next.js and Supabase.
-           </p>
-           <div className="flex flex-wrap justify-center gap-3">
-              {["Product Strategy", "UX/UI Design", "Frontend Engineering", "Data Modeling"].map(skill => (
-                 <Badge key={skill} variant="secondary" className="px-3 py-1 bg-white shadow-xs hover:bg-white">{skill}</Badge>
-              ))}
+        {/* 1. Background */}
+        <Section
+          kicker="Why now"
+          title="Background"
+          icon={<Compass className="w-5 h-5 text-muted-foreground" />}
+          testId="section-background"
+        >
+           <div id="background" className="space-y-4 scroll-mt-24">
+            <p data-testid="text-background-1">
+              I built this because I personally struggled with spontaneous speaking for years. I knew the content, but in high-stakes moments—interviews, dates, executive Q&A—my brain would freeze.
+            </p>
+            <p data-testid="text-background-2">
+              <strong>Why now?</strong> Three convergent trends make this timely:
+            </p>
+            <ul className="list-disc pl-5 space-y-2 text-muted-foreground" data-testid="list-background-trends">
+              <li><strong>Remote work</strong> has reduced low-stakes "watercooler" practice, making every Zoom call feel like a performance.</li>
+              <li><strong>Daily training norms</strong> (Duolingo, Wordle) have normalized short, gamified cognitive habits.</li>
+              <li><strong>GenAI</strong> (LLMs) enables infinite, dynamic prompt generation without human curation cost, allowing endless unique practice scenarios.</li>
+            </ul>
            </div>
+        </Section>
+
+        <Separator />
+
+        {/* 2. Problem Statements */}
+        <Section
+          kicker="Problem"
+          title="The core tension"
+          icon={<Target className="w-5 h-5 text-muted-foreground" />}
+          testId="section-problem"
+        >
+          <div className="grid gap-6 md:grid-cols-2" data-testid="grid-problems">
+            <Card className="shadow-none border-border/60" data-testid="card-problem-talent">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base">Spontaneity is treated as talent</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground leading-relaxed">
+                Most people believe you are either born "quick-witted" or not. There is no clear "gym" for verbal agility, only expensive improv classes that feel socially risky.
+              </CardContent>
+            </Card>
+
+            <Card className="shadow-none border-border/60" data-testid="card-problem-freeze">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base">The "Freeze" moment</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground leading-relaxed">
+                Users report having the knowledge but losing access to it under pressure. The problem isn't intelligence; it's retrieval latency and anxiety blocking working memory.
+              </CardContent>
+            </Card>
+          </div>
+        </Section>
+
+        <Separator />
+
+        {/* 3. Goals & Non-Goals */}
+        <Section
+          kicker="Direction"
+          title="Goals and non-goals"
+          icon={<CheckCircle2 className="w-5 h-5 text-muted-foreground" />}
+          testId="section-goals"
+        >
+          <div className="grid gap-6 md:grid-cols-2" data-testid="grid-goals-nongoals">
+            <BulletCard
+              title="Goals (Success)"
+              testId="card-goals"
+              items={[
+                <>Improve spontaneous verbal fluency through repetition.</>,
+                <>Increase real-world confidence in social/professional settings.</>,
+                <>Help users feel charismatic and present (identity shift).</>,
+                <>Leverage GenAI to ensure prompts never feel stale.</>,
+              ]}
+            />
+            <BulletCard
+              title="Non-goals (Out of Scope)"
+              testId="card-nongoals"
+              items={[
+                <>Not an improv-actor app (no "scenes" or acting).</>,
+                <>Not a library of scripts or "what to say" memorization.</>,
+                <>Not theory-heavy instruction (practice over lectures).</>,
+                <><strong>No AI judging (yet):</strong> V1 focuses on completion, not critique.</>,
+              ]}
+            />
+          </div>
+        </Section>
+
+        <Separator />
+
+        {/* 4. Hypothesis */}
+        <Section
+          kicker="Hypothesis"
+          title="Theory of change"
+          icon={<Lightbulb className="w-5 h-5 text-muted-foreground" />}
+          testId="section-hypothesis"
+        >
+          <Card className="shadow-none border-border/60" data-testid="card-hypothesis">
+             <CardContent className="pt-6 text-sm text-muted-foreground leading-relaxed space-y-3">
+              <p data-testid="text-hypothesis">
+                I believe that <strong className="text-foreground">daily, low-stakes timed practice</strong> (2–5 mins) will desensitize users to the feeling of pressure.
+              </p>
+              <p data-testid="text-hypothesis-outcome">
+                By repeatedly entering a "speak now" state without consequence, users will lower their inhibition threshold, leading to measurably faster articulation and higher confidence in real-world conversations within 3 weeks.
+              </p>
+            </CardContent>
+          </Card>
+        </Section>
+
+        <Separator />
+
+         {/* 5. Vision Narrative */}
+         <Section
+          kicker="Vision"
+          title="Longitudinal identity shift"
+          icon={<GitBranch className="w-5 h-5 text-muted-foreground" />}
+          testId="section-vision"
+        >
+          <p data-testid="text-vision-1">
+            This isn't just about speaking faster; it's about shifting self-perception from "I'm awkward/quiet" to "I can handle whatever comes up."
+          </p>
+          <p data-testid="text-vision-2">
+            The long-term vision is a <strong className="text-foreground">pocket coach for social courage</strong>.
+            While V1 is a solo drill, V2+ uses AI not just to generate prompts, but to provide personalized coaching on tone, brevity, and wit—eventually acting as a sparring partner for specific scenarios (salary negotiation, first dates, conflict).
+          </p>
+        </Section>
+
+        <Separator />
+
+        {/* 6. Scoping */}
+        <Section
+          kicker="Scope"
+          title="Rough scoping & timeline"
+          icon={<CalendarDays className="w-5 h-5 text-muted-foreground" />}
+          testId="section-scope"
+        >
+          <div className="grid gap-6 md:grid-cols-2" data-testid="grid-scope">
+            <BulletCard
+              title="Focused Prototype (V1)"
+              testId="card-scope-v1"
+              items={[
+                <>Daily timed drills (3 difficulty levels).</>,
+                <>GenAI-powered prompt generation (infinite variety).</>,
+                <>Streak & XP system (retention loop).</>,
+                <>Basic "Done" tracking (no quality scoring).</>,
+              ]}
+            />
+            <BulletCard
+              title="Future (V2+)"
+              testId="card-scope-v2"
+              items={[
+                <><strong>AI Coach:</strong> Qualitative feedback on recordings.</>,
+                <><strong>Multiplayer:</strong> Live duel / "pass the mic" modes.</>,
+                <><strong>Scenario Mode:</strong> Roleplay specific high-stakes talks.</>,
+              ]}
+            />
+          </div>
+        </Section>
+
+        <Separator />
+
+        {/* 7. Tradeoffs */}
+        <Section
+          kicker="Decisions"
+          title="Key tradeoffs & decisions"
+          icon={<AlertTriangle className="w-5 h-5 text-muted-foreground" />}
+          testId="section-tradeoffs"
+        >
+          <div className="grid gap-6 md:grid-cols-3" data-testid="grid-tradeoffs">
+            <Card className="shadow-none border-border/60" data-testid="card-tradeoff-habit">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base">Daily habit {">"} Long sessions</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground leading-relaxed">
+                <strong className="text-foreground">Decision:</strong> Cap sessions at 5 mins.
+                <br/>
+                <strong className="text-foreground">Why:</strong> Better to train 2 mins/day for 30 days than 60 mins once. Consistency rewires the brain.
+              </CardContent>
+            </Card>
+
+            <Card className="shadow-none border-border/60" data-testid="card-tradeoff-practice">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base">Practice {">"} Instruction</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground leading-relaxed">
+                <strong className="text-foreground">Decision:</strong> No theory lessons in V1.
+                <br/>
+                <strong className="text-foreground">Why:</strong> Users know <em>how</em> to speak; they need reps. Content consumption is procrastination.
+              </CardContent>
+            </Card>
+
+            <Card className="shadow-none border-border/60" data-testid="card-tradeoff-audio">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base">Audio {">"} Text</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground leading-relaxed">
+                <strong className="text-foreground">Decision:</strong> No typing, only speaking.
+                <br/>
+                <strong className="text-foreground">Why:</strong> Typing allows editing. Speaking requires commitment. We train the verbal muscle.
+              </CardContent>
+            </Card>
+          </div>
+        </Section>
+
+        <Separator />
+
+        {/* 8. Mockups */}
+        <Section
+          kicker="Concept"
+          title="Conceptual models & mockups"
+          icon={<LayoutTemplate className="w-5 h-5 text-muted-foreground" />}
+          testId="section-mockups"
+        >
+          <Card className="shadow-none border-border/60 bg-muted/20" data-testid="card-diagram">
+             <CardHeader className="pb-3">
+                <CardTitle className="text-base flex items-center gap-2">
+                   <BrainCircuit className="w-4 h-4" />
+                   Core Loop Diagram
+                </CardTitle>
+             </CardHeader>
+             <CardContent>
+                <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
+                   <div className="flex-1 p-4 border border-border bg-background rounded-lg text-center">
+                      <p className="font-bold text-foreground">Trigger</p>
+                      <p className="text-xs mt-1">Daily notification or "warm up" need</p>
+                   </div>
+                   <ArrowRight className="w-4 h-4 text-muted-foreground rotate-90 md:rotate-0" />
+                   <div className="flex-1 p-4 border border-border bg-background rounded-lg text-center">
+                      <p className="font-bold text-foreground">Action (Drill)</p>
+                      <p className="text-xs mt-1">GenAI Prompt + Timer + Voice Output</p>
+                   </div>
+                   <ArrowRight className="w-4 h-4 text-muted-foreground rotate-90 md:rotate-0" />
+                   <div className="flex-1 p-4 border border-border bg-background rounded-lg text-center">
+                      <p className="font-bold text-foreground">Reward</p>
+                      <p className="text-xs mt-1">Streak Safe + "I did it" feeling</p>
+                   </div>
+                </div>
+             </CardContent>
+          </Card>
+
+          <div className="grid md:grid-cols-2 gap-6 pt-4" data-testid="grid-ui-refs">
+             <Card className="shadow-none border-border/60">
+                <CardHeader className="pb-3">
+                   <CardTitle className="text-base">UI Reference: Dashboard</CardTitle>
+                </CardHeader>
+                <CardContent className="text-sm text-muted-foreground leading-relaxed">
+                   See live app. Focus is on "Today's Session" as the singular primary action to reduce decision fatigue.
+                </CardContent>
+             </Card>
+             <Card className="shadow-none border-border/60">
+                <CardHeader className="pb-3">
+                   <CardTitle className="text-base">UI Reference: Drill</CardTitle>
+                </CardHeader>
+                <CardContent className="text-sm text-muted-foreground leading-relaxed">
+                   Minimalist interface. Large countdown timer. High-contrast prompt text. No distractions.
+                </CardContent>
+             </Card>
+          </div>
+        </Section>
+
+        {/* Footer CTA */}
+        <section className="not-prose pt-4" data-testid="section-product-footer">
+          <Card className="shadow-none border-border/60" data-testid="card-product-footer">
+            <CardContent className="py-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground" data-testid="text-product-footer-kicker">
+                  Next step
+                </p>
+                <p className="text-sm text-muted-foreground mt-2" data-testid="text-product-footer-desc">
+                  Review the PRD for the "Difficulty Levels" feature spec.
+                </p>
+              </div>
+              <div className="flex gap-3">
+                <Link href="/prd" asChild>
+                  <Button variant="outline" className="rounded-full" data-testid="button-product-footer-prd">
+                    <a data-testid="link-product-footer-prd">View PRD</a>
+                  </Button>
+                </Link>
+                <Link href="/app" asChild>
+                  <Button asChild className="rounded-full" data-testid="button-product-footer-launch">
+                    <a data-testid="link-product-footer-launch">
+                      Launch app
+                      <ArrowRight className="ml-2 w-4 h-4" />
+                    </a>
+                  </Button>
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
         </section>
 
       </div>
