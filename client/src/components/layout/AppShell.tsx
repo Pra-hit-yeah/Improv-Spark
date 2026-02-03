@@ -15,6 +15,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     const isPM =
       location === "/product" ||
       location === "/research" ||
+      location === "/market" ||
       location === "/gtm" ||
       location === "/prd" ||
       location === "/roadmap";
@@ -25,6 +26,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const isPMRoute =
     location === "/product" ||
     location === "/research" ||
+    location === "/market" ||
     location === "/gtm" ||
     location === "/prd" ||
     location === "/roadmap";
