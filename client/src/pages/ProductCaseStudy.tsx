@@ -81,6 +81,8 @@ function Section({
   );
 }
 
+import { ScreenshotGallery } from "@/components/ui/screenshot-gallery";
+
 function BulletCard({
   title,
   items,
@@ -400,22 +402,12 @@ export default function ProductCaseStudy() {
           </Card>
 
           <div className="grid md:grid-cols-2 gap-6 pt-4" data-testid="grid-ui-refs">
-             <Card className="shadow-none border-border/60">
-                <CardHeader className="pb-3">
-                   <CardTitle className="text-base">UI Reference: Dashboard</CardTitle>
-                </CardHeader>
-                <CardContent className="text-sm text-muted-foreground leading-relaxed">
-                   See live app. Focus is on "Today's Session" as the singular primary action to reduce decision fatigue.
-                </CardContent>
-             </Card>
-             <Card className="shadow-none border-border/60">
-                <CardHeader className="pb-3">
-                   <CardTitle className="text-base">UI Reference: Drill</CardTitle>
-                </CardHeader>
-                <CardContent className="text-sm text-muted-foreground leading-relaxed">
-                   Minimalist interface. Large countdown timer. High-contrast prompt text. No distractions.
-                </CardContent>
-             </Card>
+            <div className="md:col-span-2">
+               <ScreenshotGallery 
+                 images={[]} 
+                 testId="gallery-product-mockups"
+               />
+            </div>
           </div>
         </Section>
 

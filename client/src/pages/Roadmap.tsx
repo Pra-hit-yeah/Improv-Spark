@@ -35,6 +35,7 @@ const columns = [
 ] as const;
 
 import { PMPage } from "@/components/layout/PMPage";
+import { ScreenshotGallery } from "@/components/ui/screenshot-gallery";
 
 export default function RoadmapPage() {
   return (
@@ -58,7 +59,7 @@ export default function RoadmapPage() {
       </div>
 
       <div className="not-prose">
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-3 gap-6 mb-12">
           {columns.map((col) => (
             <div key={col.title} className="space-y-4">
               <div className={`inline-flex items-center px-3 py-1.5 rounded-full border text-xs font-bold uppercase tracking-wider ${col.tone}`}>
@@ -74,6 +75,15 @@ export default function RoadmapPage() {
               ))}
             </div>
           ))}
+        </div>
+
+        {/* Feature Gallery */}
+        <div className="space-y-4">
+          <h3 className="text-sm font-bold uppercase tracking-widest text-muted-foreground">Recent Feature Ships</h3>
+          <ScreenshotGallery 
+            images={[]} 
+            testId="gallery-roadmap"
+          />
         </div>
       </div>
     </PMPage>

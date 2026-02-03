@@ -18,7 +18,7 @@ export default function LandingPage() {
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
                 </span>
-                Daily timed drills • 3 difficulty levels
+                Daily timed drills • AI-powered content
               </div>
 
               <h1 className="text-5xl md:text-7xl font-heading font-bold tracking-tight text-foreground mb-6 leading-[1.05]" data-testid="text-hero-headline">
@@ -27,7 +27,7 @@ export default function LandingPage() {
               </h1>
 
               <p className="text-xl text-muted-foreground max-w-2xl mx-auto lg:mx-0 mb-10 leading-relaxed" data-testid="text-hero-subtitle">
-                Quick-Wit is a Duolingo-style training app for verbal fluency. Practice daily, under time pressure, and build a real streak.
+                Quick-Wit is a Duolingo-style training app for verbal fluency. Practice daily with AI-generated prompts, train under time pressure, and build a real streak.
               </p>
 
               <div className="flex flex-col sm:flex-row items-center lg:items-start justify-center lg:justify-start gap-4" data-testid="hero-ctas">

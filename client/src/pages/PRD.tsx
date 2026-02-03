@@ -19,6 +19,8 @@ import {
   Timer,
 } from "lucide-react";
 
+import { ScreenshotGallery } from "@/components/ui/screenshot-gallery";
+
 function MetaRow({
   label,
   value,
@@ -555,19 +557,23 @@ export default function PRDHub() {
             <CardHeader className="pb-3">
               <CardTitle className="text-base">In-app screenshot references</CardTitle>
             </CardHeader>
-            <CardContent className="text-sm text-muted-foreground leading-relaxed space-y-3">
-              <p data-testid="text-mock-screens-1">
-                I reference the existing prototype screens to ground this PRD in what’s already built.
-              </p>
-              <ul className="list-disc pl-5 space-y-2" data-testid="list-mock-screens">
-                <li>Dashboard: “Today’s Session” card CTA</li>
-                <li>Session start: entry point into the drill flow</li>
-                <li>Timed prompt card: visible timer + prompt chips</li>
-                <li>Completion screen: XP and streak update</li>
-              </ul>
-              <p className="text-sm" data-testid="text-mock-screens-2">
-                Note: this PRD intentionally keeps evaluation out of the UI. The “win” is completion.
-              </p>
+            <CardContent className="space-y-6">
+              <div className="text-sm text-muted-foreground leading-relaxed space-y-3">
+                <p data-testid="text-mock-screens-1">
+                  I reference the existing prototype screens to ground this PRD in what’s already built.
+                </p>
+                <ul className="list-disc pl-5 space-y-2" data-testid="list-mock-screens">
+                  <li>Dashboard: “Today’s Session” card CTA</li>
+                  <li>Session start: entry point into the drill flow</li>
+                  <li>Timed prompt card: visible timer + prompt chips</li>
+                  <li>Completion screen: XP and streak update</li>
+                </ul>
+              </div>
+              
+              <ScreenshotGallery 
+                images={[]} 
+                testId="gallery-prd-mockups"
+              />
             </CardContent>
           </Card>
         </Section>
