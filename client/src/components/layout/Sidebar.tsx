@@ -5,7 +5,8 @@ import {
   Map,
   Trophy,
   Settings,
-  LogOut
+  LogOut,
+  FileText
 } from "lucide-react";
 import { useStore } from "@/lib/store";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -26,6 +27,7 @@ export function Sidebar() {
     { href: "/app", icon: LayoutDashboard, label: "Dashboard" },
     { href: "/app/tracks", icon: Map, label: "Tracks" },
     { href: "/app/progress", icon: Trophy, label: "Progress" },
+    { href: "/product", icon: FileText, label: "Case Study" },
     { href: "/app/settings", icon: Settings, label: "Settings" },
   ];
 
