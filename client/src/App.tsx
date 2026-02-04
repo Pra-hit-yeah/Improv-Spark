@@ -16,6 +16,7 @@ import RoadmapPage from "@/pages/Roadmap";
 import PRDHub from "@/pages/PRD";
 import ResearchPage from "@/pages/Research";
 import MarketResearchPage from "@/pages/MarketResearch";
+import ExperimentsPage from "@/pages/Experiments";
 import GTMPage from "@/pages/GTM";
 import Onboarding from "@/pages/Onboarding";
 import AnalyticsPage from "@/pages/Analytics";
@@ -30,6 +31,7 @@ function Router() {
         <Route path="/" component={LandingPage} />
         <Route path="/product" component={ProductCaseStudy} />
         <Route path="/research" component={ResearchPage} />
+        <Route path="/experiments" component={ExperimentsPage} />
         <Route path="/market" component={MarketResearchPage} />
         <Route path="/gtm" component={GTMPage} />
         <Route path="/prd" component={PRDHub} />

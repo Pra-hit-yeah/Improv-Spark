@@ -14,6 +14,7 @@ export function Navbar() {
   const isPMPage =
     location === "/product" ||
     location === "/research" ||
+    location === "/experiments" ||
     location === "/market" ||
     location === "/gtm" ||
     location === "/prd" ||

@@ -4,6 +4,7 @@ import { Brand } from "@/components/layout/Brand";
 const nav = [
   { href: "/product", label: "Product" },
   { href: "/research", label: "Research" },
+  { href: "/experiments", label: "Experiments" },
   { href: "/market", label: "Market" },
   { href: "/gtm", label: "GTM" },
   { href: "/prd", label: "PRD" },
@@ -61,6 +62,7 @@ export function PMLayout({ children }: { children: React.ReactNode }) {
           <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
             <Link href="/product" className="text-muted-foreground hover:text-foreground" data-testid="link-pm-footer-product">Product</Link>
             <Link href="/research" className="text-muted-foreground hover:text-foreground" data-testid="link-pm-footer-research">Research</Link>
+            <Link href="/experiments" className="text-muted-foreground hover:text-foreground" data-testid="link-pm-footer-experiments">Experiments</Link>
             <Link href="/market" className="text-muted-foreground hover:text-foreground" data-testid="link-pm-footer-market">Market</Link>
             <Link href="/gtm" className="text-muted-foreground hover:text-foreground" data-testid="link-pm-footer-gtm">GTM</Link>
             <Link href="/prd" className="text-muted-foreground hover:text-foreground" data-testid="link-pm-footer-prd">PRD</Link>
