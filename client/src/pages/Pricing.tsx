@@ -21,9 +21,9 @@ export default function Pricing() {
             <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 flex gap-4 items-start">
               <ShieldAlert className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
               <div className="space-y-1">
-                <p className="text-sm font-semibold text-amber-800">Honest Prototype Note</p>
+                <p className="text-sm font-semibold text-amber-800">Development Status</p>
                 <p className="text-sm text-amber-700/80 leading-relaxed">
-                  Quick-Wit is currently in active development. All "Pro" features are currently free for early testers while we refine the product. We appreciate your feedback!
+                  Quick-Wit is currently in active development. Pro features are not yet available, but feel free to explore the free features while we build.
                 </p>
               </div>
             </div>

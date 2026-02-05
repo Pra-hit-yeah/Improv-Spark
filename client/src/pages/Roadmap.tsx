@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, HelpCircle, Layers, Rocket, Zap, FlaskConical, Globe } from "lucide-react";
 import { PMPage } from "@/components/layout/PMPage";
 import { ScreenshotGallery } from "@/components/ui/screenshot-gallery";
+import { ShareButton } from "@/components/ui/share-button";
 
 // Helper to render confidence level badges
 function ConfidenceBadge({ level }: { level: "high" | "medium" | "low" }) {
@@ -107,6 +108,12 @@ export default function RoadmapPage() {
             Product case study
           </Button>
         </Link>
+        <ShareButton 
+            title="Quick-Wit Roadmap" 
+            text="Check out the product roadmap for Quick-Wit!" 
+            size="lg"
+            className="rounded-full"
+        />
       </div>
 
       <div className="space-y-12">

@@ -27,6 +27,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import { ShareButton } from "@/components/ui/share-button";
 import { useState } from "react";
 
 function HowToRead() {
@@ -197,6 +198,11 @@ export default function ProductCaseStudy() {
         >
           Read the brief
         </Button>
+        <ShareButton 
+          title="Quick-Wit Product Case Study" 
+          text="Check out this product case study for Quick-Wit!" 
+          className="rounded-full"
+        />
       </div>
 
       <div className="not-prose my-8">
