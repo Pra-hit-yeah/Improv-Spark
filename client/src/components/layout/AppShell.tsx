@@ -38,20 +38,12 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     location === "/prd" ||
     location === "/roadmap";
 
-  const user = useStore((state) => state.user);
-
   useEffect(() => {
-    // Ideally this checks auth state and redirects
+    // Redirect to login if not authenticated (unless tester bypass is on)
     if (isAppRoute && !isAuthenticated && !useStore.getState().testerBypassEnabled) {
       setLocation("/login");
-      return;
     }
-
-    // Only redirect to onboarding if on dashboard and not activated
-    if (location === "/app" && (isAuthenticated || useStore.getState().testerBypassEnabled) && user && !user.activated) {
-      setLocation("/app/onboarding");
-    }
-  }, [isAppRoute, isAuthenticated, location, setLocation, user]);
+  }, [isAppRoute, isAuthenticated, setLocation]);
 
   if (isAppRoute) {
     return (
