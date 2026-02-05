@@ -42,19 +42,24 @@ export async function registerRoutes(
   // Sign up
   app.post("/api/auth/signup", async (req, res) => {
     try {
-      const { username, password } = insertUserSchema.parse(req.body);
+      const { email, username, password } = insertUserSchema.parse(req.body);
       
       // Check if user already exists
-      const existingUser = await storage.getUserByUsername(username);
+      const existingUser = await storage.getUserByEmail(email);
       if (existingUser) {
-        return res.status(400).json({ error: "Username already exists" });
+        return res.status(400).json({ error: "Email already exists" });
+      }
+
+      const existingUsername = await storage.getUserByUsername(username);
+      if (existingUsername) {
+        return res.status(400).json({ error: "Username already taken" });
       }
 
       // Hash password
       const hashedPassword = await bcrypt.hash(password, 10);
       
       // Create user
-      const user = await storage.createUser({ username, password: hashedPassword });
+      const user = await storage.createUser({ email, username, password: hashedPassword });
       
       // Create initial user progress
       await storage.createUserProgress({ userId: user.id });
@@ -65,6 +70,7 @@ export async function registerRoutes(
       res.json({ 
         user: { 
           id: user.id, 
+          email: user.email,
           username: user.username, 
           activated: user.activated 
         } 
@@ -77,9 +83,13 @@ export async function registerRoutes(
   // Log in
   app.post("/api/auth/login", async (req, res) => {
     try {
-      const { username, password } = insertUserSchema.parse(req.body);
+      const { email, password } = req.body;
       
-      const user = await storage.getUserByUsername(username);
+      if (!email || !password) {
+        return res.status(400).json({ error: "Email and password are required" });
+      }
+      
+      const user = await storage.getUserByEmail(email);
       if (!user) {
         return res.status(401).json({ error: "Invalid credentials" });
       }
@@ -94,6 +104,7 @@ export async function registerRoutes(
       res.json({ 
         user: { 
           id: user.id, 
+          email: user.email,
           username: user.username, 
           activated: user.activated 
         } 
@@ -124,6 +135,7 @@ export async function registerRoutes(
       res.json({ 
         user: { 
           id: user.id, 
+          email: user.email,
           username: user.username, 
           activated: user.activated 
         } 
@@ -144,6 +156,7 @@ export async function registerRoutes(
       res.json({ 
         user: { 
           id: user.id, 
+          email: user.email,
           username: user.username, 
           activated: user.activated 
         } 
@@ -273,7 +286,7 @@ export async function registerRoutes(
         }
         
         await storage.updateUserProgress(req.session.userId!, {
-          totalXp: currentProgress.totalXp + sessionData.xpEarned,
+          totalXp: currentProgress.totalXp + (sessionData.xpEarned ?? 10),
           currentStreak: newStreak,
           longestStreak: Math.max(newStreak, currentProgress.longestStreak),
           lastSessionDate: now,

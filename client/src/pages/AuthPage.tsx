@@ -9,6 +9,7 @@ import { Loader2, AlertCircle } from "lucide-react";
 
 export default function AuthPage() {
   const [location] = useLocation();
+  const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -25,10 +26,10 @@ export default function AuthPage() {
     
     try {
       if (isLogin) {
-        await login(username, password);
+        await login(email, password);
         setLocation("/app");
       } else {
-        await signup(username, password);
+        await signup(email, username, password);
         setLocation("/app/onboarding");
       }
     } catch (err: any) {
@@ -46,7 +47,7 @@ export default function AuthPage() {
             {isLogin ? "Welcome back" : "Create an account"}
           </CardTitle>
           <CardDescription>
-            Enter your credentials to {isLogin ? "sign in" : "create your account"}
+            {isLogin ? "Sign in to continue your practice" : "Start your verbal fluency journey"}
           </CardDescription>
         </CardHeader>
         <CardContent className="grid gap-4">
@@ -59,17 +60,31 @@ export default function AuthPage() {
                 </div>
               )}
               <div className="grid gap-2">
-                <Label htmlFor="username">Username</Label>
+                <Label htmlFor="email">Email</Label>
                 <Input 
-                  id="username" 
-                  type="text" 
-                  placeholder="Choose a username" 
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  id="email" 
+                  type="email" 
+                  placeholder="you@example.com" 
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   required
-                  data-testid="input-username"
+                  data-testid="input-email"
                 />
               </div>
+              {!isLogin && (
+                <div className="grid gap-2">
+                  <Label htmlFor="username">Username</Label>
+                  <Input 
+                    id="username" 
+                    type="text" 
+                    placeholder="Choose a display name" 
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    required
+                    data-testid="input-username"
+                  />
+                </div>
+              )}
               <div className="grid gap-2">
                 <Label htmlFor="password">Password</Label>
                 <Input 
@@ -84,7 +99,7 @@ export default function AuthPage() {
                 />
               </div>
               <Button className="w-full" type="submit" disabled={loading} data-testid="button-auth-submit">
-                {loading && <Loader2 className="mr-2 h-4 h-4 animate-spin" />}
+                {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 {isLogin ? "Sign In" : "Create Account"}
               </Button>
             </div>

@@ -2,156 +2,25 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useStore } from "@/lib/store";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { 
-  Smile, 
-  Meh, 
-  Frown, 
   Zap, 
   TrendingUp, 
   BrainCircuit, 
   Activity, 
   MessageSquare,
-  Award
+  Award,
+  Flame,
+  Trophy
 } from "lucide-react";
-
-// --- Derived Data Components ---
-
-function ReflectionTrend() {
-  const { sessions } = useStore();
-  
-  // Get last 7 sessions, sorted by date desc, then reverse for timeline display
-  const recentSessions = [...sessions]
-    .sort((a, b) => new Date(b.completed_at).getTime() - new Date(a.completed_at).getTime())
-    .slice(0, 7)
-    .reverse();
-
-  if (recentSessions.length === 0) {
-    return (
-      <Card className="app-surface">
-        <CardHeader className="pb-2">
-          <CardTitle className="text-lg">Reflection Trend</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-sm text-muted-foreground">Complete a session to start tracking your self-perceived fluency.</p>
-        </CardContent>
-      </Card>
-    );
-  }
-
-  return (
-    <Card className="app-surface">
-      <CardHeader className="pb-2">
-        <CardTitle className="text-lg flex items-center gap-2">
-          <TrendingUp className="w-5 h-5 text-primary" />
-          Reflection Trend
-        </CardTitle>
-        <p className="text-xs text-muted-foreground">How fluent you felt in your last 7 sessions</p>
-      </CardHeader>
-      <CardContent>
-        <div className="flex justify-between items-center gap-2 pt-2">
-          {recentSessions.map((session, idx) => {
-            const answer = session.reflection_answer;
-            let icon = <div className="w-2 h-2 rounded-full bg-muted" />;
-            let color = "bg-muted";
-            
-            if (answer === 'yes') {
-              icon = <Smile className="w-5 h-5 text-emerald-600" />;
-              color = "bg-emerald-100";
-            } else if (answer === 'somewhat') {
-              icon = <Meh className="w-5 h-5 text-amber-500" />;
-              color = "bg-amber-100";
-            } else if (answer === 'no') {
-              icon = <Frown className="w-5 h-5 text-red-500" />;
-              color = "bg-red-100";
-            } else {
-              // Fallback for sessions without reflection
-              icon = <div className="w-2 h-2 rounded-full bg-slate-200" />;
-              color = "bg-slate-50";
-            }
-
-            return (
-              <div key={session.id} className="flex flex-col items-center gap-2 flex-1">
-                <div className={`w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center ${color} shadow-sm transition-transform hover:scale-110`}>
-                  {icon}
-                </div>
-                <span className="text-[10px] text-muted-foreground uppercase">{idx + 1}</span>
-              </div>
-            );
-          })}
-        </div>
-      </CardContent>
-    </Card>
-  );
-}
-
-function SignalsCard() {
-  const { sessions } = useStore();
-  
-  const recentSessions = [...sessions]
-    .sort((a, b) => new Date(b.completed_at).getTime() - new Date(a.completed_at).getTime())
-    .slice(0, 10);
-
-  // Flow: count sessions where flow_state is true
-  const flowCount = recentSessions.filter(s => s.flow_state).length;
-  
-  // Positivity: count 'yes' reflections
-  const positiveCount = recentSessions.filter(s => s.reflection_answer === 'yes').length;
-
-  // Consistency: dumb consecutive check logic (mocked for now as real logic needs date diffing)
-  const consistencyScore = Math.min(recentSessions.length, 5); // Just cap at 5 for visual
-
-  return (
-    <Card className="app-surface">
-      <CardHeader className="pb-2">
-        <CardTitle className="text-lg flex items-center gap-2">
-          <Award className="w-5 h-5 text-amber-500" />
-          Confidence Signals
-        </CardTitle>
-        <p className="text-xs text-muted-foreground">Qualitative signals from your last 10 sessions</p>
-      </CardHeader>
-      <CardContent className="grid gap-4">
-        <div className="flex items-center justify-between p-3 bg-white/50 border border-white/40 rounded-lg shadow-sm">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-blue-100 text-blue-600 rounded-full">
-              <Zap className="w-4 h-4" />
-            </div>
-            <div>
-              <p className="text-sm font-bold text-foreground">Flow State</p>
-              <p className="text-xs text-muted-foreground">Sessions without pausing</p>
-            </div>
-          </div>
-          <div className="text-xl font-bold text-blue-600">{flowCount}</div>
-        </div>
-
-        <div className="flex items-center justify-between p-3 bg-white/50 border border-white/40 rounded-lg shadow-sm">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-emerald-100 text-emerald-600 rounded-full">
-              <Smile className="w-4 h-4" />
-            </div>
-            <div>
-              <p className="text-sm font-bold text-foreground">Self-Belief</p>
-              <p className="text-xs text-muted-foreground">"Felt fluent" sessions</p>
-            </div>
-          </div>
-          <div className="text-xl font-bold text-emerald-600">{positiveCount}</div>
-        </div>
-      </CardContent>
-    </Card>
-  );
-}
+import { useEffect } from "react";
 
 function SkillExposureMap() {
   const { sessions } = useStore();
 
-  // Map difficulty to skills
-  // Beginner: Speed of Association
-  // Intermediate: Contextual Weaving
-  // Advanced: Narrative Flexibility
-  
   const skillCounts = {
     speed: 0,
     context: 0,
     narrative: 0,
-    calm: 0 // "Staying out of head" applies to all completed sessions
+    calm: 0
   };
 
   sessions.forEach(s => {
@@ -201,8 +70,73 @@ function SkillExposureMap() {
   );
 }
 
+function SessionHistory() {
+  const { sessions } = useStore();
+
+  if (sessions.length === 0) {
+    return (
+      <Card className="app-surface">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-lg flex items-center gap-2">
+            <TrendingUp className="w-5 h-5 text-primary" />
+            Recent Sessions
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-muted-foreground">Complete a session to start tracking your progress.</p>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  return (
+    <Card className="app-surface">
+      <CardHeader className="pb-2">
+        <CardTitle className="text-lg flex items-center gap-2">
+          <TrendingUp className="w-5 h-5 text-primary" />
+          Recent Sessions
+        </CardTitle>
+        <p className="text-xs text-muted-foreground">Your last {Math.min(sessions.length, 7)} practice sessions</p>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-3 pt-2">
+          {sessions.slice(0, 7).map((session) => {
+            const difficultyColors: Record<string, string> = {
+              beginner: "bg-green-100 text-green-700",
+              intermediate: "bg-blue-100 text-blue-700",
+              advanced: "bg-purple-100 text-purple-700",
+            };
+            return (
+              <div key={session.id} className="flex items-center justify-between p-2 rounded-lg bg-white/50 border border-border/30">
+                <div className="flex items-center gap-3">
+                  <span className={`px-2 py-1 rounded text-xs font-medium ${difficultyColors[session.difficulty] || "bg-gray-100"}`}>
+                    {session.difficulty}
+                  </span>
+                  <span className="text-sm text-muted-foreground">
+                    {new Date(session.completedAt).toLocaleDateString()}
+                  </span>
+                </div>
+                <span className="font-bold text-primary">+{session.xpEarned} XP</span>
+              </div>
+            );
+          })}
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
 export default function Progress() {
-  const { user } = useStore();
+  const { userProgress, loadUserData } = useStore();
+
+  useEffect(() => {
+    loadUserData();
+  }, [loadUserData]);
+
+  const totalXp = userProgress?.totalXp ?? 0;
+  const streak = userProgress?.currentStreak ?? 0;
+  const level = Math.floor(totalXp / 200) + 1;
+  const totalSessions = userProgress?.totalSessions ?? 0;
 
   const data = [
     { day: 'Mon', xp: 120 },
@@ -211,7 +145,7 @@ export default function Progress() {
     { day: 'Thu', xp: 300 },
     { day: 'Fri', xp: 250 },
     { day: 'Sat', xp: 180 },
-    { day: 'Sun', xp: user?.last_session_date ? 100 : 0 },
+    { day: 'Sun', xp: totalSessions > 0 ? 100 : 0 },
   ];
 
   return (
@@ -225,7 +159,10 @@ export default function Progress() {
         <Card className="app-callout border-primary/20">
           <CardContent className="pt-6">
             <div className="text-center">
-              <div className="text-4xl font-bold text-primary mb-1" data-testid="text-progress-total-xp">{user?.total_xp}</div>
+              <div className="p-3 bg-primary/10 rounded-full w-fit mx-auto mb-3">
+                <Trophy className="w-6 h-6 text-primary" />
+              </div>
+              <div className="text-4xl font-bold text-primary mb-1" data-testid="text-progress-total-xp">{totalXp}</div>
               <p className="text-sm text-muted-foreground">Total XP Earned</p>
             </div>
           </CardContent>
@@ -233,7 +170,10 @@ export default function Progress() {
         <Card className="app-surface">
           <CardContent className="pt-6">
             <div className="text-center">
-              <div className="text-4xl font-bold text-orange-500 mb-1" data-testid="text-progress-streak">{user?.streak}</div>
+              <div className="p-3 bg-orange-100 rounded-full w-fit mx-auto mb-3">
+                <Flame className="w-6 h-6 text-orange-500" />
+              </div>
+              <div className="text-4xl font-bold text-orange-500 mb-1" data-testid="text-progress-streak">{streak}</div>
               <p className="text-sm text-muted-foreground">Current Day Streak</p>
             </div>
           </CardContent>
@@ -241,17 +181,18 @@ export default function Progress() {
         <Card className="app-surface">
           <CardContent className="pt-6">
             <div className="text-center">
-              <div className="text-4xl font-bold text-blue-600 mb-1" data-testid="text-progress-level">{user?.level}</div>
+              <div className="p-3 bg-blue-100 rounded-full w-fit mx-auto mb-3">
+                <Award className="w-6 h-6 text-blue-600" />
+              </div>
+              <div className="text-4xl font-bold text-blue-600 mb-1" data-testid="text-progress-level">{level}</div>
               <p className="text-sm text-muted-foreground">Current Level</p>
             </div>
           </CardContent>
         </Card>
       </div>
 
-      {/* New Qualitative Section */}
       <div className="grid md:grid-cols-2 gap-6">
-        <ReflectionTrend />
-        <SignalsCard />
+        <SessionHistory />
         <SkillExposureMap />
       </div>
 

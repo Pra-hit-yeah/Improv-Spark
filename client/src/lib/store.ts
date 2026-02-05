@@ -21,8 +21,8 @@ interface AppState {
 
   // Actions
   setTesterBypassEnabled: (enabled: boolean) => void;
-  signup: (username: string, password: string) => Promise<void>;
-  login: (username: string, password: string) => Promise<void>;
+  signup: (email: string, username: string, password: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   checkAuth: () => Promise<void>;
   setOnboarding: (values: { goal: string | null; daily_time: string | null }) => Promise<void>;
@@ -48,16 +48,16 @@ export const useStore = create<AppState>()(
 
       setTesterBypassEnabled: (enabled) => set({ testerBypassEnabled: enabled }),
 
-      signup: async (username, password) => {
+      signup: async (email, username, password) => {
         try {
           set({ isLoading: true });
-          const { user } = await authApi.signup(username, password);
+          const { user } = await authApi.signup(email, username, password);
           set({ 
             user: { ...user, goal: null, daily_time: null }, 
             isAuthenticated: true,
             isLoading: false
           });
-          logEvent({ name: "user_signed_up", userId: user.id, properties: { username } });
+          logEvent({ name: "user_signed_up", userId: user.id, properties: { email } });
           await get().loadUserData();
         } catch (error: any) {
           set({ isLoading: false });
@@ -65,16 +65,16 @@ export const useStore = create<AppState>()(
         }
       },
 
-      login: async (username, password) => {
+      login: async (email, password) => {
         try {
           set({ isLoading: true });
-          const { user } = await authApi.login(username, password);
+          const { user } = await authApi.login(email, password);
           set({ 
             user: { ...user, goal: null, daily_time: null }, 
             isAuthenticated: true,
             isLoading: false
           });
-          logEvent({ name: "user_signed_up", userId: user.id, properties: { username } });
+          logEvent({ name: "user_signed_up", userId: user.id, properties: { email } });
           await get().loadUserData();
         } catch (error: any) {
           set({ isLoading: false });
@@ -142,7 +142,7 @@ export const useStore = create<AppState>()(
           });
 
           // Create session
-          const session = await sessionsApi.create({
+          await sessionsApi.create({
             trackId,
             difficulty,
             durationSeconds: duration,
@@ -183,7 +183,7 @@ export const useStore = create<AppState>()(
       },
     }),
     {
-      name: 'quick-wit-storage-v3',
+      name: 'quick-wit-storage-v4',
       partialize: (state) => ({
         testerBypassEnabled: state.testerBypassEnabled,
         user: state.user,

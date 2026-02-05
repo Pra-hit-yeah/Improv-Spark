@@ -27,16 +27,16 @@ async function fetchApi<T>(url: string, options?: RequestInit): Promise<T> {
 
 // Auth API
 export const authApi = {
-  signup: (username: string, password: string) =>
+  signup: (email: string, username: string, password: string) =>
     fetchApi<{ user: Omit<User, "password"> }>("/api/auth/signup", {
       method: "POST",
-      body: JSON.stringify({ username, password }),
+      body: JSON.stringify({ email, username, password }),
     }),
 
-  login: (username: string, password: string) =>
+  login: (email: string, password: string) =>
     fetchApi<{ user: Omit<User, "password"> }>("/api/auth/login", {
       method: "POST",
-      body: JSON.stringify({ username, password }),
+      body: JSON.stringify({ email, password }),
     }),
 
   logout: () =>
