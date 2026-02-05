@@ -7,7 +7,12 @@ import { PMLayout } from "@/components/layout/PMLayout";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const [location, setLocation] = useLocation();
-  const { isAuthenticated } = useStore();
+  const { isAuthenticated, checkAuth } = useStore();
+
+  // Check auth on mount
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
 
   // Route theme for global typography + tokens
   useEffect(() => {
