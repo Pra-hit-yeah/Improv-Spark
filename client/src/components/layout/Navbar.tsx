@@ -28,9 +28,9 @@ export function Navbar() {
 
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-8">
-          <Link href="/#how-it-works" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors" data-testid="link-nav-how-it-works">How it works</Link>
+          <Link href="/how-it-works" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors" data-testid="link-nav-how-it-works">How it works</Link>
           <Link href="/tracks" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors" data-testid="link-nav-tracks">Tracks</Link>
-          <Link href="/#pricing" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors" data-testid="link-nav-pricing">Pricing</Link>
+          <Link href="/pricing" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors" data-testid="link-nav-pricing">Pricing</Link>
           <Link href="/product" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors" data-testid="link-nav-product-case-study">Product Case Study</Link>
           
           <div className="flex items-center gap-4 ml-4">
@@ -69,8 +69,9 @@ export function Navbar() {
       {/* Mobile Nav */}
       {isOpen && (
         <div className="md:hidden border-t border-border bg-background p-4 flex flex-col gap-4 animate-in slide-in-from-top-5">
-          <Link href="/#how-it-works" className="text-sm font-medium p-2" onClick={() => setIsOpen(false)} data-testid="link-mobile-how-it-works">How it works</Link>
+          <Link href="/how-it-works" className="text-sm font-medium p-2" onClick={() => setIsOpen(false)} data-testid="link-mobile-how-it-works">How it works</Link>
           <Link href="/tracks" className="text-sm font-medium p-2" onClick={() => setIsOpen(false)} data-testid="link-mobile-tracks">Tracks</Link>
+          <Link href="/pricing" className="text-sm font-medium p-2" onClick={() => setIsOpen(false)} data-testid="link-mobile-pricing">Pricing</Link>
           <Link href="/product" className="text-sm font-medium p-2" onClick={() => setIsOpen(false)} data-testid="link-mobile-product-case-study">Product Case Study</Link>
           <div className="h-px bg-border my-2" />
           <Link href="/login" asChild>

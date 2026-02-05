@@ -5,6 +5,9 @@ import { Toaster } from "@/components/ui/toaster";
 import { AppShell } from "@/components/layout/AppShell";
 
 import LandingPage from "@/pages/LandingPage";
+import HowItWorks from "@/pages/HowItWorks";
+import Pricing from "@/pages/Pricing";
+import MarketingTracks from "@/pages/MarketingTracks";
 import AuthPage from "@/pages/AuthPage";
 import Dashboard from "@/pages/Dashboard";
 import Tracks from "@/pages/Tracks";
@@ -29,6 +32,9 @@ function Router() {
       <Switch>
         {/* Public */}
         <Route path="/" component={LandingPage} />
+        <Route path="/how-it-works" component={HowItWorks} />
+        <Route path="/pricing" component={Pricing} />
+        <Route path="/tracks" component={MarketingTracks} />
         <Route path="/product" component={ProductCaseStudy} />
         <Route path="/research" component={ResearchPage} />
         <Route path="/experiments" component={ExperimentsPage} />
