@@ -11,7 +11,7 @@ export function Brand({
     return (
       <Link href={href}>
         <span className="inline-flex items-center gap-2 cursor-pointer" data-testid="link-brand-pm">
-          <img src="/logo.png" alt="Quick-Wit" className="h-20 w-auto object-contain" />
+          <img src="/logo.png" alt="Quick-Wit" className="h-40 w-auto object-contain" />
         </span>
       </Link>
     );
@@ -20,7 +20,7 @@ export function Brand({
   return (
     <Link href={href}>
       <span className="inline-flex items-center gap-2 cursor-pointer" data-testid="link-brand-app">
-        <img src="/logo.png" alt="Quick-Wit" className="h-24 w-auto object-contain" />
+        <img src="/logo.png" alt="Quick-Wit" className="h-48 w-auto object-contain" />
       </span>
     </Link>
   );
