@@ -47,8 +47,8 @@ export default function Onboarding() {
     setLoading(true);
     try {
       await setOnboarding({ goal, daily_time: time });
-      // Small delay to let state propagate before navigation
-      setTimeout(() => setLocation("/app"), 100);
+      // Use window.location for more reliable navigation on mobile
+      window.location.href = "/app";
     } catch (error) {
       console.error("Onboarding error:", error);
       setLoading(false);
@@ -59,8 +59,8 @@ export default function Onboarding() {
     setLoading(true);
     try {
       await setOnboarding({ goal: null, daily_time: null });
-      // Small delay to let state propagate before navigation
-      setTimeout(() => setLocation("/app"), 100);
+      // Use window.location for more reliable navigation on mobile
+      window.location.href = "/app";
     } catch (error) {
       console.error("Skip error:", error);
       setLoading(false);
