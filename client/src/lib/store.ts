@@ -186,7 +186,7 @@ export const useStore = create<AppState>()(
       },
     }),
     {
-      name: 'quick-wit-storage',
+      name: 'quick-wit-storage-v2',
     }
   )
 );

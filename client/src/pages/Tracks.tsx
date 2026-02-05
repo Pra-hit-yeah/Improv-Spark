@@ -111,12 +111,15 @@ const TrackCard = ({ track, isRecommended }: { track: Track; isRecommended?: boo
                      <BrainCircuit className="w-4 h-4 text-blue-500" /> Skills Trained
                    </div>
                    <ul className="space-y-2">
-                     {track.skills.map(skill => (
+                     {(track.skills || []).map(skill => (
                        <li key={skill} className="text-sm text-muted-foreground flex items-center gap-2">
                          <div className="w-1.5 h-1.5 rounded-full bg-blue-400" />
                          {skill}
                        </li>
                      ))}
+                     {(!track.skills || track.skills.length === 0) && (
+                       <li className="text-sm text-muted-foreground italic">Skills loading...</li>
+                     )}
                    </ul>
                  </div>
 
