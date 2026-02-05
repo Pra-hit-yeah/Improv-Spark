@@ -576,7 +576,28 @@ export default function PRDHub() {
               </div>
               
               <ScreenshotGallery 
-                images={[]} 
+                images={[
+                  { 
+                    src: "/prd/dashboard.png", 
+                    alt: "Dashboard showing daily streak and CTA",
+                    caption: "Dashboard: Clear entry point for today's session."
+                  },
+                  { 
+                    src: "/prd/difficulty.png", 
+                    alt: "Difficulty selection screen with Beginner, Intermediate, Advanced options",
+                    caption: "Selection: Explicit choice of challenge level."
+                  },
+                  { 
+                    src: "/prd/session.png", 
+                    alt: "Active drill interface with timer and prompt",
+                    caption: "Active Drill: Timed prompts for spoken practice."
+                  },
+                  { 
+                    src: "/prd/completion.png", 
+                    alt: "Session complete screen showing stats",
+                    caption: "Completion: Instant feedback and streak updates."
+                  }
+                ]} 
                 testId="gallery-prd-mockups"
               />
             </CardContent>
