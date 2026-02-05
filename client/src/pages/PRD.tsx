@@ -183,7 +183,7 @@ export default function PRDHub() {
               <div className="grid gap-5" data-testid="grid-prd-brief">
                 <MetaRow
                   label="Owner"
-                  value="PM (me)"
+                  value="Prahitya"
                   testId="meta-prd-owner"
                 />
                 <MetaRow
@@ -193,8 +193,13 @@ export default function PRDHub() {
                 />
                 <MetaRow
                   label="Status"
-                  value="Ready for implementation"
+                  value="Prototype"
                   testId="meta-prd-status"
+                />
+                <MetaRow
+                  label="Last Updated"
+                  value={new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                  testId="meta-prd-updated"
                 />
                 <MetaRow
                   label="Time estimate"

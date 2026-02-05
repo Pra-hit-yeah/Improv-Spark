@@ -47,6 +47,12 @@ export default function Settings() {
             <Button variant="destructive" onClick={handleLogout}>Log Out</Button>
          </CardContent>
       </Card>
+
+      <div className="text-center pt-8 pb-4">
+        <p className="text-xs text-muted-foreground/60">
+          Quick-Wit is a prototype built by Prahitya.
+        </p>
+      </div>
     </div>
   );
 }

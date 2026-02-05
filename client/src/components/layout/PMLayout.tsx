@@ -106,6 +106,9 @@ export function PMLayout({ children }: { children: React.ReactNode }) {
             <Link href="/app" className="text-muted-foreground hover:text-foreground" data-testid="link-pm-footer-app">Back to App</Link>
           </div>
         </div>
+        <div className="mx-auto max-w-[1000px] px-5 sm:px-6 mt-4 pt-4 border-t border-border/50 text-xs text-muted-foreground text-center sm:text-left">
+          Built and designed by Prahitya
+        </div>
       </footer>
     </div>
   );

@@ -210,6 +210,11 @@ export default function ProductCaseStudy() {
             <CardContent className="pt-6" data-testid="card-product-meta-content">
               <div className="grid gap-5" data-testid="grid-product-meta">
                 <MetaRow
+                  label="Ownership"
+                  value="Conceived, designed, and built by Prahitya"
+                  testId="meta-product-owner"
+                />
+                <MetaRow
                   label="Role"
                   value="Founder / PM / Engineer"
                   testId="meta-product-role"
