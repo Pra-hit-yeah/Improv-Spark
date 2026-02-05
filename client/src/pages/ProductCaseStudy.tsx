@@ -474,7 +474,28 @@ export default function ProductCaseStudy() {
           <div className="grid md:grid-cols-2 gap-6 pt-4" data-testid="grid-ui-refs">
             <div className="md:col-span-2">
                <ScreenshotGallery 
-                 images={[]} 
+                 images={[
+                   { 
+                     src: "/case-study/dashboard.png", 
+                     alt: "Dashboard interface showing daily streak and difficulty selection",
+                     caption: "The Dashboard: Optimized for quick entry into daily drills."
+                   },
+                   { 
+                     src: "/case-study/session.png", 
+                     alt: "Active drill session with timer and prompt",
+                     caption: "Active Drill: Distraction-free interface with clear time pressure."
+                   },
+                   { 
+                     src: "/case-study/tracks.png", 
+                     alt: "Learning tracks selection screen",
+                     caption: "Tracks: Structured curriculum to build specific communication skills."
+                   },
+                   { 
+                     src: "/case-study/progress.png", 
+                     alt: "Progress analytics and stats",
+                     caption: "Progress: Qualitative and quantitative signals of improvement."
+                   }
+                 ]} 
                  testId="gallery-product-mockups"
                />
             </div>
