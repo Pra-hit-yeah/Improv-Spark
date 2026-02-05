@@ -96,15 +96,15 @@ export default function Dashboard() {
 
       <div className="grid md:grid-cols-3 gap-6">
         {/* Main Action Card */}
-        <Card className="md:col-span-2 bg-linear-to-br from-primary via-indigo-600 to-secondary text-white border-0 shadow-xl overflow-hidden relative app-glow">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-white/12 rounded-full blur-3xl -mr-16 -mt-16" />
+        <Card className="md:col-span-2 bg-orange-500 text-white border-0 shadow-xl overflow-hidden relative app-glow">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -mr-16 -mt-16" />
           <div className="absolute -bottom-24 -left-24 w-72 h-72 bg-white/10 rounded-full blur-3xl" />
           
           <CardHeader>
             <div className="flex justify-between items-start">
               <div>
                 <CardTitle className="text-2xl">Today's Session</CardTitle>
-                <CardDescription className="text-primary-foreground/80">
+                <CardDescription className="text-white/80">
                   {recommendationReason}
                 </CardDescription>
               </div>
@@ -127,7 +127,7 @@ export default function Dashboard() {
                   asChild
                   size="lg"
                   variant="secondary"
-                  className="h-12 px-8 font-bold shadow-lg"
+                  className="h-12 px-8 font-bold shadow-lg bg-white text-orange-600 hover:bg-white/90"
                   data-testid="button-dashboard-primary-cta"
                 >
                   <a
@@ -187,7 +187,7 @@ export default function Dashboard() {
       </div>
 
       <h2 className="text-xl font-bold mt-12 mb-6 flex items-center gap-2">
-        <Zap className="w-5 h-5 text-primary" />
+        <Zap className="w-5 h-5 text-orange-500" />
         Your Tracks
       </h2>
       <div className="grid md:grid-cols-3 gap-6">
@@ -195,13 +195,13 @@ export default function Dashboard() {
             <Link key={track.id} href="/app/tracks" className="block h-full group" data-testid={`card-track-${track.id}`}>
               <Card className={`h-full transition-all duration-300 border-2 ${track.locked 
                 ? "opacity-60 grayscale bg-muted/30 border-transparent" 
-                : "bg-white border-transparent hover:border-primary/20 shadow-sm hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1"
+                : "bg-white border-transparent hover:border-orange-500/20 shadow-sm hover:shadow-xl hover:shadow-orange-500/5 hover:-translate-y-1"
               }`}>
                 <CardHeader>
                   <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-3 shadow-sm ${
                     track.locked 
                       ? "bg-muted text-muted-foreground" 
-                      : "bg-linear-to-br from-primary/10 to-indigo-50 text-primary group-hover:scale-110 transition-transform duration-300"
+                      : "bg-orange-50 text-orange-600 group-hover:scale-110 transition-transform duration-300"
                   }`}>
                     <Zap className="w-6 h-6" />
                   </div>
@@ -213,9 +213,9 @@ export default function Dashboard() {
                   <div className="space-y-2">
                     <div className="flex justify-between text-xs font-medium">
                       <span className="text-muted-foreground">Progress</span>
-                      <span className="text-primary">{Math.round((track.completed_modules / track.total_modules) * 100)}%</span>
+                      <span className="text-orange-600">{Math.round((track.completed_modules / track.total_modules) * 100)}%</span>
                     </div>
-                    <Progress value={(track.completed_modules / track.total_modules) * 100} className="h-2" />
+                    <Progress value={(track.completed_modules / track.total_modules) * 100} className="h-2 bg-orange-100 [&>div]:bg-orange-500" />
                   </div>
                 </CardContent>
               </Card>
