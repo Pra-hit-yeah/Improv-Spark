@@ -5,13 +5,15 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Link, useLocation } from "wouter";
 import { useStore } from "@/lib/store";
 import { useState } from "react";
-import { Loader2, Mail } from "lucide-react";
+import { Loader2, AlertCircle } from "lucide-react";
 
 export default function AuthPage() {
   const [location] = useLocation();
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const { login } = useStore();
+  const [error, setError] = useState<string | null>(null);
+  const { signup, login } = useStore();
   const [, setLocation] = useLocation();
 
   const isLogin = location === "/login";
@@ -19,9 +21,21 @@ export default function AuthPage() {
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    await login(email);
-    setLoading(false);
-    setLocation("/app/onboarding");
+    setError(null);
+    
+    try {
+      if (isLogin) {
+        await login(username, password);
+        setLocation("/app");
+      } else {
+        await signup(username, password);
+        setLocation("/app/onboarding");
+      }
+    } catch (err: any) {
+      setError(err.message || "Authentication failed. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -32,40 +46,46 @@ export default function AuthPage() {
             {isLogin ? "Welcome back" : "Create an account"}
           </CardTitle>
           <CardDescription>
-            Enter your email below to {isLogin ? "sign in" : "create your account"}
+            Enter your credentials to {isLogin ? "sign in" : "create your account"}
           </CardDescription>
         </CardHeader>
         <CardContent className="grid gap-4">
-          <div className="grid grid-cols-1 gap-2">
-            <Button variant="outline" className="w-full bg-white hover:bg-gray-50 text-black border-gray-200">
-              <img src="https://www.svgrepo.com/show/475656/google-color.svg" className="w-5 h-5 mr-2" alt="Google" />
-              Google
-            </Button>
-          </div>
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t" />
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-card px-2 text-muted-foreground">Or continue with</span>
-            </div>
-          </div>
           <form onSubmit={handleAuth}>
             <div className="grid gap-4">
+              {error && (
+                <div className="p-3 rounded-lg bg-destructive/10 border border-destructive/20 flex items-center gap-2 text-sm text-destructive">
+                  <AlertCircle className="w-4 h-4" />
+                  {error}
+                </div>
+              )}
               <div className="grid gap-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="username">Username</Label>
                 <Input 
-                  id="email" 
-                  type="email" 
-                  placeholder="m@example.com" 
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required 
+                  id="username" 
+                  type="text" 
+                  placeholder="Choose a username" 
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  required
+                  data-testid="input-username"
                 />
               </div>
-              <Button className="w-full" type="submit" disabled={loading}>
-                {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                {isLogin ? "Sign In with Email" : "Create Account"}
+              <div className="grid gap-2">
+                <Label htmlFor="password">Password</Label>
+                <Input 
+                  id="password" 
+                  type="password" 
+                  placeholder="Enter password" 
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  minLength={6}
+                  data-testid="input-password"
+                />
+              </div>
+              <Button className="w-full" type="submit" disabled={loading} data-testid="button-auth-submit">
+                {loading && <Loader2 className="mr-2 h-4 h-4 animate-spin" />}
+                {isLogin ? "Sign In" : "Create Account"}
               </Button>
             </div>
           </form>

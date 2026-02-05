@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { useStore } from "@/lib/store";
 import { useMemo, useState } from "react";
 import { useLocation } from "wouter";
+import { Loader2 } from "lucide-react";
 
 const goals = [
   { key: "confidence", label: "Confidence" },
@@ -22,6 +23,7 @@ export default function Onboarding() {
   const { user, setOnboarding } = useStore();
   const [, setLocation] = useLocation();
   const [step, setStep] = useState<1 | 2>(1);
+  const [loading, setLoading] = useState(false);
 
   const initialGoal = user?.goal ?? null;
   const initialTime = user?.daily_time ?? null;
@@ -40,6 +42,18 @@ export default function Onboarding() {
     if (step === 1) return "We will tailor your dashboard and track suggestions.";
     return "Pick a default reminder window. You can change this later.";
   }, [step]);
+
+  const handleFinish = async () => {
+    setLoading(true);
+    try {
+      await setOnboarding({ goal, daily_time: time });
+      setLocation("/app");
+    } catch (error) {
+      console.error("Onboarding error:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="max-w-2xl mx-auto">
@@ -91,10 +105,7 @@ export default function Onboarding() {
             <Button
               variant="ghost"
               data-testid="button-onboarding-skip"
-              onClick={() => {
-                // Skip option for tester mode
-                setLocation("/app");
-              }}
+              onClick={() => setLocation("/app")}
             >
               Skip for now
             </Button>
@@ -107,17 +118,16 @@ export default function Onboarding() {
               )}
               <Button
                 data-testid="button-onboarding-continue"
-                disabled={!canContinue}
+                disabled={!canContinue || loading}
                 onClick={() => {
                   if (step === 1) {
                     setStep(2);
                     return;
                   }
-
-                  setOnboarding({ goal, daily_time: time });
-                  setLocation("/app");
+                  handleFinish();
                 }}
               >
+                {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 {step === 1 ? "Continue" : "Finish"}
               </Button>
             </div>

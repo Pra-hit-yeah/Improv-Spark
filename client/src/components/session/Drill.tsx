@@ -130,11 +130,17 @@ export function Drill({ difficulty }: { difficulty: Difficulty }) {
     setIsPaused(!isPaused);
   };
 
-  const handleFinish = () => {
-    completeSession(difficulty, 60, !hasPaused, reflectionAnswer || undefined);
-    setTimeout(() => {
-      setLocation("/app");
-    }, 500);
+  const handleFinish = async () => {
+    const config = CONFIG[difficulty];
+    const totalDuration = config.promptCount * config.duration;
+    try {
+      await completeSession(difficulty, totalDuration);
+      setTimeout(() => {
+        setLocation("/app");
+      }, 500);
+    } catch (error) {
+      console.error("Error completing session:", error);
+    }
   };
 
   // 6. Pre-Drill Instruction Modal
