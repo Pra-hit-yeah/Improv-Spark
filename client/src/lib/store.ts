@@ -34,6 +34,9 @@ export type Track = {
   id: string;
   title: string;
   description: string;
+  payoff: string; // Real-world benefit
+  skills: string[]; // Specific skills trained
+  unlockCriteria: string; // Friendly unlock text
   level_req: number;
   locked: boolean;
   total_modules: number;
@@ -73,6 +76,9 @@ const INITIAL_TRACKS: Track[] = [
     id: 't1',
     title: 'Verbal Reflexes',
     description: 'Master the art of instant association and eliminate hesitation.',
+    payoff: 'Never get stuck searching for a word in casual conversation or meetings.',
+    skills: ['Speed of Association', 'Staying Out of Your Head', 'Vocabulary Access'],
+    unlockCriteria: 'Available immediately',
     level_req: 1,
     locked: false,
     total_modules: 10,
@@ -82,6 +88,9 @@ const INITIAL_TRACKS: Track[] = [
     id: 't2',
     title: 'Persuasive Pitching',
     description: 'Learn to structure compelling arguments on the fly.',
+    payoff: 'Deliver clear, convincing updates in stand-ups and stakeholder reviews.',
+    skills: ['Structure Under Pressure', 'Audience Awareness', 'Clear Articulation'],
+    unlockCriteria: 'Recommended after 5 Verbal Reflex sessions',
     level_req: 5,
     locked: false,
     total_modules: 8,
@@ -91,6 +100,9 @@ const INITIAL_TRACKS: Track[] = [
     id: 't3',
     title: 'Narrative Weaving',
     description: 'Connect disparate concepts into cohesive stories.',
+    payoff: 'Turn dry data points into engaging stories during presentations.',
+    skills: ['Narrative Flexibility', 'Contextual Weaving', 'Metaphor Usage'],
+    unlockCriteria: 'Unlocks after 3 Pitching sessions to build foundational flow',
     level_req: 10,
     locked: true,
     total_modules: 12,
