@@ -3,9 +3,39 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Progress } from "@/components/ui/progress";
 import { useStore } from "@/lib/store";
 import { Link } from "wouter";
-import { Play, Zap, Trophy, Flame } from "lucide-react";
+import { Play, Zap, Trophy, Flame, History, ArrowUpRight } from "lucide-react";
 import { getDashboardCtaText, getDashboardCtaVariant } from "@/lib/experiments";
 import { logEvent } from "@/lib/analytics";
+
+function LastSessionRecap({ user }: { user: any }) {
+  if (!user?.last_session_completed || !user?.last_session_difficulty) return null;
+
+  const difficultyLabel = {
+    beginner: "Verbal Reflexes",
+    intermediate: "Elevator Pitch",
+    advanced: "Story Weaving"
+  }[user.last_session_difficulty as string] || "Practice";
+
+  return (
+    <Card className="app-surface mb-6 border-l-4 border-l-primary/40">
+      <CardContent className="p-4 flex items-center justify-between gap-4">
+        <div className="flex items-center gap-3">
+           <div className="p-2 bg-muted rounded-full">
+             <History className="w-4 h-4 text-muted-foreground" />
+           </div>
+           <div>
+             <p className="text-sm font-medium text-foreground">Last Session: {difficultyLabel}</p>
+             <p className="text-xs text-muted-foreground">You're building verbal flexibility.</p>
+           </div>
+        </div>
+        <div className="text-right hidden sm:block">
+           <p className="text-xs font-bold text-primary">Completed</p>
+           <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Keep it up</p>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
 
 export default function Dashboard() {
   const { user, tracks } = useStore();
@@ -13,6 +43,23 @@ export default function Dashboard() {
   const currentTrack = tracks.find(t => !t.locked) || tracks[0];
   const variant = getDashboardCtaVariant(user?.id ?? null);
   const ctaText = getDashboardCtaText(variant);
+
+  // Recommendation Logic
+  let recommendedDifficulty = "beginner";
+  let recommendationReason = "Start here to build your base.";
+
+  if (user?.last_session_completed) {
+    if (user.last_session_difficulty === "beginner") {
+      recommendedDifficulty = "intermediate";
+      recommendationReason = "You crushed Beginner. Level up?";
+    } else if (user.last_session_difficulty === "intermediate") {
+      recommendedDifficulty = "advanced";
+      recommendationReason = "Ready for the big leagues.";
+    } else {
+      recommendedDifficulty = "advanced";
+      recommendationReason = "Keep mastering the advanced flow.";
+    }
+  }
 
   const headline = user?.goal === 'confidence'
     ? 'Build calm confidence'
@@ -45,6 +92,8 @@ export default function Dashboard() {
         </div>
       </div>
 
+      <LastSessionRecap user={user} />
+
       <div className="grid md:grid-cols-3 gap-6">
         {/* Main Action Card */}
         <Card className="md:col-span-2 bg-linear-to-br from-primary via-indigo-600 to-secondary text-white border-0 shadow-xl overflow-hidden relative app-glow">
@@ -52,10 +101,20 @@ export default function Dashboard() {
           <div className="absolute -bottom-24 -left-24 w-72 h-72 bg-white/10 rounded-full blur-3xl" />
           
           <CardHeader>
-            <CardTitle className="text-2xl">Today's Session</CardTitle>
-            <CardDescription className="text-primary-foreground/80">
-              Continue your {currentTrack.title} track.
-            </CardDescription>
+            <div className="flex justify-between items-start">
+              <div>
+                <CardTitle className="text-2xl">Today's Session</CardTitle>
+                <CardDescription className="text-primary-foreground/80">
+                  {recommendationReason}
+                </CardDescription>
+              </div>
+              {user?.last_session_completed && (
+                <div className="bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1">
+                  <ArrowUpRight className="w-3 h-3" />
+                  Rec: {recommendedDifficulty.charAt(0).toUpperCase() + recommendedDifficulty.slice(1)}
+                </div>
+              )}
+            </div>
           </CardHeader>
           <CardContent>
             <div className="flex items-end justify-between">

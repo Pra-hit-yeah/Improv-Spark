@@ -12,6 +12,8 @@ export type User = {
   total_xp: number;
   level: number;
   last_session_date: string | null;
+  last_session_difficulty?: 'beginner' | 'intermediate' | 'advanced' | null;
+  last_session_completed?: boolean;
   goal?: string | null;
   daily_time?: string | null;
   activated?: boolean;
@@ -24,6 +26,8 @@ export type Session = {
   completed_at: string;
   duration_seconds: number;
   xp_earned: number;
+  flow_state?: boolean;
+  reflection_answer?: 'yes' | 'somewhat' | 'no';
 };
 
 export type Track = {
@@ -50,7 +54,7 @@ interface AppState {
   login: (email: string) => Promise<void>;
   logout: () => void;
   setOnboarding: (values: { goal: string | null; daily_time: string | null }) => void;
-  completeSession: (difficulty: 'beginner' | 'intermediate' | 'advanced', duration: number) => void;
+  completeSession: (difficulty: 'beginner' | 'intermediate' | 'advanced', duration: number, flowState?: boolean, reflectionAnswer?: 'yes' | 'somewhat' | 'no') => void;
 }
 
 const MOCK_USER: User = {
@@ -135,11 +139,11 @@ export const useStore = create<AppState>()(
         });
       },
 
-      completeSession: (difficulty, duration) => {
+      completeSession: (difficulty, duration, flowState = true, reflectionAnswer) => {
         const xpMap = { beginner: 10, intermediate: 25, advanced: 50 };
         const earnedXp = xpMap[difficulty];
 
-        logEvent({ name: "session_completed", userId: get().user?.id ?? null, properties: { difficulty, duration_seconds: duration, xp_earned: earnedXp } });
+        logEvent({ name: "session_completed", userId: get().user?.id ?? null, properties: { difficulty, duration_seconds: duration, xp_earned: earnedXp, flow_state: flowState } });
         logEvent({ name: "streak_incremented", userId: get().user?.id ?? null, properties: { difficulty } });
 
         set((state) => {
@@ -152,6 +156,8 @@ export const useStore = create<AppState>()(
             completed_at: new Date().toISOString(),
             duration_seconds: duration,
             xp_earned: earnedXp,
+            flow_state: flowState,
+            reflection_answer: reflectionAnswer,
           };
 
           return {
@@ -160,6 +166,8 @@ export const useStore = create<AppState>()(
               ...state.user,
               total_xp: state.user.total_xp + earnedXp,
               streak: state.user.streak + 1, // Simplified streak logic
+              last_session_difficulty: difficulty,
+              last_session_completed: true,
             }
           };
         });
