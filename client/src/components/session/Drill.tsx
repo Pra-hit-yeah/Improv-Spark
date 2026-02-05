@@ -141,36 +141,45 @@ export function Drill({ difficulty }: { difficulty: Difficulty }) {
   if (showPreStart) {
     return (
       <Dialog open={true}>
-        <DialogContent className="sm:max-w-md" data-testid="modal-pre-drill">
+        <DialogContent className="sm:max-w-md bg-white border-2 border-primary/10 shadow-2xl" data-testid="modal-pre-drill">
            <DialogHeader>
-             <DialogTitle className="text-2xl font-bold flex items-center gap-2">
-               <span className="text-3xl">{difficulty === 'beginner' ? '🌱' : difficulty === 'intermediate' ? '💼' : '🎭'}</span>
+             <DialogTitle className="text-2xl font-bold flex items-center gap-2 text-primary">
+               <span className="text-3xl filter drop-shadow-sm">{difficulty === 'beginner' ? '🌱' : difficulty === 'intermediate' ? '💼' : '🎭'}</span>
                {difficulty.charAt(0).toUpperCase() + difficulty.slice(1)} Session
              </DialogTitle>
-             <DialogDescription className="text-base pt-2">
+             <DialogDescription className="text-base pt-2 text-foreground/80">
                {CONFIG[difficulty].instruction}
              </DialogDescription>
            </DialogHeader>
            
            <div className="space-y-4 py-4">
-             <div className="bg-muted/30 p-4 rounded-lg space-y-3">
-               <h4 className="text-sm font-bold uppercase tracking-wider text-muted-foreground">What you're training today</h4>
+             <div className="bg-indigo-50/50 border border-indigo-100 p-4 rounded-xl space-y-3">
+               <h4 className="text-xs font-bold uppercase tracking-wider text-indigo-900/70">What you're training today</h4>
                <ul className="space-y-2">
-                 <li className="flex gap-2 items-center text-sm font-medium">
-                   <Zap className="w-4 h-4 text-amber-500" /> Speed of association
+                 <li className="flex gap-3 items-center text-sm font-medium text-indigo-950">
+                   <div className="p-1.5 bg-amber-100 rounded-md text-amber-600">
+                     <Zap className="w-3.5 h-3.5" />
+                   </div>
+                   Speed of association
                  </li>
-                 <li className="flex gap-2 items-center text-sm font-medium">
-                   <BrainCircuit className="w-4 h-4 text-primary" /> Staying out of your head
+                 <li className="flex gap-3 items-center text-sm font-medium text-indigo-950">
+                   <div className="p-1.5 bg-blue-100 rounded-md text-blue-600">
+                     <BrainCircuit className="w-3.5 h-3.5" />
+                   </div>
+                   Staying out of your head
                  </li>
-                 <li className="flex gap-2 items-center text-sm font-medium">
-                   <Activity className="w-4 h-4 text-green-500" /> Speaking without pre-editing
+                 <li className="flex gap-3 items-center text-sm font-medium text-indigo-950">
+                   <div className="p-1.5 bg-emerald-100 rounded-md text-emerald-600">
+                     <Activity className="w-3.5 h-3.5" />
+                   </div>
+                   Speaking without pre-editing
                  </li>
                </ul>
              </div>
            </div>
 
-           <Button size="lg" className="w-full text-lg h-12" onClick={handleStartCountdown} data-testid="button-start-drill-countdown">
-             I'm Ready
+           <Button size="lg" className="w-full text-lg h-12 shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all" onClick={handleStartCountdown} data-testid="button-start-drill-countdown">
+             I'm Ready to Start
            </Button>
         </DialogContent>
       </Dialog>

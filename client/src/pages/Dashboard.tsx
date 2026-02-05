@@ -154,50 +154,69 @@ export default function Dashboard() {
         </Card>
 
         {/* Stats Card */}
-        <Card className="app-surface">
+        <Card className="bg-linear-to-br from-white to-amber-50/50 border-amber-100/50 shadow-lg shadow-amber-500/5 overflow-hidden relative">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/5 rounded-full blur-2xl -mr-8 -mt-8" />
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Trophy className="w-5 h-5 text-yellow-500" />
+            <CardTitle className="flex items-center gap-2 text-amber-950">
+              <div className="p-2 bg-amber-100 rounded-lg text-amber-600">
+                <Trophy className="w-5 h-5" />
+              </div>
               Your Stats
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-4 relative z-10">
              <div>
-                <div className="flex justify-between text-sm mb-1">
-                   <span className="text-muted-foreground">Total XP</span>
-                   <span className="font-bold">{user?.total_xp}</span>
+                <div className="flex justify-between text-sm mb-2">
+                   <span className="text-amber-900/60 font-medium">Total XP</span>
+                   <span className="font-bold text-amber-900">{user?.total_xp}</span>
                 </div>
-                <Progress value={65} className="h-2" />
+                <Progress value={65} className="h-2.5 bg-amber-100" />
              </div>
-             <div className="pt-4 border-t border-border grid grid-cols-2 gap-4">
-                <div className="text-center">
-                   <p className="text-2xl font-bold">12</p>
-                   <p className="text-xs text-muted-foreground">Sessions</p>
+             <div className="pt-4 border-t border-amber-100 grid grid-cols-2 gap-4">
+                <div className="text-center p-2 rounded-lg bg-white/50 border border-amber-100/50">
+                   <p className="text-2xl font-bold text-amber-900">12</p>
+                   <p className="text-xs text-amber-700/60 font-medium uppercase tracking-wide">Sessions</p>
                 </div>
-                <div className="text-center">
-                   <p className="text-2xl font-bold">4.5h</p>
-                   <p className="text-xs text-muted-foreground">Practice Time</p>
+                <div className="text-center p-2 rounded-lg bg-white/50 border border-amber-100/50">
+                   <p className="text-2xl font-bold text-amber-900">4.5h</p>
+                   <p className="text-xs text-amber-700/60 font-medium uppercase tracking-wide">Time</p>
                 </div>
              </div>
           </CardContent>
         </Card>
       </div>
 
-      <h2 className="text-xl font-bold mt-8 mb-4">Your Tracks</h2>
+      <h2 className="text-xl font-bold mt-12 mb-6 flex items-center gap-2">
+        <Zap className="w-5 h-5 text-primary" />
+        Your Tracks
+      </h2>
       <div className="grid md:grid-cols-3 gap-6">
          {tracks.map(track => (
-            <Link key={track.id} href="/app/tracks" className="block h-full" data-testid={`card-track-${track.id}`}>
-              <Card className={`h-full transition-all hover:border-primary/50 hover:shadow-md ${track.locked ? "opacity-60 grayscale" : ""}`}>
+            <Link key={track.id} href="/app/tracks" className="block h-full group" data-testid={`card-track-${track.id}`}>
+              <Card className={`h-full transition-all duration-300 border-2 ${track.locked 
+                ? "opacity-60 grayscale bg-muted/30 border-transparent" 
+                : "bg-white border-transparent hover:border-primary/20 shadow-sm hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1"
+              }`}>
                 <CardHeader>
-                  <div className="w-10 h-10 bg-muted rounded-lg flex items-center justify-center mb-2">
-                    <Zap className={`w-5 h-5 ${track.locked ? "text-muted-foreground" : "text-primary"}`} />
+                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-3 shadow-sm ${
+                    track.locked 
+                      ? "bg-muted text-muted-foreground" 
+                      : "bg-linear-to-br from-primary/10 to-indigo-50 text-primary group-hover:scale-110 transition-transform duration-300"
+                  }`}>
+                    <Zap className="w-6 h-6" />
                   </div>
-                  <CardTitle className="text-lg">{track.title}</CardTitle>
-                  <CardDescription>{track.total_modules} Modules</CardDescription>
+                  <CardTitle className="text-lg font-bold">{track.title}</CardTitle>
+                  <CardDescription className="font-medium text-xs uppercase tracking-wider text-muted-foreground/80">{track.total_modules} Modules</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm text-muted-foreground mb-4">{track.description}</p>
-                  <Progress value={(track.completed_modules / track.total_modules) * 100} />
+                  <p className="text-sm text-muted-foreground mb-6 leading-relaxed min-h-[40px]">{track.description}</p>
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-xs font-medium">
+                      <span className="text-muted-foreground">Progress</span>
+                      <span className="text-primary">{Math.round((track.completed_modules / track.total_modules) * 100)}%</span>
+                    </div>
+                    <Progress value={(track.completed_modules / track.total_modules) * 100} className="h-2" />
+                  </div>
                 </CardContent>
               </Card>
             </Link>
