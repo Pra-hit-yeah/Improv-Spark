@@ -68,7 +68,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <main className="flex-1">{children}</main>
       <footer className="border-t border-border py-12 bg-muted/20">
         <div className="container mx-auto px-4 text-center text-muted-foreground text-sm">
-          <p>&copy; {new Date().getFullYear()} Quick-Wit. All rights reserved.</p>
+          <p>Built and designed by Prahitya.</p>
           <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 mt-4">
             <a href="#" className="hover:text-foreground" data-testid="link-footer-terms">Terms</a>
             <a href="#" className="hover:text-foreground" data-testid="link-footer-privacy">Privacy</a>
