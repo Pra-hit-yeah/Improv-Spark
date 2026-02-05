@@ -36,18 +36,7 @@ export function ScreenshotGallery({ images = [], testId = "screenshot-gallery" }
             </p>
           </div>
 
-          {/* Dev/Tester Only Hint */}
-          {testerBypassEnabled && (
-            <div className="mt-6 p-4 rounded-lg bg-yellow-500/10 border border-yellow-500/20 max-w-sm text-left flex gap-3">
-              <UploadCloud className="w-5 h-5 text-yellow-600 shrink-0 mt-0.5" />
-              <div className="space-y-1">
-                <p className="text-xs font-bold text-yellow-700 uppercase tracking-wider">Dev / Tester Hint</p>
-                <p className="text-xs text-yellow-700/80">
-                  To add screenshots: Upload images to <code>/client/public/case-study/</code> and update the page config to pass them into this <code>ScreenshotGallery</code> component.
-                </p>
-              </div>
-            </div>
-          )}
+          {/* Dev/Tester Only Hint - Removed as requested */}
         </CardContent>
       </Card>
     );

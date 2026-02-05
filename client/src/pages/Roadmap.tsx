@@ -188,17 +188,7 @@ export default function RoadmapPage() {
           ))}
         </div>
 
-        {/* Feature Gallery */}
-        <div className="space-y-4 pt-8 border-t border-border">
-          <div className="flex items-center gap-2 mb-2">
-            <Layers className="w-5 h-5 text-muted-foreground" />
-            <h3 className="text-sm font-bold uppercase tracking-widest text-muted-foreground">Recent Feature Ships</h3>
-          </div>
-          <ScreenshotGallery 
-            images={[]} 
-            testId="gallery-roadmap"
-          />
-        </div>
+        {/* Feature Gallery - Removed as requested */}
       </div>
     </PMPage>
   );
