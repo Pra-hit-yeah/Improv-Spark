@@ -10,15 +10,8 @@ export function Brand({
   if (variant === "pm") {
     return (
       <Link href={href}>
-        <span className="inline-flex items-baseline gap-2 cursor-pointer" data-testid="link-brand-pm">
-          <span className="font-heading text-lg tracking-tight text-foreground">
-            Quick
-            <span className="text-foreground/70">-</span>
-            <span className="tracking-tight">Wit</span>
-          </span>
-          <span className="hidden sm:inline-flex font-mono text-[11px] text-muted-foreground">
-            QW
-          </span>
+        <span className="inline-flex items-center gap-2 cursor-pointer" data-testid="link-brand-pm">
+          <img src="/logo.png" alt="Quick-Wit" className="h-8 w-auto object-contain" />
         </span>
       </Link>
     );
@@ -27,11 +20,7 @@ export function Brand({
   return (
     <Link href={href}>
       <span className="inline-flex items-center gap-2 cursor-pointer" data-testid="link-brand-app">
-        <span className="font-heading font-bold text-xl tracking-tight">
-          Quick
-          <span className="text-foreground/60">-</span>
-          <span className="text-primary">Wit</span>
-        </span>
+        <img src="/logo.png" alt="Quick-Wit" className="h-9 w-auto object-contain" />
       </span>
     </Link>
   );
