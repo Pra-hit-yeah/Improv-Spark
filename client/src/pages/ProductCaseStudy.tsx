@@ -19,7 +19,68 @@ import {
   LayoutTemplate,
   BrainCircuit,
   CalendarDays,
+  BookOpen,
+  ChevronDown
 } from "lucide-react";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import { useState } from "react";
+
+function HowToRead() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <Collapsible
+      open={isOpen}
+      onOpenChange={setIsOpen}
+      className="border border-indigo-100 bg-indigo-50/50 rounded-lg overflow-hidden transition-all duration-200"
+      data-testid="collapsible-how-to-read"
+    >
+      <CollapsibleTrigger asChild>
+        <button className="flex items-center justify-between w-full px-4 py-3 text-sm font-medium text-indigo-900 hover:bg-indigo-50 transition-colors">
+          <div className="flex items-center gap-2">
+            <BookOpen className="w-4 h-4 text-indigo-600" />
+            <span>How to read this case study</span>
+          </div>
+          <ChevronDown
+            className={`w-4 h-4 text-indigo-400 transition-transform duration-200 ${
+              isOpen ? "transform rotate-180" : ""
+            }`}
+          />
+        </button>
+      </CollapsibleTrigger>
+      <CollapsibleContent className="px-4 pb-4 animate-in slide-in-from-top-2">
+        <div className="space-y-3 pt-1">
+          <p className="text-sm text-indigo-900/80 leading-relaxed">
+            This portfolio is structured as a set of linked artifacts. Each page stands alone, but together they tell the full product story.
+          </p>
+          <ul className="space-y-2 text-sm text-indigo-900/70">
+            <li className="flex gap-2 items-start">
+              <span className="font-bold text-indigo-700 text-xs mt-0.5 uppercase tracking-wide min-w-[80px]">Start Here</span>
+              <span>Read the <strong>Product Brief</strong> (below) for the problem framing and solution overview.</span>
+            </li>
+            <li className="flex gap-2 items-start">
+              <span className="font-bold text-indigo-700 text-xs mt-0.5 uppercase tracking-wide min-w-[80px]">Context</span>
+              <span>Check <Link href="/research" className="underline hover:text-indigo-900">Research</Link> for user insights and <Link href="/market" className="underline hover:text-indigo-900">Market</Link> for the competitive landscape.</span>
+            </li>
+            <li className="flex gap-2 items-start">
+              <span className="font-bold text-indigo-700 text-xs mt-0.5 uppercase tracking-wide min-w-[80px]">Decisions</span>
+              <span>See the <Link href="/prd" className="underline hover:text-indigo-900">PRD</Link> for specs and the <Link href="/experiments" className="underline hover:text-indigo-900">Experiments Log</Link> for validation data.</span>
+            </li>
+            <li className="flex gap-2 items-start">
+              <span className="font-bold text-indigo-700 text-xs mt-0.5 uppercase tracking-wide min-w-[80px]">Strategy</span>
+              <span>Review the <Link href="/roadmap" className="underline hover:text-indigo-900">Roadmap</Link> for future bets and <Link href="/gtm" className="underline hover:text-indigo-900">GTM</Link> for launch plans.</span>
+            </li>
+          </ul>
+        </div>
+      </CollapsibleContent>
+    </Collapsible>
+  );
+}
+
 
 function MetaRow({
   label,
@@ -136,6 +197,10 @@ export default function ProductCaseStudy() {
         >
           Read the brief
         </Button>
+      </div>
+
+      <div className="not-prose my-8">
+        <HowToRead />
       </div>
 
       <div className="space-y-14" data-testid="product-body">
