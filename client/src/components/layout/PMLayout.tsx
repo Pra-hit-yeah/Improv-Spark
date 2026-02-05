@@ -1,5 +1,6 @@
 import { Link, useLocation } from "wouter";
 import { Brand } from "@/components/layout/Brand";
+import { useState, useEffect } from "react";
 
 const nav = [
   { href: "/product", label: "Product" },
@@ -13,9 +14,40 @@ const nav = [
 
 export function PMLayout({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
+  const [showFooter, setShowFooter] = useState(true);
+
+  useEffect(() => {
+    let timeout: NodeJS.Timeout;
+
+    const handleScroll = () => {
+      setShowFooter(true);
+      clearTimeout(timeout);
+      
+      timeout = setTimeout(() => {
+        // Only hide if we are not at the very bottom of the page
+        if ((window.innerHeight + window.scrollY) < document.body.offsetHeight - 50) {
+          setShowFooter(false);
+        }
+      }, 2500);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    
+    // Initial timer to hide footer if no scrolling happens
+    timeout = setTimeout(() => {
+       if ((window.innerHeight + window.scrollY) < document.body.offsetHeight - 50) {
+         setShowFooter(false);
+       }
+    }, 2500);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      clearTimeout(timeout);
+    };
+  }, []);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pb-32">
       <header className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur-sm">
         <div className="mx-auto max-w-[1000px] px-5 sm:px-6 h-16 flex items-center justify-between">
           <Brand href="/product" variant="pm" />
@@ -54,7 +86,11 @@ export function PMLayout({ children }: { children: React.ReactNode }) {
         {children}
       </main>
 
-      <footer className="border-t border-border py-10">
+      <footer 
+        className={`fixed bottom-0 left-0 right-0 border-t border-border py-6 bg-background/80 backdrop-blur-md transition-all duration-700 z-50 ${
+          showFooter ? "opacity-100 translate-y-0" : "opacity-0 translate-y-full pointer-events-none"
+        }`}
+      >
         <div className="mx-auto max-w-[1000px] px-5 sm:px-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <p className="text-sm text-muted-foreground" data-testid="text-pm-footer">
             Quick-Wit PM portfolio
