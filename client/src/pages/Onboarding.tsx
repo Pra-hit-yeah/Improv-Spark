@@ -55,6 +55,18 @@ export default function Onboarding() {
     }
   };
 
+  const handleSkip = async () => {
+    setLoading(true);
+    try {
+      await setOnboarding({ goal: null, daily_time: null });
+      setLocation("/app");
+    } catch (error) {
+      console.error("Skip error:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="max-w-2xl mx-auto">
       <div className="flex items-center justify-between gap-4 mb-6">
@@ -105,8 +117,10 @@ export default function Onboarding() {
             <Button
               variant="ghost"
               data-testid="button-onboarding-skip"
-              onClick={() => setLocation("/app")}
+              disabled={loading}
+              onClick={handleSkip}
             >
+              {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Skip for now
             </Button>
 
