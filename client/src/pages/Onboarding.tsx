@@ -47,10 +47,10 @@ export default function Onboarding() {
     setLoading(true);
     try {
       await setOnboarding({ goal, daily_time: time });
-      setLocation("/app");
+      // Small delay to let state propagate before navigation
+      setTimeout(() => setLocation("/app"), 100);
     } catch (error) {
       console.error("Onboarding error:", error);
-    } finally {
       setLoading(false);
     }
   };
@@ -59,10 +59,10 @@ export default function Onboarding() {
     setLoading(true);
     try {
       await setOnboarding({ goal: null, daily_time: null });
-      setLocation("/app");
+      // Small delay to let state propagate before navigation
+      setTimeout(() => setLocation("/app"), 100);
     } catch (error) {
       console.error("Skip error:", error);
-    } finally {
       setLoading(false);
     }
   };
