@@ -18,19 +18,19 @@ function LastSessionRecap({ user }: { user: any }) {
 
   return (
     <Card className="app-surface mb-6 border-l-4 border-l-primary/40">
-      <CardContent className="p-4 flex items-center justify-between gap-4">
+      <CardContent className="p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
            <div className="p-2 bg-muted rounded-full">
              <History className="w-4 h-4 text-muted-foreground" />
            </div>
            <div>
              <p className="text-sm font-medium text-foreground">Last Session: {difficultyLabel}</p>
-             <p className="text-xs text-muted-foreground">You're building verbal flexibility.</p>
+             <p className="text-sm text-muted-foreground italic">
+               {user.last_session_difficulty === 'beginner' && "You built stronger verbal reflexes."}
+               {user.last_session_difficulty === 'intermediate' && "You practiced structure under pressure."}
+               {user.last_session_difficulty === 'advanced' && "You exercised narrative flexibility."}
+             </p>
            </div>
-        </div>
-        <div className="text-right hidden sm:block">
-           <p className="text-xs font-bold text-primary">Completed</p>
-           <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Keep it up</p>
         </div>
       </CardContent>
     </Card>
@@ -51,13 +51,13 @@ export default function Dashboard() {
   if (user?.last_session_completed) {
     if (user.last_session_difficulty === "beginner") {
       recommendedDifficulty = "intermediate";
-      recommendationReason = "You crushed Beginner. Level up?";
+      recommendationReason = "Builds on your verbal reflexes.";
     } else if (user.last_session_difficulty === "intermediate") {
       recommendedDifficulty = "advanced";
-      recommendationReason = "Ready for the big leagues.";
+      recommendationReason = "Challenges your storytelling depth.";
     } else {
       recommendedDifficulty = "advanced";
-      recommendationReason = "Keep mastering the advanced flow.";
+      recommendationReason = "Keeps your narrative skills sharp.";
     }
   }
 
@@ -104,51 +104,59 @@ export default function Dashboard() {
             <div className="flex justify-between items-start">
               <div>
                 <CardTitle className="text-2xl">Today's Session</CardTitle>
-                <CardDescription className="text-white/80">
+                <CardDescription className="text-white/90 font-medium text-base mt-1">
                   {recommendationReason}
                 </CardDescription>
+                <p className="text-white/70 text-sm mt-2 max-w-md">
+                   Trains <span className="font-semibold text-white/90">Speed of Association</span> to help you respond faster in meetings and conversations.
+                </p>
               </div>
               {user?.last_session_completed && (
-                <div className="bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1">
+                <div className="hidden sm:flex bg-white/10 backdrop-blur-md px-3 py-1 rounded-full text-xs font-medium text-white/80 items-center gap-1 border border-white/10">
                   <ArrowUpRight className="w-3 h-3" />
-                  Rec: {recommendedDifficulty.charAt(0).toUpperCase() + recommendedDifficulty.slice(1)}
+                  Optional: {recommendedDifficulty.charAt(0).toUpperCase() + recommendedDifficulty.slice(1)}
                 </div>
               )}
             </div>
           </CardHeader>
           <CardContent>
-            <div className="flex items-end justify-between">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
               <div>
                  <p className="text-sm font-medium opacity-80 mb-1">Current Level</p>
                  <div className="text-4xl font-bold">{user?.level}</div>
               </div>
-              <Link href="/app/session" asChild>
-                <Button
-                  asChild
-                  size="lg"
-                  variant="secondary"
-                  className="h-12 px-8 font-bold shadow-lg bg-white text-orange-600 hover:bg-white/90"
-                  data-testid="button-dashboard-primary-cta"
-                >
-                  <a
-                    data-testid="link-dashboard-primary-cta"
-                    onClick={() => {
-                      logEvent({
-                        name: "cta_clicked",
-                        userId: user?.id ?? null,
-                        properties: {
-                          experiment_key: "dashboard_primary_cta_text",
-                          variant,
-                          cta_text: ctaText,
-                        },
-                      });
-                    }}
+              <div className="flex flex-col items-end gap-2 w-full sm:w-auto">
+                <Link href="/app/session" asChild>
+                  <Button
+                    asChild
+                    size="lg"
+                    variant="secondary"
+                    className="h-12 px-8 font-bold shadow-lg bg-white text-orange-600 hover:bg-white/90 w-full sm:w-auto"
+                    data-testid="button-dashboard-primary-cta"
                   >
-                    <Play className="w-4 h-4 mr-2 fill-current" />
-                    {ctaText}
-                  </a>
-                </Button>
-              </Link>
+                    <a
+                      data-testid="link-dashboard-primary-cta"
+                      onClick={() => {
+                        logEvent({
+                          name: "cta_clicked",
+                          userId: user?.id ?? null,
+                          properties: {
+                            experiment_key: "dashboard_primary_cta_text",
+                            variant,
+                            cta_text: ctaText,
+                          },
+                        });
+                      }}
+                    >
+                      <Play className="w-4 h-4 mr-2 fill-current" />
+                      {ctaText}
+                    </a>
+                  </Button>
+                </Link>
+                <span className="text-xs text-white/60 font-medium text-center sm:text-right w-full block">
+                  Most users feel more fluent after 3–5 sessions.
+                </span>
+              </div>
             </div>
           </CardContent>
         </Card>
