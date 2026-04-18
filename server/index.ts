@@ -1,5 +1,5 @@
-import { createApp, log } from "./app";
-import { serveStatic } from "./static";
+import { createApp, log } from "./app.js";
+import { serveStatic } from "./static.js";
 import { createServer } from "http";
 
 const app = createApp();
@@ -9,7 +9,7 @@ const httpServer = createServer(app);
   if (process.env.NODE_ENV === "production") {
     serveStatic(app);
   } else {
-    const { setupVite } = await import("./vite");
+    const { setupVite } = await import("./vite.js");
     await setupVite(httpServer, app);
   }
 

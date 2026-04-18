@@ -1,4 +1,4 @@
-import { createApp } from "../server/app";
+import { createApp } from "../server/app.js";
 import express, { type Request, type Response } from "express";
 import path from "path";
 

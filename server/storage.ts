@@ -17,7 +17,7 @@ import {
   type InsertUserTrackProgress,
   type Session,
   type InsertSession,
-} from "../shared/schema";
+} from "../shared/schema.js";
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL!,

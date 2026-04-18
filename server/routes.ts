@@ -1,8 +1,8 @@
 import type { Express, Request, Response, NextFunction } from "express";
-import { storage } from "./storage";
+import { storage } from "./storage.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { insertUserSchema, insertSessionSchema } from "../shared/schema";
+import { insertUserSchema, insertSessionSchema } from "../shared/schema.js";
 
 const JWT_SECRET = process.env.SESSION_SECRET || "quickwit-secret-key-change-in-production";
 const COOKIE_NAME = "qw_token";
