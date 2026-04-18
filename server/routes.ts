@@ -1,8 +1,9 @@
 import type { Express } from "express";
-import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import bcrypt from "bcrypt";
 import session from "express-session";
+import connectPgSimple from "connect-pg-simple";
+import { Pool } from "pg";
 import { insertUserSchema, insertSessionSchema } from "@shared/schema";
 
 declare module "express-session" {
@@ -11,13 +12,20 @@ declare module "express-session" {
   }
 }
 
-export async function registerRoutes(
-  httpServer: Server,
-  app: Express
-): Promise<Server> {
-  // Session middleware
+export function registerRoutes(app: Express): void {
+  // Session store — use PostgreSQL in production so sessions survive across serverless invocations
+  const PgSession = connectPgSimple(session);
+  const sessionStore = process.env.DATABASE_URL
+    ? new PgSession({
+        conString: process.env.DATABASE_URL,
+        createTableIfMissing: true,
+        tableName: "user_sessions",
+      })
+    : undefined;
+
   app.use(
     session({
+      store: sessionStore,
       secret: process.env.SESSION_SECRET || "quickwit-secret-key-change-in-production",
       resave: false,
       saveUninitialized: false,
@@ -38,13 +46,12 @@ export async function registerRoutes(
   };
 
   // ============= AUTH ROUTES =============
-  
+
   // Sign up
   app.post("/api/auth/signup", async (req, res) => {
     try {
       const { email, username, password } = insertUserSchema.parse(req.body);
-      
-      // Check if user already exists
+
       const existingUser = await storage.getUserByEmail(email);
       if (existingUser) {
         return res.status(400).json({ error: "Email already exists" });
@@ -55,25 +62,19 @@ export async function registerRoutes(
         return res.status(400).json({ error: "Username already taken" });
       }
 
-      // Hash password
       const hashedPassword = await bcrypt.hash(password, 10);
-      
-      // Create user
       const user = await storage.createUser({ email, username, password: hashedPassword });
-      
-      // Create initial user progress
       await storage.createUserProgress({ userId: user.id });
-      
-      // Set session
+
       req.session.userId = user.id;
-      
-      res.json({ 
-        user: { 
-          id: user.id, 
+
+      res.json({
+        user: {
+          id: user.id,
           email: user.email,
-          username: user.username, 
-          activated: user.activated 
-        } 
+          username: user.username,
+          activated: user.activated,
+        },
       });
     } catch (error: any) {
       res.status(400).json({ error: error.message });
@@ -84,11 +85,11 @@ export async function registerRoutes(
   app.post("/api/auth/login", async (req, res) => {
     try {
       const { email, password } = req.body;
-      
+
       if (!email || !password) {
         return res.status(400).json({ error: "Email and password are required" });
       }
-      
+
       const user = await storage.getUserByEmail(email);
       if (!user) {
         return res.status(401).json({ error: "Invalid credentials" });
@@ -100,14 +101,14 @@ export async function registerRoutes(
       }
 
       req.session.userId = user.id;
-      
-      res.json({ 
-        user: { 
-          id: user.id, 
+
+      res.json({
+        user: {
+          id: user.id,
           email: user.email,
-          username: user.username, 
-          activated: user.activated 
-        } 
+          username: user.username,
+          activated: user.activated,
+        },
       });
     } catch (error: any) {
       res.status(400).json({ error: error.message });
@@ -131,14 +132,14 @@ export async function registerRoutes(
       if (!user) {
         return res.status(404).json({ error: "User not found" });
       }
-      
-      res.json({ 
-        user: { 
-          id: user.id, 
+
+      res.json({
+        user: {
+          id: user.id,
           email: user.email,
-          username: user.username, 
-          activated: user.activated 
-        } 
+          username: user.username,
+          activated: user.activated,
+        },
       });
     } catch (error: any) {
       res.status(500).json({ error: error.message });
@@ -152,14 +153,14 @@ export async function registerRoutes(
       if (!user) {
         return res.status(404).json({ error: "User not found" });
       }
-      
-      res.json({ 
-        user: { 
-          id: user.id, 
+
+      res.json({
+        user: {
+          id: user.id,
           email: user.email,
-          username: user.username, 
-          activated: user.activated 
-        } 
+          username: user.username,
+          activated: user.activated,
+        },
       });
     } catch (error: any) {
       res.status(500).json({ error: error.message });
@@ -167,8 +168,7 @@ export async function registerRoutes(
   });
 
   // ============= USER PROGRESS ROUTES =============
-  
-  // Get user progress
+
   app.get("/api/progress", requireAuth, async (req, res) => {
     try {
       const progress = await storage.getUserProgress(req.session.userId!);
@@ -182,8 +182,7 @@ export async function registerRoutes(
   });
 
   // ============= TRACK ROUTES =============
-  
-  // Get all tracks
+
   app.get("/api/tracks", async (req, res) => {
     try {
       const tracks = await storage.getAllTracks();
@@ -193,7 +192,6 @@ export async function registerRoutes(
     }
   });
 
-  // Get user's track progress for all tracks
   app.get("/api/tracks/progress", requireAuth, async (req, res) => {
     try {
       const trackProgress = await storage.getAllUserTrackProgress(req.session.userId!);
@@ -203,13 +201,11 @@ export async function registerRoutes(
     }
   });
 
-  // Get or create user track progress for specific track
   app.get("/api/tracks/:trackId/progress", requireAuth, async (req, res) => {
     try {
       const { trackId } = req.params;
       let progress = await storage.getUserTrackProgress(req.session.userId!, trackId);
-      
-      // Create if doesn't exist
+
       if (!progress) {
         progress = await storage.createUserTrackProgress({
           userId: req.session.userId!,
@@ -218,29 +214,28 @@ export async function registerRoutes(
           completedModules: 0,
         });
       }
-      
+
       res.json(progress);
     } catch (error: any) {
       res.status(500).json({ error: error.message });
     }
   });
 
-  // Update user track progress
   app.patch("/api/tracks/:trackId/progress", requireAuth, async (req, res) => {
     try {
       const { trackId } = req.params;
       const updates = req.body;
-      
+
       const progress = await storage.updateUserTrackProgress(
         req.session.userId!,
         trackId,
         updates
       );
-      
+
       if (!progress) {
         return res.status(404).json({ error: "Track progress not found" });
       }
-      
+
       res.json(progress);
     } catch (error: any) {
       res.status(500).json({ error: error.message });
@@ -248,43 +243,36 @@ export async function registerRoutes(
   });
 
   // ============= SESSION ROUTES =============
-  
-  // Create session (record completed drill)
+
   app.post("/api/sessions", requireAuth, async (req, res) => {
     try {
       const sessionData = insertSessionSchema.parse({
         ...req.body,
         userId: req.session.userId,
       });
-      
-      const session = await storage.createSession(sessionData);
-      
-      // Update user progress
+
+      const drillSession = await storage.createSession(sessionData);
+
       const currentProgress = await storage.getUserProgress(req.session.userId!);
       if (currentProgress) {
         const now = new Date();
         const lastSession = currentProgress.lastSessionDate;
-        
-        // Calculate streak
+
         let newStreak = currentProgress.currentStreak;
         if (lastSession) {
           const daysSinceLastSession = Math.floor(
             (now.getTime() - lastSession.getTime()) / (1000 * 60 * 60 * 24)
           );
-          
+
           if (daysSinceLastSession === 1) {
-            // Consecutive day
             newStreak += 1;
           } else if (daysSinceLastSession > 1) {
-            // Streak broken
             newStreak = 1;
           }
-          // Same day = no change to streak
         } else {
-          // First session
           newStreak = 1;
         }
-        
+
         await storage.updateUserProgress(req.session.userId!, {
           totalXp: currentProgress.totalXp + (sessionData.xpEarned ?? 10),
           currentStreak: newStreak,
@@ -294,14 +282,13 @@ export async function registerRoutes(
           totalTimeMinutes: currentProgress.totalTimeMinutes + Math.floor(sessionData.durationSeconds / 60),
         });
       }
-      
-      res.json(session);
+
+      res.json(drillSession);
     } catch (error: any) {
       res.status(400).json({ error: error.message });
     }
   });
 
-  // Get user sessions
   app.get("/api/sessions", requireAuth, async (req, res) => {
     try {
       const limit = req.query.limit ? parseInt(req.query.limit as string) : 50;
@@ -312,7 +299,6 @@ export async function registerRoutes(
     }
   });
 
-  // Get session stats
   app.get("/api/sessions/stats", requireAuth, async (req, res) => {
     try {
       const stats = await storage.getSessionStats(req.session.userId!);
@@ -321,6 +307,4 @@ export async function registerRoutes(
       res.status(500).json({ error: error.message });
     }
   });
-
-  return httpServer;
 }
