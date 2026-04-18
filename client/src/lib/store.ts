@@ -8,6 +8,7 @@ import { logEvent } from "@/lib/analytics";
 export type AppUser = Omit<User, 'password'> & {
   goal?: string | null;
   daily_time?: string | null;
+  isGuest?: boolean;
 };
 
 interface AppState {
@@ -23,6 +24,7 @@ interface AppState {
   setTesterBypassEnabled: (enabled: boolean) => void;
   signup: (email: string, username: string, password: string) => Promise<void>;
   login: (email: string, password: string) => Promise<void>;
+  loginAsGuest: () => void;
   logout: () => Promise<void>;
   checkAuth: () => Promise<void>;
   setOnboarding: (values: { goal: string | null; daily_time: string | null }) => Promise<void>;
@@ -34,6 +36,27 @@ interface AppState {
   ) => Promise<void>;
   loadUserData: () => Promise<void>;
 }
+
+const GUEST_USER: AppUser = {
+  id: 'guest',
+  email: 'guest@quickwit.app',
+  username: 'Guest',
+  activated: true,
+  goal: 'Build speaking confidence',
+  daily_time: '10',
+  isGuest: true,
+};
+
+const GUEST_PROGRESS: UserProgress = {
+  id: 'guest-progress',
+  userId: 'guest',
+  totalXp: 0,
+  currentStreak: 0,
+  longestStreak: 0,
+  lastSessionDate: null,
+  totalSessions: 0,
+  totalTimeMinutes: 0,
+};
 
 export const useStore = create<AppState>()(
   persist(
@@ -47,6 +70,18 @@ export const useStore = create<AppState>()(
       tracks: [],
 
       setTesterBypassEnabled: (enabled) => set({ testerBypassEnabled: enabled }),
+
+      loginAsGuest: () => {
+        set({
+          user: GUEST_USER,
+          userProgress: GUEST_PROGRESS,
+          isAuthenticated: true,
+          sessions: [],
+          tracks: [],
+        });
+        // Load tracks in background (public endpoint, no auth needed)
+        tracksApi.getAll().then((tracks) => set({ tracks })).catch(() => {});
+      },
 
       signup: async (email, username, password) => {
         try {
@@ -84,7 +119,9 @@ export const useStore = create<AppState>()(
 
       logout: async () => {
         try {
-          await authApi.logout();
+          if (!get().user?.isGuest) {
+            await authApi.logout();
+          }
           set({ 
             user: null, 
             userProgress: null,
@@ -97,6 +134,8 @@ export const useStore = create<AppState>()(
       },
 
       checkAuth: async () => {
+        // Don't check auth for guest users — they're already set
+        if (get().user?.isGuest) return;
         try {
           const { user } = await authApi.me();
           set({ 
@@ -134,6 +173,23 @@ export const useStore = create<AppState>()(
         const xpMap = { beginner: 10, intermediate: 25, advanced: 50 };
         const earnedXp = xpMap[difficulty];
 
+        // Guest mode: update progress locally without API calls
+        if (get().user?.isGuest) {
+          const current = get().userProgress ?? GUEST_PROGRESS;
+          set({
+            userProgress: {
+              ...current,
+              totalXp: current.totalXp + earnedXp,
+              currentStreak: current.currentStreak + 1,
+              longestStreak: Math.max(current.longestStreak, current.currentStreak + 1),
+              totalSessions: current.totalSessions + 1,
+              totalTimeMinutes: current.totalTimeMinutes + Math.floor(duration / 60),
+              lastSessionDate: new Date(),
+            },
+          });
+          return;
+        }
+
         try {
           logEvent({ 
             name: "session_completed", 
@@ -141,7 +197,6 @@ export const useStore = create<AppState>()(
             properties: { difficulty, duration_seconds: duration, xp_earned: earnedXp } 
           });
 
-          // Create session
           await sessionsApi.create({
             trackId,
             difficulty,
@@ -150,7 +205,6 @@ export const useStore = create<AppState>()(
             promptsCompleted,
           });
 
-          // Reload user data to get updated progress
           await get().loadUserData();
 
           logEvent({ 
@@ -165,6 +219,7 @@ export const useStore = create<AppState>()(
       },
 
       loadUserData: async () => {
+        if (get().user?.isGuest) return;
         try {
           const [progress, sessions, tracks] = await Promise.all([
             progressApi.get(),

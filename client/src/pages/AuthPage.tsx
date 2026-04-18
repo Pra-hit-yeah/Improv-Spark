@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Link, useLocation } from "wouter";
 import { useStore } from "@/lib/store";
 import { useState } from "react";
-import { Loader2, AlertCircle } from "lucide-react";
+import { Loader2, AlertCircle, ArrowRight } from "lucide-react";
 
 export default function AuthPage() {
   const [location] = useLocation();
@@ -14,7 +14,7 @@ export default function AuthPage() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { signup, login } = useStore();
+  const { signup, login, loginAsGuest } = useStore();
   const [, setLocation] = useLocation();
 
   const isLogin = location === "/login";
@@ -37,6 +37,11 @@ export default function AuthPage() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleGuest = () => {
+    loginAsGuest();
+    setLocation("/app");
   };
 
   return (
@@ -104,6 +109,28 @@ export default function AuthPage() {
               </Button>
             </div>
           </form>
+
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t border-border/50" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-background px-2 text-muted-foreground">or</span>
+            </div>
+          </div>
+
+          <Button
+            variant="outline"
+            className="w-full gap-2"
+            onClick={handleGuest}
+            data-testid="button-guest-access"
+          >
+            Explore as Guest
+            <ArrowRight className="w-4 h-4" />
+          </Button>
+          <p className="text-center text-xs text-muted-foreground -mt-1">
+            Try the app without an account — progress won't be saved
+          </p>
         </CardContent>
         <CardFooter>
           <p className="text-center text-sm text-muted-foreground w-full">
