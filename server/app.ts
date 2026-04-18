@@ -56,7 +56,7 @@ export function createApp() {
     const message = err.message || "Internal Server Error";
     console.error("Internal Server Error:", err);
     if (res.headersSent) return next(err);
-    res.status(status).json({ message });
+    res.status(status).json({ error: message });
   });
 
   return app;

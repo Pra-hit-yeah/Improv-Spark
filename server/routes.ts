@@ -51,6 +51,18 @@ const requireAuth = (req: any, res: Response, next: NextFunction) => {
 
 export function registerRoutes(app: Express): void {
 
+  // ============= HEALTH CHECK =============
+  app.get("/api/health", (_req, res) => {
+    res.json({
+      ok: true,
+      env: {
+        hasDatabase: !!process.env.DATABASE_URL,
+        hasSecret: !!process.env.SESSION_SECRET,
+        nodeEnv: process.env.NODE_ENV,
+      },
+    });
+  });
+
   // ============= AUTH ROUTES =============
 
   app.post("/api/auth/signup", async (req, res) => {
