@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 import session from "express-session";
 import connectPgSimple from "connect-pg-simple";
 import { Pool } from "pg";
-import { insertUserSchema, insertSessionSchema } from "@shared/schema";
+import { insertUserSchema, insertSessionSchema } from "../shared/schema";
 
 declare module "express-session" {
   interface SessionData {
