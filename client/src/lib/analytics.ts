@@ -1,5 +1,3 @@
-import { supabase } from "@/lib/supabase";
-
 export type AnalyticsEventName =
   | "user_signed_up"
   | "session_started"
@@ -51,24 +49,5 @@ export async function logEvent(params: {
     properties: params.properties ?? {},
   };
 
-  // Always keep local fallback so the UI never blocks.
   localAppend(event);
-
-  // Best-effort Supabase insert.
-  try {
-    const maybeAny = supabase as any;
-    if (maybeAny?.from) {
-      await maybeAny.from("analytics_events").insert([
-        {
-          id: event.id,
-          user_id: event.user_id,
-          name: event.name,
-          properties: event.properties,
-          created_at: event.created_at,
-        },
-      ]);
-    }
-  } catch {
-    // ignore
-  }
 }

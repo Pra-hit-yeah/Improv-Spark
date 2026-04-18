@@ -178,7 +178,7 @@ export default function AnalyticsPage() {
               </div>
             ))}
             <Separator />
-            <p className="text-xs text-muted-foreground">Counts are derived from logged events. If Supabase is unavailable, local fallback is used.</p>
+            <p className="text-xs text-muted-foreground">Counts are derived from locally logged events stored in your browser.</p>
           </CardContent>
         </Card>
 
@@ -205,38 +205,6 @@ export default function AnalyticsPage() {
         </Card>
       </div>
 
-      <Card className="bg-primary/5 border-primary/10">
-        <CardHeader>
-          <CardTitle>SQL Setup Notes</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-3 text-sm text-muted-foreground">
-          <p>Use these fields/tables in Supabase (RLS friendly). This page works without them using local fallback.</p>
-          <div className="rounded-xl bg-background border border-border p-4 font-mono text-xs overflow-auto">
-            <pre>{`-- analytics_events
-create table if not exists public.analytics_events (
-  id uuid primary key,
-  user_id uuid references auth.users(id),
-  name text not null,
-  properties jsonb not null default '{}'::jsonb,
-  created_at timestamptz not null default now()
-);
-
--- profiles additions
-alter table public.profiles add column if not exists goal text;
-alter table public.profiles add column if not exists daily_time text;
-alter table public.profiles add column if not exists activated boolean not null default false;
-alter table public.profiles add column if not exists exp_dashboard_cta text;
-
--- RLS example
-alter table public.analytics_events enable row level security;
-create policy "Users can insert their analytics" on public.analytics_events
-for insert with check (auth.uid() = user_id);
-create policy "Users can read their analytics" on public.analytics_events
-for select using (auth.uid() = user_id);
-`}</pre>
-          </div>
-        </CardContent>
-      </Card>
     </div>
   );
 }
